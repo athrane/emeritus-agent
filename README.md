@@ -1,2 +1,2 @@
 # emeritus
-Experiment with state machine for an old man
+Experiment with a state machine for an old man.
