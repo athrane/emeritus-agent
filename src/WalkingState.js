@@ -2,6 +2,10 @@ const State = require('./State'); // Import the State class
 const SleepingState = require('./SleepingState'); // Import the SleepingState class
 
 class WalkingState extends State {
+  constructor(npc) {
+    super(npc); // Call the parent class constructor
+  }
+    
   enter() {
     console.log(`${this.npc.name} is now walking around.`);
   }
