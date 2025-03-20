@@ -1,4 +1,12 @@
-const Person = require('./Person.js'); // For CommonJS modules (Node.js)
 
-const john = new Person('John Doe', 30);
-john.greet();
+// Import the NonPlayerCharacter class
+const NonPlayerCharacter = require('./NonPlayerCharacter');
+
+// Example Usage
+const npc = new NonPlayerCharacter("Bob");
+
+// Simulate the NPC's behavior over time
+for (let i = 0; i < 20; i++) {
+  console.log(`--- Tick ${i + 1} ---`);
+  npc.update();
+}
