@@ -1,7 +1,7 @@
-const State = require('./State'); // Import the State class
-const SleepingState = require('./SleepingState'); // Import the SleepingState class
 
-class WalkingState extends State {
+import { State, SleepingState } from './internal.js'; // Import the State class
+
+export class WalkingState extends State {
   constructor(npc) {
     super(npc); // Call the parent class constructor
   }
@@ -23,5 +23,3 @@ class WalkingState extends State {
     this.npc.walkTime = 0;
   }
 }
-
-module.exports = WalkingState; // For CommonJS modules (Node.js)

@@ -1,5 +1,5 @@
 // State interface
-class State {
+export class State {
   constructor(npc) {
     this.npc = npc;
   }
@@ -16,5 +16,3 @@ class State {
     // Method to handle exiting the state
   }
 }
-
-module.exports = State; // For CommonJS modules (Node.js)

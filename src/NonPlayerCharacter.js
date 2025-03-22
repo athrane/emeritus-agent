@@ -1,6 +1,7 @@
-const SleepingState = require('./SleepingState'); // Import SleepingState
 
-class NonPlayerCharacter {
+import { SleepingState } from './internal.js'; // Import SleepingState
+
+export class NonPlayerCharacter {
   constructor(name) {
     this.name = name;
     this.currentState = new SleepingState(this); // Initial state
@@ -19,5 +20,3 @@ class NonPlayerCharacter {
     this.currentState.update();
   }
 }
-
-module.exports = NonPlayerCharacter; // For CommonJS modules (Node.js)
