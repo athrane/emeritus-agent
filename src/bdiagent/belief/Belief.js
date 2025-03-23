@@ -1,5 +1,5 @@
 /**
- * Belief class.
+ * Base Belief class.
  */
 export class Belief {
     constructor(name, value) {

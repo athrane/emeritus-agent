@@ -2,7 +2,7 @@
 import { Belief } from '../../internal.js';
 
 /**
- * Belief which holds integer values
+ * Belief which holds integer values.
  */
 export class IntegerBelief extends Belief {
     constructor(name, value) {
@@ -36,6 +36,7 @@ export class IntegerBelief extends Belief {
     setValue(newValue) {
         this.update(newValue);
     }
+    
     getValue() {
         return this.value;
     }
