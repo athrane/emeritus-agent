@@ -38,6 +38,25 @@ export class TypeUtils {
       throw new Error(errorMessage);
     }
   }
+
+  /**
+     * Ensures that a value is of type number.
+     * If not, it throws an error with details about the type mismatch
+     * and prints the stack trace.
+     *
+     * @param {any} value The value to check.
+     */
+  static ensureNumber(value) {
+    if (typeof value !== 'number') {
+      const actualType = typeof value;
+      const expectedType = 'number';
+      const errorMessage = `Expected type ${expectedType}, but got ${actualType}`;
+      console.error(errorMessage);
+      console.trace("Number check failed");
+      throw new Error(errorMessage);
+    }
+  }
+
 }
 
 // Usage

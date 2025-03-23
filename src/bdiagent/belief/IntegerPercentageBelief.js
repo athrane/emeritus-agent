@@ -6,8 +6,10 @@ import { Belief } from '../../internal.js';
  * Values are automatically clamped to this range.
  */
 export class IntegerPercentageBelief extends Belief {
+  
   /**
    * Creates a new IntegerPercentageBelief.
+   * 
    * @param {string} name The name of the belief.
    * @param {number} value The initial value of the belief.
    */

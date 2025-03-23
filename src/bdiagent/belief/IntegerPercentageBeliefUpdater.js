@@ -13,14 +13,12 @@ export class IntegerPercentageBeliefUpdater extends BeliefUpdater {
  * @param {IntegerPercentageBelief} belief The belief to update.
  * @param {any} value The new value for the belief.
  */
-    IntegerPercentageBeliefUpdater(belief, value) {
+    constructor(belief, value) {
+        super();
         TypeUtils.ensureInstanceOf(belief, IntegerPercentageBelief);
-        //TypeUtils.ensureNumber(value);
+        TypeUtils.ensureNumber(value);
         this.belief = belief;
         this.value = value;
-
-        console.log(`belief= ${this.belief}   `);
-        console.log(`value= ${this.value}   `);
     }
 
     /**
@@ -28,6 +26,7 @@ export class IntegerPercentageBeliefUpdater extends BeliefUpdater {
      * @param {Agent} agent The agent whose belief needs to be updated.
      */
     update(agent) {
+        TypeUtils.ensureInstanceOf(agent, Agent);
         console.log(`updating belief= ${this.belief}   `);
         this.belief.increase(this.value);
     }
