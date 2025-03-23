@@ -6,3 +6,10 @@ export { EatingState } from './EatingState.js';
 export { WalkingState } from './WalkingState.js';
 export { NonPlayerCharacter } from './NonPlayerCharacter.js';
 
+export { Belief } from './bdiagent/belief/Belief.js';
+export { IntegerBelief } from './bdiagent/belief/IntegerBelief.js';
+
+export { Agent } from './bdiagent/Agent.js';
+
+
+
