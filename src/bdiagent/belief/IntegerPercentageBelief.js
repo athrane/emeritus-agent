@@ -20,11 +20,11 @@ export class IntegerPercentageBelief extends Belief {
   }
    
   increase(amount) {
-    this.value = this.clampPercentage(this.value + amount);
+    this.value = IntegerPercentageBelief.clampPercentage(this.value + amount);
   }
 
   decrease(amount) {
-    this.value = this.clampPercentage(this.value - amount);
+    this.value = IntegerPercentageBelief.clampPercentage(this.value - amount);
   }
 
   getValue() {

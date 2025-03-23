@@ -27,8 +27,9 @@ export class IntegerPercentageBeliefUpdater extends BeliefUpdater {
      */
     update(agent) {
         TypeUtils.ensureInstanceOf(agent, Agent);
-        console.log(`updating belief= ${this.belief}   `);
         this.belief.increase(this.value);
+        console.log(`Belief ${this.belief.name} value is: ${this.belief.getValue()}`);
+
     }
 
 }
