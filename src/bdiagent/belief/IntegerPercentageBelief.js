@@ -6,24 +6,27 @@ import { Belief } from '../../internal.js';
  * Values are automatically clamped to this range.
  */
 export class IntegerPercentageBelief extends Belief {
+  /**
+   * Creates a new IntegerPercentageBelief.
+   * @param {string} name The name of the belief.
+   * @param {number} value The initial value of the belief.
+   */
   constructor(name, value) {
-    super(name, IntegerPercentageBelief.clampPercentage(value));
+    super()
+    this.name = name;
+    this.value = IntegerPercentageBelief.clampPercentage(value);
   }
-
-  update(newValue) {
-    super.update(this.clampPercentage(newValue));
-  }
-
+   
   increase(amount) {
-    super.update(this.clampPercentage(this.value + amount));
+    this.value = this.clampPercentage(this.value + amount);
   }
 
   decrease(amount) {
-    super.update(this.clampPercentage(this.value - amount));
+    this.value = this.clampPercentage(this.value - amount);
   }
 
-  setValue(newValue) {
-    this.update(newValue);
+  getValue() {
+    return this.value
   }
 
   /**

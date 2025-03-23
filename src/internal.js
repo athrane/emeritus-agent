@@ -9,11 +9,10 @@ export { WalkingState } from './WalkingState.js';
 export { NonPlayerCharacter } from './NonPlayerCharacter.js';
 
 export { Belief } from './bdiagent/belief/Belief.js';
-export { IntegerBelief } from './bdiagent/belief/IntegerBelief.js';
 export { IntegerPercentageBelief } from './bdiagent/belief/IntegerPercentageBelief.js';
 
 export { BeliefUpdater } from './bdiagent/belief/BeliefUpdater.js';
-export { IntegerPercentageBeliefUpdater } from './bdiagent/belief/IntegerPercentageBeliefUpdater.js';   
+export { IntegerPercentageBeliefUpdater } from './bdiagent/belief/IntegerPercentageBeliefUpdater.js';
 
 export { Agent } from './bdiagent/Agent.js';
 

@@ -1,15 +1,23 @@
 
 
-import { BeliefUpdater } from '../../internal.js';
+import { Belief } from '../internal.js';
+import { BeliefUpdater } from '../internal.js';
+import { TypeUtils } from '../internal.js';
 
 export class Agent {
+  
   constructor(name) {
     this.name = name;
     this.beliefs = [];
-    this.beliefUpdaters = {};
+    this.beliefUpdaters = [];
   }
 
+  /**
+   * 
+   * @param {*} belief 
+   */
   addBelief(belief) {
+    TypeUtils.ensureInstanceOf(belief, Belief);
     this.beliefs.push(belief);
   }
 
@@ -20,18 +28,20 @@ export class Agent {
   /**
    * Registers a BeliefUpdater with the agent.
    * 
-   * @param {string} name The belief (name) to register the BeliefUpdater with.
    * @param {BeliefUpdater} beliefUpdater The BeliefUpdater instance to register.
    */
-  registerBeliefUpdater(name, beliefUpdater) {
-    TypeUtils.ensureInstanceOf(name, String);
+  registerBeliefUpdater(beliefUpdater) {
     TypeUtils.ensureInstanceOf(beliefUpdater, BeliefUpdater);
-
-    this.beliefUpdaters[name] = beliefUpdater;
+    this.beliefUpdaters.push(beliefUpdater);
   }
   
   update() {
     console.log(`${this.name} is updating.`);
+
+    // Update beliefs
+    this.beliefUpdaters.forEach(bu => {
+      bu.update(this);
+    });
   }
 
 }
