@@ -1,4 +1,5 @@
-import { Belief } from './Belief.js'; // Assuming Belief is in the same directory
+
+import { Belief } from '../../internal.js';
 
 /**
  * Belief which holds integer percentage values between 0 and 100.
@@ -6,7 +7,7 @@ import { Belief } from './Belief.js'; // Assuming Belief is in the same director
  */
 export class IntegerPercentageBelief extends Belief {
   constructor(name, value) {
-    super(name, self.clampPercentage(value));
+    super(name, IntegerPercentageBelief.clampPercentage(value));
   }
 
   update(newValue) {
@@ -29,7 +30,6 @@ export class IntegerPercentageBelief extends Belief {
    * Clamps the given value to ensure it's within the 0-100 range.
    * @param {number} value The value to clamp.
    * @returns {number} The clamped value.
-   * @private
    */
   static clampPercentage(value) {
     if (value > 100) {
