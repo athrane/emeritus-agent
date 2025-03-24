@@ -48,4 +48,26 @@ This ensures that `esbuild` is available for building the project but is not inc
 
 ## Description
 
-This project includes a `Agent` class that models a NPC with a name and age. The `main.js` file demonstrates its usage by creating an instance and invoking its methods.
+This project includes the following classes, grouped by their respective directories:
+
+### `src/`
+- **`main.js`**: The entry point of the application. It creates and runs the agent using the `AgentFactory`.
+
+### `src/utils/`
+- **`TypeUtils`**: Provides utility methods for type checking, such as ensuring a value is an instance of a specific class or a specific type.
+
+### `src/`
+- **`Agent`**: Represents the main agent with beliefs, desires, and intentions. It models the behavior of the NPC.
+- **`AgentFactory`**: A factory class responsible for creating and initializing agents with predefined beliefs, desires, and intentions.
+
+### `src/beliefs/`
+- **`IntegerPercentageBelief`**: Represents a belief with a value between 0 and 100 (e.g., hunger, fatigue).
+- **`IntegerPercentageBeliefUpdater`**: Updates the value of an `IntegerPercentageBelief` over time.
+
+### `src/desires/`
+- **`Desire`**: Represents a desire of the agent, with conditions for activation and a priority level.
+
+### `src/intentions/`
+- **`Intention`**: Represents an intention of the agent, with actions to execute and conditions for activation.
+
+This modular structure ensures that the agent's behavior is easy to extend and maintain.
