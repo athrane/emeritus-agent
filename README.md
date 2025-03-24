@@ -1,4 +1,4 @@
-# emeritus
+# Emeritus-agent
 Experiment with a belief–desire–intention (BDI) agent for an old man living in a house.
 
 ## Usage 
