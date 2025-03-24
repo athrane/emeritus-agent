@@ -2,12 +2,6 @@
 
 export { TypeUtils } from './utils/TypeUtils.js';
 
-export { State } from './State.js';
-export { SleepingState } from './SleepingState.js';
-export { EatingState } from './EatingState.js';
-export { WalkingState } from './WalkingState.js';
-export { NonPlayerCharacter } from './NonPlayerCharacter.js';
-
 export { Belief } from './bdiagent/belief/Belief.js';
 export { IntegerPercentageBelief } from './bdiagent/belief/IntegerPercentageBelief.js';
 
