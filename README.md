@@ -7,4 +7,4 @@ Run in terminal: node main.js
 
 ## Description
 
-This project includes a `Agent` class that models a person with a name and age. The `main.js` file demonstrates its usage by creating an instance and invoking its methods.
+This project includes a `Agent` class that models a NPC with a name and age. The `main.js` file demonstrates its usage by creating an instance and invoking its methods.
