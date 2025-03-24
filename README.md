@@ -26,6 +26,16 @@ This command uses `esbuild` with the following parameters:
 
 The bundled file is placed in the `dist/` directory, making it ready for distribution or deployment.
 
+### Running the Bundled File
+
+To run the `bundle.js` file from the root directory of the project, use the following command in the terminal:
+
+```sh
+node dist/bundle.js
+```
+
+This will execute the bundled code and display the output in the terminal.
+
 ### Installing `esbuild`
 
 `esbuild` was installed as a development dependency using the following command:
