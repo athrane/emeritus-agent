@@ -57,16 +57,28 @@ export class TypeUtils {
     }
   }
 
-    /**
-     * Ensures that the provided value is a function.
-     * @param {any} value The value to check.
-     * @param {string} [message] Optional error message to throw if the value is not a function.
-     * @throws {Error} If the value is not a function.
-     */
-    static ensureFunction(value, message) {
-      if (typeof value !== 'function') {
-          throw new Error(message || 'Expected a function');
-      }
+  /**
+   * Ensures that the provided value is a function.
+   * @param {any} value The value to check.
+   * @param {string} [message] Optional error message to throw if the value is not a function.
+   * @throws {Error} If the value is not a function.
+   */
+  static ensureFunction(value, message) {
+    if (typeof value !== 'function') {
+      throw new Error(message || 'Expected a function');
+    }
+  }
+
+  /**
+       * Ensures that the provided value is an array.
+       * @param {any} value The value to check.
+       * @param {string} [message] Optional error message to throw if the value is not an array.
+       * @throws {Error} If the value is not an array.
+  */
+  static ensureArray(value, message) {
+    if (!Array.isArray(value)) {
+      throw new Error(message || 'Expected an array');
+    }
   }
 
 }

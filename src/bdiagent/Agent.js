@@ -1,6 +1,7 @@
 import { Belief } from '../internal.js';
 import { BeliefUpdater } from '../internal.js';
 import { Desire } from '../internal.js';
+import { Intention } from '../internal.js';
 import { TypeUtils } from '../internal.js';
 
 /**
@@ -20,7 +21,9 @@ export class Agent {
     this.name = name;
     this.beliefs = [];
     this.beliefUpdaters = [];
-    this.desires = [];    
+    this.desires = [];
+    this.intentions = [];
+    this.currentIntention = null; // Track the current intention    
   }
 
   /**
@@ -58,22 +61,49 @@ export class Agent {
   /**
    * Adds a desire to the agent's list of desires.
    * * @param {Desire} desire The desire to add to the agent.
-   */  
+   */
   addDesire(desire) {
-    TypeUtils.ensureInstanceOf(desire, Desire);    
+    TypeUtils.ensureInstanceOf(desire, Desire);
     this.desires.push(desire);
+  }
+
+  addIntention(intention) {
+    TypeUtils.ensureInstanceOf(intention, Intention);
+    this.intentions.push(intention);
   }
 
   /**
    * Updates the agent's beliefs using the registered BeliefUpdaters.
    */
   update() {
-    console.log(`${this.name} is updating.`);
-
-    // Update beliefs
     this.beliefUpdaters.forEach(bu => {
       bu.update(this);
     });
   }
 
+  reason() {
+    // 1. Desire Generation
+    const activeDesires = this.desires.filter(desire => desire.isSatisfied(this));
+
+    // 2. Intention Selection (basic - pick the highest priority)
+    if (activeDesires.length > 0) {
+      activeDesires.sort((a, b) => b.priority - a.priority); // Sort by priority
+      const bestDesire = activeDesires[0];
+      this.currentIntention = this.intentions.find(intention => intention.name === bestDesire.name && intention.canExecute(this));
+    } else {
+      this.currentIntention = null;
+    }
+  }
+
+  act() {
+    if (this.currentIntention) {
+      this.currentIntention.execute(this);
+    }
+  }
+
+  run() {
+    this.update(); // Update beliefs
+    this.reason(); // Determine what to do
+    this.act();    // Perform the action
+  }
 }
