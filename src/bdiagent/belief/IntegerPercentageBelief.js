@@ -1,4 +1,4 @@
-
+import { TypeUtils } from "../../internal.js";
 import { Belief } from '../../internal.js';
 
 /**
@@ -15,15 +15,19 @@ export class IntegerPercentageBelief extends Belief {
    */
   constructor(name, value) {
     super()
+    TypeUtils.ensureString(name);
+    TypeUtils.ensureNumber(value);
     this.name = name;
     this.value = IntegerPercentageBelief.clampPercentage(value);
   }
    
   increase(amount) {
+    TypeUtils.ensureNumber(amount);
     this.value = IntegerPercentageBelief.clampPercentage(this.value + amount);
   }
 
   decrease(amount) {
+    TypeUtils.ensureNumber(amount);
     this.value = IntegerPercentageBelief.clampPercentage(this.value - amount);
   }
 
@@ -37,6 +41,7 @@ export class IntegerPercentageBelief extends Belief {
    * @returns {number} The clamped value.
    */
   static clampPercentage(value) {
+    TypeUtils.ensureNumber(value);
     if (value > 100) {
       return 100;
     } else if (value < 0) {

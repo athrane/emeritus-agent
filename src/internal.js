@@ -14,6 +14,8 @@ export { IntegerPercentageBelief } from './bdiagent/belief/IntegerPercentageBeli
 export { BeliefUpdater } from './bdiagent/belief/BeliefUpdater.js';
 export { IntegerPercentageBeliefUpdater } from './bdiagent/belief/IntegerPercentageBeliefUpdater.js';
 
+export { Desire } from './bdiagent/desire/Desire.js';
+
 export { Agent } from './bdiagent/Agent.js';
 
 

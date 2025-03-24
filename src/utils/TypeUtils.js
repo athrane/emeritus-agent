@@ -57,6 +57,18 @@ export class TypeUtils {
     }
   }
 
+    /**
+     * Ensures that the provided value is a function.
+     * @param {any} value The value to check.
+     * @param {string} [message] Optional error message to throw if the value is not a function.
+     * @throws {Error} If the value is not a function.
+     */
+    static ensureFunction(value, message) {
+      if (typeof value !== 'function') {
+          throw new Error(message || 'Expected a function');
+      }
+  }
+
 }
 
 // Usage

@@ -1,5 +1,6 @@
 import { Belief } from '../internal.js';
 import { BeliefUpdater } from '../internal.js';
+import { Desire } from '../internal.js';
 import { TypeUtils } from '../internal.js';
 
 /**
@@ -7,18 +8,19 @@ import { TypeUtils } from '../internal.js';
  * An agent has beliefs and can update them using BeliefUpdaters.
  */
 export class Agent {
-  
-/**
-   * Constructor for the Agent class.
-   * 
-   * @param {string} name The name of the agent.
-   * @throws {Error} If the provided name is not a string.
-   */  
+
+  /**
+     * Constructor for the Agent class.
+     * 
+     * @param {string} name The name of the agent.
+     * @throws {Error} If the provided name is not a string.
+     */
   constructor(name) {
     TypeUtils.ensureString(name);
     this.name = name;
     this.beliefs = [];
     this.beliefUpdaters = [];
+    this.desires = [];    
   }
 
   /**
@@ -26,7 +28,7 @@ export class Agent {
    * 
    * @param {Belief} belief The belief to add.
    * @throws {Error} If the provided belief is not an instance of the Belief class.
-   */  
+   */
   addBelief(belief) {
     TypeUtils.ensureInstanceOf(belief, Belief);
     this.beliefs.push(belief);
@@ -39,6 +41,7 @@ export class Agent {
    * @returns {Belief | undefined} The belief with the given name, or undefined if not found.
    */
   getBelief(name) {
+    TypeUtils.ensureString(name);
     return this.beliefs.find(belief => belief.name === name);
   }
 
@@ -51,10 +54,19 @@ export class Agent {
     TypeUtils.ensureInstanceOf(beliefUpdater, BeliefUpdater);
     this.beliefUpdaters.push(beliefUpdater);
   }
-  
+
+  /**
+   * Adds a desire to the agent's list of desires.
+   * * @param {Desire} desire The desire to add to the agent.
+   */  
+  addDesire(desire) {
+    TypeUtils.ensureInstanceOf(desire, Desire);    
+    this.desires.push(desire);
+  }
+
   /**
    * Updates the agent's beliefs using the registered BeliefUpdaters.
-   */  
+   */
   update() {
     console.log(`${this.name} is updating.`);
 
