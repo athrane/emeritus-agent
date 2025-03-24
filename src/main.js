@@ -57,7 +57,7 @@ oldMan.addIntention(new Intention("SitIdle", [
   console.log("Agent is done idling.");
 }));
 
-// Simulate the NPC's behavior over time
+// Run agent 
 for (let i = 0; i < 100; i++) {
   console.log(`--- Tick ${i + 1} ---`);
   oldMan.run();
