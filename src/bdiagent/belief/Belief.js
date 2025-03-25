@@ -3,6 +3,10 @@
  */
 export class Belief {
 
-  // no implementation in the base class
+  // null implementation in the base class
+  
+  getValue() {
+    return null;
+  }
 
 }
