@@ -21,8 +21,11 @@ npm run build
 
 This command uses `esbuild` with the following parameters:
 
-- `--bundle`: Bundles all dependencies into a single file.
+- `--bundle`: Bundles all dependencies and source files into a single file.
 - `--outfile=dist/bundle.js`: Specifies the output file location as `dist/bundle.js`.
+- `--format=esm`: Ensures the output file is in ES Module format, preserving `import/export` syntax.
+- `--target=esnext`: Ensures the code is not transpiled and remains in ESNext syntax.
+- `--minify-whitespace`: Removes unnecessary whitespace from the output file to reduce its size.
 
 The bundled file is placed in the `dist/` directory, making it ready for distribution or deployment.
 
