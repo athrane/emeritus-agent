@@ -13,6 +13,7 @@ export { Desire } from './bdiagent/desire/Desire.js';
 export { Intention } from './bdiagent/intention/Intention.js';
 
 export { Agent } from './bdiagent/Agent.js';
+export { AgentFactory } from './bdiagent/AgentFactory.js';
 
 
 

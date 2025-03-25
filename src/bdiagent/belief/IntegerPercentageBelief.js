@@ -6,7 +6,7 @@ import { Belief } from '../../internal.js';
  * Values are automatically clamped to this range.
  */
 export class IntegerPercentageBelief extends Belief {
-  
+
   /**
    * Creates a new IntegerPercentageBelief.
    * 
@@ -20,7 +20,7 @@ export class IntegerPercentageBelief extends Belief {
     this.name = name;
     this.value = IntegerPercentageBelief.clampPercentage(value);
   }
-   
+
   increase(amount) {
     TypeUtils.ensureNumber(amount);
     this.value = IntegerPercentageBelief.clampPercentage(this.value + amount);

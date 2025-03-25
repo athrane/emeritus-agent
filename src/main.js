@@ -1,4 +1,4 @@
-import { AgentFactory } from './AgentFactory.js';
+import { AgentFactory } from './internal.js';
 
 // Create the agent using the factory
 const oldMan = AgentFactory.createOldManAgent();

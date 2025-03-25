@@ -5,7 +5,7 @@ export class Desire {
     constructor(name, condition, priority) {
         TypeUtils.ensureString(name);
         TypeUtils.ensureFunction(condition);
-        TypeUtils.ensureNumber(priority);   
+        TypeUtils.ensureNumber(priority);
         this.name = name;
         this.condition = condition; // Function that returns true if the desire is active
         this.priority = priority;
