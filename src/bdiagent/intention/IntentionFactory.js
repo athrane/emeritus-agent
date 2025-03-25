@@ -1,6 +1,10 @@
 import { Intention } from "../../internal.js";
 
 export class IntentionFactory {
+
+    /**
+     * Creates a new null intention instance.
+     */
     static createNullIntention() {
         return new Intention(
             "Null intention", // Name of the intention

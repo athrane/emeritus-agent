@@ -24,6 +24,8 @@ export class Agent {
     this.beliefs = [];
     this.beliefUpdaters = [];
     this.desires = [];
+    this.activeDesires = [];
+    this.bestDesire = null;    
     this.intentions = [];
     this.currentIntention = Agent.NULL_INTENTION;    
   }
@@ -90,6 +92,15 @@ export class Agent {
   }
 
   /**
+   * Retrieves the agent's current best desire.
+   *
+   * @returns {Desire | null} The agent's current best desire, or null if there is none.
+   */ 
+  getCurrentBestDesire() {
+    return this.bestDesire;
+  }
+  
+  /**
    * Updates the agent's beliefs using the registered BeliefUpdaters.
    */
   update() {
@@ -107,9 +118,9 @@ export class Agent {
 
     // 2. Intention Selection (basic - pick the highest priority)
     if (activeDesires.length > 0) {
-      activeDesires.sort((a, b) => b.priority - a.priority); // Sort by priority
-      const bestDesire = activeDesires[0];
-      this.currentIntention = this.intentions.find(intention => intention.name === bestDesire.name && intention.canExecute(this));
+      this.activeDesires.sort((a, b) => b.priority - a.priority); // Sort by priority
+      this.bestDesire = activeDesires[0];
+      this.currentIntention = this.intentions.find(intention => intention.name === this.bestDesire.name && intention.canExecute(this));
     } else {
       this.currentIntention = Agent.NULL_INTENTION;
     }

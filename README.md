@@ -63,14 +63,15 @@ This project includes the following classes, grouped by their respective directo
 - **`Agent`**: Represents the main agent with beliefs, desires, and intentions. It models the behavior of the NPC.
 - **`AgentFactory`**: A factory class responsible for creating and initializing agents with predefined beliefs, desires, and intentions.
 
-### `src/beliefs/`
+### `src/belief/`
+- **`Belief`**: A base class representing a belief of the agent.
 - **`IntegerPercentageBelief`**: Represents a belief with a value between 0 and 100 (e.g., hunger, fatigue).
 - **`IntegerPercentageBeliefUpdater`**: Updates the value of an `IntegerPercentageBelief` over time.
 
-### `src/desires/`
+### `src/desire/`
 - **`Desire`**: Represents a desire of the agent, with conditions for activation and a priority level.
 
-### `src/intentions/`
+### `src/intention/`
 - **`Intention`**: Represents an intention of the agent, with actions to execute and conditions for activation.
+- **`IntentionFactory`**: A factory class that creates specific intentions, including a "null intention" used when no valid intention is applicable.
 
-This modular structure ensures that the agent's behavior is easy to extend and maintain.

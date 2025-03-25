@@ -1,7 +1,7 @@
 import { Agent } from '../internal.js';
 import { IntegerPercentageBelief } from '../internal.js';
 import { IntegerPercentageBeliefUpdater } from '../internal.js';
-import { Desire } from '../internal.js';
+import { DesireFactory } from '../internal.js';
 import { Intention } from '../internal.js';
 
 export class AgentFactory {
@@ -22,9 +22,10 @@ export class AgentFactory {
         oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(boredomBelief, 5));
 
         // Add desires
-        oldMan.addDesire(new Desire("Sleep", (agent) => agent.getBelief("fatigue").getValue() > 70, 8));
-        oldMan.addDesire(new Desire("Eat", (agent) => agent.getBelief("hunger").getValue() > 60, 7));
-        oldMan.addDesire(new Desire("SitIdle", (agent) => agent.getBelief("boredom").getValue() > 50, 5));
+        oldMan.addDesire(DesireFactory.createSleepDesire());
+        oldMan.addDesire(DesireFactory.createEatDesire());
+        oldMan.addDesire(DesireFactory.createSitIdleDesire());
+        oldMan.addDesire(DesireFactory.createNullDesire()); 
 
         // Add intentions
         oldMan.addIntention(new Intention("Sleep", [

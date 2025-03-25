@@ -16,10 +16,12 @@ for (let i = 0; i < 100; i++) {
     console.log(`Fatigue: ${fatigue}`);
 
     let currentIntention = oldMan.getCurrentIntention();
-    if (currentIntention) {
-        console.log(`Current Intention: ${currentIntention.name}`);
-    } else {
-        console.log("Current Intention: null");
+    console.log(`Current Intention: ${currentIntention.name}`);
+    
+    let currentBestDesire = oldMan.getCurrentBestDesire();
+    if(currentBestDesire) { 
+        console.log(`Current Best Desire: ${currentBestDesire.name}`);
     }
+    
 }
 
