@@ -30,14 +30,26 @@ export class DesireFactory {
     }
 
     /**
+     * Creates a "Entertain" desire.
+     * @returns {Desire} A desire for the agent to entertain itself.
+     */
+    static createEntertainDesire() {
+        return new Desire(
+            "Entertain",
+            (agent) => agent.getBelief("boredom").getValue() > 50, // Condition for activation
+            5 // Priority
+        );
+    }
+
+    /**
      * Creates a "SitIdle" desire.
      * @returns {Desire} A desire for the agent to sit idle.
      */
     static createSitIdleDesire() {
         return new Desire(
             "SitIdle",
-            (agent) => agent.getBelief("boredom").getValue() > 50, // Condition for activation
-            5 // Priority
+            (agent) => true,  // Condition is always true, so it will always activate
+            3 // Priority
         );
     }
 

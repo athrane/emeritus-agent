@@ -6,8 +6,8 @@ const oldMan = AgentFactory.createOldManAgent();
 
 // Run the agent
 for (let i = 0; i < 100; i++) {
-    console.log(`--- Generation: ${i + 1} ---`);
     oldMan.run();
+    console.log(`--- Generation: ${i + 1} ---`);
     let boredom = oldMan.getBelief("boredom").getValue();
     let hunger = oldMan.getBelief("hunger").getValue();
     let fatigue = oldMan.getBelief("fatigue").getValue();;
@@ -17,7 +17,7 @@ for (let i = 0; i < 100; i++) {
 
     let currentBestDesire = oldMan.getCurrentBestDesire();
     if(currentBestDesire) { 
-        console.log(`Current Best Desire: ${currentBestDesire.name}`);
+        console.log(`Current Desire: ${currentBestDesire.name}`);
     }
      
     let currentIntention = oldMan.getCurrentIntention();

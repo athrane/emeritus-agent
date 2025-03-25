@@ -24,12 +24,14 @@ export class AgentFactory {
         // Add desires
         oldMan.addDesire(DesireFactory.createSleepDesire());
         oldMan.addDesire(DesireFactory.createEatDesire());
+        oldMan.addDesire(DesireFactory.createEntertainDesire());
         oldMan.addDesire(DesireFactory.createSitIdleDesire());
         oldMan.addDesire(DesireFactory.createNullDesire());
 
         // Add intentions using IntentionFactory
         oldMan.addIntention(IntentionFactory.createSleepIntention());
         oldMan.addIntention(IntentionFactory.createEatIntention());
+        oldMan.addIntention(IntentionFactory.createEntertainIntention());
         oldMan.addIntention(IntentionFactory.createSitIdleIntention());
 
         return oldMan;
