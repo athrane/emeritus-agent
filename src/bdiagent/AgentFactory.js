@@ -2,7 +2,7 @@ import { Agent } from '../internal.js';
 import { IntegerPercentageBelief } from '../internal.js';
 import { IntegerPercentageBeliefUpdater } from '../internal.js';
 import { DesireFactory } from '../internal.js';
-import { Intention } from '../internal.js';
+import { IntentionFactory } from '../internal.js';
 
 export class AgentFactory {
     static createOldManAgent() {
@@ -25,39 +25,12 @@ export class AgentFactory {
         oldMan.addDesire(DesireFactory.createSleepDesire());
         oldMan.addDesire(DesireFactory.createEatDesire());
         oldMan.addDesire(DesireFactory.createSitIdleDesire());
-        oldMan.addDesire(DesireFactory.createNullDesire()); 
+        oldMan.addDesire(DesireFactory.createNullDesire());
 
-        // Add intentions
-        oldMan.addIntention(new Intention("Sleep", [
-            (agent) => {
-                console.log("Agent is going to sleep.");
-                agent.getBelief("fatigue").decrease(50);
-                agent.getBelief("hunger").increase(10); // Sleeping might increase hunger a bit
-            }
-        ], (agent) => agent.getBelief("fatigue").getValue() > 70, (agent) => {
-            console.log("Agent woke up and feels rested.");
-        }));
-
-        oldMan.addIntention(new Intention("Eat", [
-            (agent) => {
-                console.log("Agent is eating.");
-                agent.getBelief("hunger").decrease(40);
-                agent.getBelief("fatigue").increase(5); // Eating might cause a bit of fatigue
-            }
-        ], (agent) => agent.getBelief("hunger").getValue() > 60, (agent) => {
-            console.log("Agent finished eating.");
-        }));
-
-        oldMan.addIntention(new Intention("SitIdle", [
-            (agent) => {
-                console.log("Agent is sitting idle.");
-                agent.getBelief("boredom").decrease(20);
-                agent.getBelief("hunger").increase(5);
-                agent.getBelief("fatigue").increase(5);
-            }
-        ], (agent) => agent.getBelief("boredom").getValue() > 50, (agent) => {
-            console.log("Agent is done idling.");
-        }));
+        // Add intentions using IntentionFactory
+        oldMan.addIntention(IntentionFactory.createSleepIntention());
+        oldMan.addIntention(IntentionFactory.createEatIntention());
+        oldMan.addIntention(IntentionFactory.createSitIdleIntention());
 
         return oldMan;
     }

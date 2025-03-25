@@ -15,13 +15,13 @@ for (let i = 0; i < 100; i++) {
     console.log(`Hunger: ${hunger}`);
     console.log(`Fatigue: ${fatigue}`);
 
-    let currentIntention = oldMan.getCurrentIntention();
-    console.log(`Current Intention: ${currentIntention.name}`);
-    
     let currentBestDesire = oldMan.getCurrentBestDesire();
     if(currentBestDesire) { 
         console.log(`Current Best Desire: ${currentBestDesire.name}`);
     }
-    
+     
+    let currentIntention = oldMan.getCurrentIntention();
+    console.log(`Current Intention: ${currentIntention.name}`);
+       
 }
 
