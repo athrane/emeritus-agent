@@ -15,5 +15,11 @@ for (let i = 0; i < 100; i++) {
     console.log(`Hunger: ${hunger}`);
     console.log(`Fatigue: ${fatigue}`);
 
+    let currentIntention = oldMan.getCurrentIntention();
+    if (currentIntention) {
+        console.log(`Current Intention: ${currentIntention.name}`);
+    } else {
+        console.log("Current Intention: null");
+    }
 }
 

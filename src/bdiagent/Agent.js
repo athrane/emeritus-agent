@@ -2,6 +2,7 @@ import { Belief } from '../internal.js';
 import { BeliefUpdater } from '../internal.js';
 import { Desire } from '../internal.js';
 import { Intention } from '../internal.js';
+import { IntentionFactory } from '../internal.js';
 import { TypeUtils } from '../internal.js';
 
 /**
@@ -10,6 +11,7 @@ import { TypeUtils } from '../internal.js';
  */
 export class Agent {
 
+  static NULL_INTENTION = IntentionFactory.createNullIntention();
   /**
      * Constructor for the Agent class.
      * 
@@ -23,7 +25,7 @@ export class Agent {
     this.beliefUpdaters = [];
     this.desires = [];
     this.intentions = [];
-    this.currentIntention = null; // Track the current intention    
+    this.currentIntention = Agent.NULL_INTENTION;    
   }
 
   /**
@@ -60,6 +62,7 @@ export class Agent {
 
   /**
    * Adds a desire to the agent's list of desires.
+   * 
    * * @param {Desire} desire The desire to add to the agent.
    */
   addDesire(desire) {
@@ -67,9 +70,23 @@ export class Agent {
     this.desires.push(desire);
   }
 
+  /**
+   * Adds an intention to the agent's list of intentions.
+   * 
+   * @param {Intention} intention The intention to add to the agent.
+   */
   addIntention(intention) {
     TypeUtils.ensureInstanceOf(intention, Intention);
     this.intentions.push(intention);
+  }
+
+  /**
+   * Retrieves the agent's current intention.
+   *
+   * @returns {Intention | null} The agent's current intention, or null if there is none.
+   */
+  getCurrentIntention() {
+    return this.currentIntention;
   }
 
   /**
@@ -81,6 +98,9 @@ export class Agent {
     });
   }
 
+  /**
+   * Determines the agent's current intention based on its desires and intentions.
+   */
   reason() {
     // 1. Desire Generation
     const activeDesires = this.desires.filter(desire => desire.isSatisfied(this));
@@ -91,16 +111,22 @@ export class Agent {
       const bestDesire = activeDesires[0];
       this.currentIntention = this.intentions.find(intention => intention.name === bestDesire.name && intention.canExecute(this));
     } else {
-      this.currentIntention = null;
+      this.currentIntention = Agent.NULL_INTENTION;
     }
   }
 
+  /**
+   * Performs the agent's current intention.
+   */
   act() {
     if (this.currentIntention) {
       this.currentIntention.execute(this);
     }
   }
 
+  /**
+   * Runs the agent for a single iteration of the simulation.
+   */
   run() {
     this.update(); // Update beliefs
     this.reason(); // Determine what to do
