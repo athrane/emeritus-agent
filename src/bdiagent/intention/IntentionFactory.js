@@ -10,12 +10,12 @@ export class IntentionFactory {
             "Null intention", // Name of the intention
             [
                 (agent) => {
-                    console.log("Doing nothing.");
+                    //console.log("Doing nothing.");
                 }
             ], // Actions to execute
             (agent) => true, // Preconditions (always true for a null intention)
             (agent) => {
-                console.log("Done doing nothing.");
+                //console.log("Done doing nothing.");
             } // Effects
         );
     }
@@ -29,14 +29,14 @@ export class IntentionFactory {
             "Sleep",
             [
                 (agent) => {
-                    console.log("Agent is going to sleep.");
+                    //console.log("Agent is going to sleep.");
                     agent.getBelief("fatigue").decrease(50);
                     agent.getBelief("hunger").increase(10); // Sleeping might increase hunger a bit
                 }
             ],
             (agent) => agent.getBelief("fatigue").getValue() > 70, // Preconditions
             (agent) => {
-                console.log("Agent woke up and feels rested.");
+                //console.log("Agent woke up and feels rested.");
             } // Effects
         );
     }
@@ -50,14 +50,14 @@ export class IntentionFactory {
             "Eat",
             [
                 (agent) => {
-                    console.log("Agent is eating.");
+                    //console.log("Agent is eating.");
                     agent.getBelief("hunger").decrease(40);
                     agent.getBelief("fatigue").increase(5); // Eating might cause a bit of fatigue
                 }
             ],
             (agent) => agent.getBelief("hunger").getValue() > 60, // Preconditions
             (agent) => {
-                console.log("Agent finished eating.");
+                //console.log("Agent finished eating.");
             } // Effects
         );
     }
@@ -71,15 +71,13 @@ export class IntentionFactory {
             "Entertain",
             [
                 (agent) => {
-                    console.log("Agent is reading.");
-                    agent.getBelief("boredom").decrease(20);
-                    agent.getBelief("hunger").increase(5);
-                    agent.getBelief("fatigue").increase(5);
+                    //console.log("Agent is reading.");
+                    agent.getBelief("boredom").decrease(25);
                 }
             ],
             (agent) => agent.getBelief("boredom").getValue() > 50, // Preconditions
             (agent) => {
-                console.log("Agent is done reading.");
+                //console.log("Agent is done reading.");
             } // Effects
         );
     }
@@ -93,15 +91,13 @@ export class IntentionFactory {
             "SitIdle",
             [
                 (agent) => {
-                    console.log("Agent is sitting idle.");
-                    agent.getBelief("boredom").increase(1);
-                    agent.getBelief("hunger").increase(1);
-                    agent.getBelief("fatigue").increase(1);
+                    //console.log("Agent is sitting idle.");
+                    agent.getBelief("boredom").increase(2); // is boring to sit idle
                 }
             ],
             (agent) => true,  // Condition is always true, so it will always activate
             (agent) => {
-                console.log("Agent is done idling.");
+                // console.log("Agent is done idling.");
             } // Effects
         );
     }
