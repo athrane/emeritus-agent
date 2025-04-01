@@ -49,6 +49,53 @@ npm install esbuild --save-dev
 
 This ensures that `esbuild` is available for building the project but is not included in the production dependencies.
 
+## Unit Testing
+
+This project uses the **Jest** framework for unit testing. Jest is a JavaScript testing framework designed to ensure correctness of any JavaScript codebase.
+
+### Running Tests
+
+To run the tests, execute the following command in the terminal:
+
+```sh
+npm test
+```
+
+This will execute all test files located in the `tests` directory.
+
+### Installing Jest
+
+Jest was installed as a development dependency using the following command:
+
+```sh
+npm install --save-dev jest
+```
+
+### Test Directory Structure
+
+All test files are located in the `tests` directory, which mirrors the structure of the `src` directory. For example:
+
+```plaintext
+/workspaces/emeritus-agent
+├── src
+│   ├── main.js
+│   ├── bdiagent
+│   │   ├── Agent.js
+│   │   ├── AgentFactory.js
+│   │   └── ...
+│   └── ...
+├── tests
+│   ├── main.test.js
+│   ├── bdiagent
+│   │   ├── Agent.test.js
+│   │   ├── AgentFactory.test.js
+│   │   └── ...
+├── package.json
+└── jest.config.js
+```
+
+This structure ensures that test files are organized and easy to locate.
+
 ## Description
 
 This project includes the following classes, grouped by their respective directories:
