@@ -3,10 +3,19 @@ import { IntegerPercentageBelief } from '../internal.js';
 import { IntegerPercentageBeliefUpdater } from '../internal.js';
 import { DesireFactory } from '../internal.js';
 import { IntentionFactory } from '../internal.js';
+import { Location } from '../internal.js';
 
+/**
+ * Factory class for creating agents.
+ */
 export class AgentFactory {
+
     static createOldManAgent() {
-        const oldMan = new Agent("Acticus");
+
+        const MOVEMENT_SPEED = 1; // Speed of the agent
+
+        const initialLocation = new Location("Home", 0, 0);
+        const oldMan = new Agent("Acticus", initialLocation, MOVEMENT_SPEED);
 
         // Add beliefs
         const hungerBelief = new IntegerPercentageBelief("hunger", 0);

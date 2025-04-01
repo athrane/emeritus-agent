@@ -1,7 +1,7 @@
 import { TypeUtils } from '../../internal.js';
 
 /**
- *  
+ * Represents a location in the simulation.
  */
 export class Location {
     /**

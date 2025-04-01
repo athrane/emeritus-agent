@@ -1,8 +1,10 @@
 // Pattern for breaking curcular dependencies: https://medium.com/visual-development/how-to-fix-nasty-circular-dependency-issues-once-and-for-all-in-javascript-typescript-a04c987cf0de
 
 export { TypeUtils } from './utils/TypeUtils.js';
-export { Location } from './utils/Location.js';
 export { LogBuffer } from './utils/log/LogBuffer.js';
+
+export { Movement } from './bdiagent/movement/Movement.js';
+export { Location } from './bdiagent/movement/Location.js';
 
 export { Belief } from './bdiagent/belief/Belief.js';
 export { IntegerPercentageBelief } from './bdiagent/belief/IntegerPercentageBelief.js';

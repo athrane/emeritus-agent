@@ -4,6 +4,8 @@ import { Desire } from '../internal.js';
 import { Intention } from '../internal.js';
 import { IntentionFactory } from '../internal.js';
 import { TypeUtils } from '../internal.js';
+import { Movement } from '../internal.js';
+import { Location } from '../internal.js';
 
 /**
  * Represents an agent in the simulation.
@@ -16,10 +18,14 @@ export class Agent {
      * Constructor for the Agent class.
      * 
      * @param {string} name The name of the agent.
+     * @param {Location} initialLocation The initial location of the agent.
+     * @param {number} movementSpeed The speed of the agent's movement.
      * @throws {Error} If the provided name is not a string.
      */
-  constructor(name) {
+  constructor(name, initialLocation, movementSpeed) {
     TypeUtils.ensureString(name);
+    TypeUtils.ensureInstanceOf(initialLocation, Location);
+    TypeUtils.ensureNumber(movementSpeed);
     this.name = name;
     this.beliefs = [];
     this.beliefUpdaters = [];
@@ -28,6 +34,8 @@ export class Agent {
     this.bestDesire = null;
     this.intentions = [];
     this.currentIntention = Agent.NULL_INTENTION;
+
+    this.movement = new Movement(this, initialLocation, movementSpeed); // Create Movement instance    
   }
 
   /**
@@ -98,6 +106,24 @@ export class Agent {
    */
   getCurrentBestDesire() {
     return this.bestDesire;
+  } 
+
+  /**
+   * Retrieves the agent's current location.
+   *
+   * @returns {Location} The current location of the agent.
+   */
+  getCurrentLocation() {
+    return this.movement.getLocation();
+  }
+
+  /**
+   * Retrieves the agent's current destination.
+   *
+   * @returns {Location | null} The destination location the agent is moving to, or null if not moving.
+   */
+  getDestination() {
+    return this.movement.getDestination();
   }
 
   /**
@@ -151,6 +177,7 @@ export class Agent {
   run() {
     this.update(); // Update beliefs
     this.reason(); // Determine what to do
+    this.movement.update(); // update movement
     this.act();    // Perform the action
   }
 }
