@@ -105,6 +105,7 @@ This project includes the following classes, grouped by their respective directo
 
 ### `src/utils/`
 - **`TypeUtils`**: Provides utility methods for type checking, such as ensuring a value is an instance of a specific class or a specific type.
+- **`Location`**: Represents a 2D location with x and y coordinates. Provides methods for calculating distances between locations.
 
 ### `src/`
 - **`Agent`**: Represents the main agent with beliefs, desires, and intentions. It models the behavior of the NPC.
