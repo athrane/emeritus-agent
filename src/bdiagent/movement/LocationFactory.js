@@ -23,7 +23,7 @@ export class LocationFactory {
      * @returns {Location} A Location instance representing a null location.
      */
     static createNullLocation() {
-        return new Location("NULL Location", 0, 0);
+        return new Location("NULL Location (0,0)", 0, 0);
     }
 
 }

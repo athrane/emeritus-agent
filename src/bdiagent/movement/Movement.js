@@ -1,11 +1,18 @@
 import { TypeUtils } from "../../internal.js";
 import { Agent } from "../../internal.js";
 import { Location } from "../../internal.js";
+import { LocationFactory } from "../../internal.js";
+
+/**
+ * A constant representing a null location.
+ */
+const NULL_LOCATION = LocationFactory.createNullLocation();
 
 /**
  * Represents a movement system for an agent.
  */
 export class Movement {
+
     /**
      * Constructor for the Movement class.
      * 
@@ -23,7 +30,7 @@ export class Movement {
         this.agent = agent;
         this.speed = speed;
         this.location = initialLocation;
-        this.destination = initialLocation.copy();
+        this.destination = NULL_LOCATION;
         this.isAgentMoving = false;
     }
 
@@ -72,10 +79,16 @@ export class Movement {
      * @returns {boolean} True if the agent has reached its destination, false otherwise.
      */
     update() {
-        if (!this.isAgentMoving || !this.destination) {
-            return true; // Not moving or no destination
+        // exit if the agent is not moving
+        if (!this.isAgentMoving) {
+            return true;
         }
 
+        // exit if destination is null location
+        if (this.destination === NULL_LOCATION) {
+            return true; 
+        }
+        
         // get agent's current location (mutable state)
         let currentLocation = this.agent.location;
 
@@ -89,7 +102,7 @@ export class Movement {
             currentLocation.x = this.destination.x;
             currentLocation.y = this.destination.y;
             this.isAgentMoving = false;
-            this.destination = null;
+            this.destination = NULL_LOCATION;
             return true; // Reached destination
         }
 
