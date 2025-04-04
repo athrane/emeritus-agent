@@ -9,6 +9,9 @@ import { Location } from "../../internal.js";
  * before executing the actions, and effects to apply after the actions are executed.
  */
 export class Intention {
+
+    static EXECUTION_RANGE = 0.1; // Reasonable range for execution
+
     /**
      * Constructor for the Intention class.
      * 
@@ -32,11 +35,33 @@ export class Intention {
         this.location = location; 
     }
 
+    /**
+     * Return if plan of action can be executed.
+     * 
+     * @returns {string} True if intention can be executed, false otherwise.
+     */
     canExecute(agent) {
         TypeUtils.ensureInstanceOf(agent, Agent);
         return this.preconditions(agent);
     }
 
+    /**
+     * Checks if the given location is within a reasonable range of the intention's location.
+     * 
+     * @param {Location} location The location to check.
+     * @returns {boolean} True if the location is within a reasonable range, false otherwise.
+     */
+    isWithinReasonbleRange(location) {
+        TypeUtils.ensureInstanceOf(location, Location);
+        return this.location.distanceTo(location) <= Intention.EXECUTION_RANGE;
+    }
+
+    /**
+     * Executes the actions of the intention if the preconditions are met.
+     * 
+     * @param {Agent} agent The agent executing the intention.
+     * @returns {boolean} True if the intention was executed, false otherwise.
+     */
     execute(agent) {
         TypeUtils.ensureInstanceOf(agent, Agent);
         if (this.canExecute(agent)) {

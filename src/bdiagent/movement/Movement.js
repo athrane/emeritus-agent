@@ -4,14 +4,14 @@ import { Location } from "../../internal.js";
 import { LocationFactory } from "../../internal.js";
 
 /**
- * A constant representing a null location.
- */
-const NULL_LOCATION = LocationFactory.createNullLocation();
-
-/**
  * Represents a movement system for an agent.
  */
 export class Movement {
+
+    /**
+     * A constant representing a null location.
+     */
+    static NULL_LOCATION = LocationFactory.createNullLocation();
 
     /**
      * Constructor for the Movement class.
@@ -30,7 +30,7 @@ export class Movement {
         this.agent = agent;
         this.speed = speed;
         this.location = initialLocation;
-        this.destination = NULL_LOCATION;
+        this.destination = Movement.NULL_LOCATION;
         this.isAgentMoving = false;
     }
 

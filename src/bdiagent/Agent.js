@@ -13,7 +13,11 @@ import { Location } from '../internal.js';
  */
 export class Agent {
 
+  /**
+   * A constant representing a null location.
+   */
   static NULL_INTENTION = IntentionFactory.createNullIntention();
+
   /**
      * Constructor for the Agent class.
      * 
@@ -148,23 +152,28 @@ export class Agent {
    * Determines the agent's current intention based on its desires and intentions.
    */
   reason() {
-    // 1. Desire Generation
+    // get desires 
     const activeDesires = this.desires.filter(desire => desire.isSatisfied(this));
 
-    // 2. Intention Selection (basic - pick the highest priority)
-    if (activeDesires.length > 0) {
-
-      // sort the active desires by priority
-      this.activeDesires.sort((a, b) => b.priority - a.priority);
-
-      // select the best desire
-      this.bestDesire = activeDesires[0];
-
-      // find the intention that corresponds to the best desire - found by name
-      this.currentIntention = this.intentions.find(intention => intention.name === this.bestDesire.name && intention.canExecute(this));
+    // exit if no active desires
+    if (activeDesires.length === 0) {
+      this.currentIntention = Agent.NULL_INTENTION;
+      return;
     }
 
-    // 3. If no intentions where found, set the null intention
+    // sort the active desires by priority
+    this.activeDesires.sort((a, b) => b.priority - a.priority);
+
+    // select the best desire
+    this.bestDesire = activeDesires[0];
+
+    // find the intention that corresponds to the best desire - found by name
+    this.currentIntention = this.intentions.find(
+      intention => intention.name === this.bestDesire.name 
+      && intention.canExecute(this)
+      && intention.isWithinReasonbleRange(this.getCurrentLocation()));
+
+    // if no intentions where found, set the null intention
     if (!this.currentIntention) {
       this.currentIntention = Agent.NULL_INTENTION;
     }
@@ -175,11 +184,16 @@ export class Agent {
    * Performs the agent's current intention.
    */
   act() {
-    if (this.currentIntention) {
-      this.currentIntention.execute(this);
-    }
-  }
 
+    // if not within reasonable range of the intention's location, move towards it
+    if (!this.currentIntention.isWithinReasonbleRange(this.getCurrentLocation())) {
+      this.movement.moveTo(this.currentIntention.location); // Start moving
+      return;
+    }
+
+    // execute
+    this.currentIntention.execute(this);
+  }
   /**
    * Runs the agent for a single iteration of the simulation.
    */
