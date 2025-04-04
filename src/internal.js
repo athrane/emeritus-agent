@@ -3,9 +3,10 @@
 export { TypeUtils } from './utils/TypeUtils.js';
 export { LogBuffer } from './utils/log/LogBuffer.js';
 
-export { Movement } from './bdiagent/movement/Movement.js';
 export { Location } from './bdiagent/movement/Location.js';
 export { LocationFactory } from './bdiagent/movement/LocationFactory.js';
+
+export { Movement } from './bdiagent/movement/Movement.js';
 
 export { Belief } from './bdiagent/belief/Belief.js';
 export { IntegerPercentageBelief } from './bdiagent/belief/IntegerPercentageBelief.js';
