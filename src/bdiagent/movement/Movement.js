@@ -65,8 +65,8 @@ export class Movement {
             return true; // Not moving or no destination
         }
 
-        // get agent's current location
-        const currentLocation = this.agent.location;
+        // get agent's current location (mutable state)
+        let currentLocation = this.agent.location;
 
         // Calculate the distance to the destination
         const dx = this.destination.x - currentLocation.x;
@@ -75,8 +75,8 @@ export class Movement {
 
         // handle case where the agent is already at the destination
         if (dist <= this.speed) {
-            this.currentLocation.x = this.destination.x;
-            this.currentLocation.y = this.destination.y;
+            currentLocation.x = this.destination.x;
+            currentLocation.y = this.destination.y;
             this.isMoving = false;
             this.destination = null;
             return true; // Reached destination
@@ -84,8 +84,8 @@ export class Movement {
 
         // Still moving
         const angle = Math.atan2(dy, dx);
-        this.currentLocation.x += this.speed * Math.cos(angle);
-        this.currentLocation.y += this.speed * Math.sin(angle);
+        currentLocation.x += this.speed * Math.cos(angle);
+        currentLocation.y += this.speed * Math.sin(angle);
         return false; // Still moving
 
     }

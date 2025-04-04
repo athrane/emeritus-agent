@@ -105,21 +105,25 @@ This project includes the following classes, grouped by their respective directo
 
 ### `src/utils/`
 - **`TypeUtils`**: Provides utility methods for type checking, such as ensuring a value is an instance of a specific class or a specific type.
-- **`Location`**: Represents a 2D location with x and y coordinates. Provides methods for calculating distances between locations.
 
-### `src/`
+### `src/bdiagent`
 - **`Agent`**: Represents the main agent with beliefs, desires, and intentions. It models the behavior of the NPC.
 - **`AgentFactory`**: A factory class responsible for creating and initializing agents with predefined beliefs, desires, and intentions.
 
-### `src/belief/`
+### `src/bdiagent/belief/`
 - **`Belief`**: A base class representing a belief of the agent.
 - **`IntegerPercentageBelief`**: Represents a belief with a value between 0 and 100 (e.g., hunger, fatigue).
 - **`IntegerPercentageBeliefUpdater`**: Updates the value of an `IntegerPercentageBelief` over time.
 
-### `src/desire/`
+### `src/bdiagent/desire/`
 - **`Desire`**: Represents a desire of the agent, with conditions for activation and a priority level.
 
-### `src/intention/`
+### `src/bdiagent/intention/`
 - **`Intention`**: Represents an intention of the agent, with actions to execute and conditions for activation.
 - **`IntentionFactory`**: A factory class that creates specific intentions, including a "null intention" used when no valid intention is applicable.
 
+### `src/bdiagent/movement/`
+
+- **`Location`**: Represents a 2D location with x and y coordinates.
+- **`LocationFactory`**: A factory class for creating `Location` instances.
+- **`Movement`**: Manages the movement of an agent within the simulation.
