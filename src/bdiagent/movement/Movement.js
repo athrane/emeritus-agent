@@ -9,6 +9,8 @@ export class Movement {
     /**
      * Constructor for the Movement class.
      * 
+     * Destination is set to current location.
+     * 
      * @param {Agent} agent The agent associated with this movement system.
      * @param {Location} initialLocation The initial location of the agent.
      * @param {number} speed The speed of the agent.
@@ -21,8 +23,8 @@ export class Movement {
         this.agent = agent;
         this.speed = speed;
         this.location = initialLocation;
-        this.destination = null;
-        this.isMoving = false;
+        this.destination = initialLocation.copy();
+        this.isAgentMoving = false;
     }
 
     /**
@@ -43,6 +45,15 @@ export class Movement {
         return this.destination;
     }
 
+    /**
+       * Checks if the agent is currently moving.
+       *
+       * @returns {boolean} True if the agent is moving, false otherwise.
+       */
+    isMoving() {
+        return this.isAgentMoving;
+    }
+
     /** 
      * Moves the agent to a specified destination.
      * 
@@ -52,7 +63,7 @@ export class Movement {
     moveTo(destination) {
         TypeUtils.ensureInstanceOf(destination, Location);
         this.destination = destination;
-        this.isMoving = true;
+        this.isAgentMoving = true;
     }
 
     /** 
@@ -61,7 +72,7 @@ export class Movement {
      * @returns {boolean} True if the agent has reached its destination, false otherwise.
      */
     update() {
-        if (!this.isMoving || !this.destination) {
+        if (!this.isAgentMoving || !this.destination) {
             return true; // Not moving or no destination
         }
 
@@ -77,7 +88,7 @@ export class Movement {
         if (dist <= this.speed) {
             currentLocation.x = this.destination.x;
             currentLocation.y = this.destination.y;
-            this.isMoving = false;
+            this.isAgentMoving = false;
             this.destination = null;
             return true; // Reached destination
         }

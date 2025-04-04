@@ -2,8 +2,10 @@ import { TypeUtils } from '../../internal.js';
 
 /**
  * Represents a location in the simulation.
+ * Object are mutable.
  */
 export class Location {
+    
     /**
      * Constructor for the Location class.
      * 
@@ -21,6 +23,15 @@ export class Location {
     }
 
     /**
+     * Creates a copy of the current location.
+     *
+     * @returns {Location} A new Location object with the same properties as the original.
+     */
+    copy() {
+        return new Location(this.name, this.x, this.y);
+    }
+    
+    /**
      * Calculates the distance to another location.
      * 
      * @param {Location} otherLocation The other location to calculate the distance to.
@@ -33,4 +44,5 @@ export class Location {
             Math.pow(this.y - otherLocation.y, 2)
         );
     }
+
 }

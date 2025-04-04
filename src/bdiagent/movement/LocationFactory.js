@@ -5,8 +5,6 @@ import { Location } from '../../internal.js';
  */
 export class LocationFactory {
 
-
-    
     /**
      * Creates a new location with the specified parameters.
      * 

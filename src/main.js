@@ -24,10 +24,11 @@ for (let i = 0; i < 100; i++) {
     console.log(`Current Intention: ${currentIntention.name}`);
 
     let currentLocation = oldMan.getCurrentLocation();
-    console.log(`Agent is at ${currentLocation.name} (${currentLocation.x}, ${currentLocation.y})`);    
+    console.log(`Agent is at location: ${currentLocation.name} (${currentLocation.x}, ${currentLocation.y})`);    
     let destination = oldMan.getDestination();
-    console.log(`Agent going to ${destination.name} (${destination.x}, ${destination.y})`);    
-
+    console.log(`Agent going to location: ${destination.name} (${destination.x}, ${destination.y})`);    
+    let isMoving = oldMan.isMoving();   
+    console.log(`Agent is moving: ${isMoving}`);
     
 }
 

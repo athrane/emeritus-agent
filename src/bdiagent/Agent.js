@@ -106,7 +106,7 @@ export class Agent {
    */
   getCurrentBestDesire() {
     return this.bestDesire;
-  } 
+  }
 
   /**
    * Retrieves the agent's current location.
@@ -115,6 +115,15 @@ export class Agent {
    */
   getCurrentLocation() {
     return this.movement.getLocation();
+  }
+
+  /**
+     * Checks if the agent is currently moving.
+     *
+     * @returns {boolean} True if the agent is moving, false otherwise.
+     */
+  isMoving() {
+    return this.movement.isMoving();
   }
 
   /**
