@@ -38,8 +38,7 @@ export class Agent {
     this.bestDesire = null;
     this.intentions = [];
     this.currentIntention = Agent.NULL_INTENTION;
-
-    this.movement = new Movement(this, initialLocation, movementSpeed); // Create Movement instance    
+    this.movement = new Movement(initialLocation, movementSpeed); 
   }
 
   /**

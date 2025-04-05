@@ -3,7 +3,7 @@ import { IntegerPercentageBelief } from '../internal.js';
 import { IntegerPercentageBeliefUpdater } from '../internal.js';
 import { DesireFactory } from '../internal.js';
 import { IntentionFactory } from '../internal.js';
-import { Location } from '../internal.js';
+import { LocationFactory } from '../internal.js'; // Import the LocationFactory
 
 /**
  * Factory class for creating agents.
@@ -15,7 +15,7 @@ export class AgentFactory {
         const MOVEMENT_SPEED = 1; // Speed of the agent
 
         // Create the agent
-        const initialLocation = new Location("Home", 0, 0);
+        const initialLocation = LocationFactory.createLivingRoom();
         const oldMan = new Agent("Acticus", initialLocation, MOVEMENT_SPEED);
 
         // Add beliefs

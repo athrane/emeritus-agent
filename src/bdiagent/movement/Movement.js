@@ -1,5 +1,4 @@
 import { TypeUtils } from "../../internal.js";
-import { Agent } from "../../internal.js";
 import { Location } from "../../internal.js";
 import { LocationFactory } from "../../internal.js";
 
@@ -18,18 +17,15 @@ export class Movement {
      * 
      * Destination is set to current location.
      * 
-     * @param {Agent} agent The agent associated with this movement system.
      * @param {Location} initialLocation The initial location of the agent.
      * @param {number} speed The speed of the agent.
      * @throws {Error} If the provided agent is not an instance of Agent or if speed is not a number.
      */
-    constructor(agent, initialLocation, speed) {
-        TypeUtils.ensureInstanceOf(agent, Agent);
+    constructor(initialLocation, speed) {
         TypeUtils.ensureInstanceOf(initialLocation, Location);
         TypeUtils.ensureNumber(speed);
-        this.agent = agent;
         this.speed = speed;
-        this.location = initialLocation;
+        this.location = initialLocation.copy();
         this.destination = Movement.NULL_LOCATION;
         this.isAgentMoving = false;
     }
@@ -79,38 +75,36 @@ export class Movement {
      * @returns {boolean} True if the agent has reached its destination, false otherwise.
      */
     update() {
+        
         // exit if the agent is not moving
         if (!this.isAgentMoving) {
             return true;
         }
 
         // exit if destination is null location
-        if (this.destination === NULL_LOCATION) {
+        if (this.destination == Movement.NULL_LOCATION) {
             return true; 
         }
-        
-        // get agent's current location (mutable state)
-        let currentLocation = this.agent.location;
 
         // Calculate the distance to the destination
-        const dx = this.destination.x - currentLocation.x;
-        const dy = this.destination.y - currentLocation.y;
+        const dx = this.destination.x - this.location.x;
+        const dy = this.destination.y - this.location.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
 
         // handle case where the agent is already at the destination
         if (dist <= this.speed) {
-            currentLocation.x = this.destination.x;
-            currentLocation.y = this.destination.y;
+            this.location.x = this.destination.x;
+            this.location.y = this.destination.y;
             this.isAgentMoving = false;
-            this.destination = NULL_LOCATION;
-            return true; // Reached destination
+            this.destination = Movement.NULL_LOCATION;
+            return true; 
         }
 
         // Still moving
         const angle = Math.atan2(dy, dx);
-        currentLocation.x += this.speed * Math.cos(angle);
-        currentLocation.y += this.speed * Math.sin(angle);
-        return false; // Still moving
+        this.location.x += this.speed * Math.cos(angle);
+        this.location.y += this.speed * Math.sin(angle);
+        return false; 
 
     }
 }
