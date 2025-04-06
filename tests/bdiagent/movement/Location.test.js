@@ -1,4 +1,3 @@
-// filepath: /workspaces/emeritus-agent/tests/bdiagent/movement/Location.test.js
 import { Location } from "../../../src/internal.js";
 
 describe('Location', () => {
