@@ -81,7 +81,7 @@ export class IntentionFactory {
             (agent) => {
                 //console.log("Agent is done reading.");
             }, // Effects
-            LocationFactory.createLivingRoom()
+            LocationFactory.createGarden()
         );
     }
 

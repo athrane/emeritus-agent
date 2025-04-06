@@ -15,7 +15,7 @@ export class AgentFactory {
         const MOVEMENT_SPEED = 1; // Speed of the agent
 
         // Create the agent
-        const initialLocation = LocationFactory.createLivingRoom();
+        const initialLocation = LocationFactory.createBedroom();
         const oldMan = new Agent("Acticus", initialLocation, MOVEMENT_SPEED);
 
         // Add beliefs

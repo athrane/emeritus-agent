@@ -169,8 +169,7 @@ export class Agent {
     // find the intention that corresponds to the best desire - found by name
     this.currentIntention = this.intentions.find(
       intention => intention.name === this.bestDesire.name 
-      && intention.canExecute(this)
-      && intention.isWithinReasonbleRange(this.getCurrentLocation()));
+      && intention.canExecute(this));
 
     // if no intentions where found, set the null intention
     if (!this.currentIntention) {

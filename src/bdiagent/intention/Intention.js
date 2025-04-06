@@ -10,7 +10,7 @@ import { Location } from "../../internal.js";
  */
 export class Intention {
 
-    static EXECUTION_RANGE = 0.1; // Reasonable range for execution
+    static EXECUTION_RANGE = 0.01; // Reasonable range for execution
 
     /**
      * Constructor for the Intention class.
