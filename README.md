@@ -53,6 +53,20 @@ This ensures that `esbuild` is available for building the project but is not inc
 
 This project uses the **Jest** framework for unit testing. Jest is a JavaScript testing framework designed to ensure correctness of any JavaScript codebase.
 
+
+
+### Babel Configuration for Jest
+
+To ensure that Jest can properly run tests with modern JavaScript syntax (including ES modules, JSX, and other features), Babel is used to transpile the code before it is executed by Jest. Babel transforms the source code into a format that is compatible with the Node.js environment used by Jest.
+
+The Babel configuration is defined in the `.babelrc` file in the root of the project. This file specifies the presets and plugins that Babel should use when transpiling the code.
+
+```json
+{
+  "presets": ["@babel/preset-env"]
+}
+```
+
 ### Running Tests
 
 To run the tests, execute the following command in the terminal:
@@ -95,6 +109,24 @@ All test files are located in the `tests` directory, which mirrors the structure
 ```
 
 This structure ensures that test files are organized and easy to locate.
+
+### `jest.config.js` Description
+
+The `jest.config.js` file is located in the root of the project and is used to configure Jest. It specifies various settings that Jest uses when running tests, such as the test environment, module resolution, and code transformation.
+
+```javascript
+/** @type {import('jest').Config} */
+const config = {
+  testEnvironment: 'node',
+  transform: {
+    '^.+\\.js$': 'babel-jest',
+  },
+  moduleFileExtensions: ['js', 'mjs'],
+  moduleDirectories: ['node_modules', '<rootDir>/src'],
+};
+
+module.exports = config;
+```
 
 ## Description
 
