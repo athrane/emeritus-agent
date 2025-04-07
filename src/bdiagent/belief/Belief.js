@@ -22,4 +22,8 @@ export class Belief {
     return this.value;
   }
 
+  getName() {
+    return this.name;
+  }
+
 }

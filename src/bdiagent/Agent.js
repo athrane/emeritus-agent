@@ -32,8 +32,6 @@ export class Agent {
     TypeUtils.ensureInstanceOf(initialLocation, Location);
     TypeUtils.ensureNumber(movementSpeed);
     this.name = name;
-    this.beliefs = [];
-    this.beliefUpdaters = [];
     this.desires = [];
     this.activeDesires = [];
     this.bestDesire = null;
@@ -50,8 +48,7 @@ export class Agent {
    * @throws {Error} If the provided belief is not an instance of the Belief class.
    */
   addBelief(belief) {
-    TypeUtils.ensureInstanceOf(belief, Belief);
-    this.beliefs.push(belief);
+    this.beliefManager.addBelief(belief);
   }
 
   /**
@@ -61,8 +58,7 @@ export class Agent {
    * @returns {Belief | undefined} The belief with the given name, or undefined if not found.
    */
   getBelief(name) {
-    TypeUtils.ensureString(name);
-    return this.beliefs.find(belief => belief.name === name);
+    this.beliefManager.getBelief(name);
   }
 
   /**
@@ -71,8 +67,7 @@ export class Agent {
    * @param {BeliefUpdater} beliefUpdater The BeliefUpdater instance to register.
    */
   registerBeliefUpdater(beliefUpdater) {
-    TypeUtils.ensureInstanceOf(beliefUpdater, BeliefUpdater);
-    this.beliefUpdaters.push(beliefUpdater);
+    this.beliefManager.registerBeliefUpdater(beliefUpdater);
   }
 
   /**
@@ -141,15 +136,6 @@ export class Agent {
   }
 
   /**
-   * Updates the agent's beliefs using the registered BeliefUpdaters.
-   */
-  update() {
-    this.beliefUpdaters.forEach(bu => {
-      bu.update(this);
-    });
-  }
-
-  /**
    * Determines the agent's current intention based on its desires and intentions.
    */
   reason() {
@@ -198,7 +184,7 @@ export class Agent {
    * Runs the agent for a single iteration of the simulation.
    */
   run() {
-    this.update(); // Update beliefs
+    this.beliefManager.update(); // Update beliefs
     this.reason(); // Determine what to do
     this.movement.update(); // update movement
     this.act();    // Perform the action

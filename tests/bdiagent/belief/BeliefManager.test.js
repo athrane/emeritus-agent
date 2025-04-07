@@ -35,6 +35,12 @@ describe('BeliefManager', () => {
         expect(beliefManager.getBelief("testBelief2")).toBe(belief2);
     });
 
+    it('should get a belief by name #2', () => {
+        const belief1 = new Belief("fatigue", 1);
+        beliefManager.addBelief(belief1);
+        expect(beliefManager.getBelief("fatigue")).toBe(belief1);
+    });
+
     it('should return undefined if belief is not found', () => {
         expect(beliefManager.getBelief("nonExistentBelief")).toBeUndefined();
     });
@@ -59,7 +65,7 @@ describe('BeliefManager', () => {
         expect(spy1).toHaveBeenCalledWith(agent);
         expect(spy2).toHaveBeenCalledWith(agent);
     });
-    
+
     it('should not throw an error if no belief updaters are registered', () => {
         expect(() => beliefManager.update()).not.toThrow();
     });

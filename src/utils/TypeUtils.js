@@ -17,7 +17,7 @@ export class TypeUtils {
       const errorMessage = `Expected instance of ${expectedType}, but got ${actualType}`;
       console.error(errorMessage);
       console.trace("Instance check failed");
-      throw new Error(errorMessage);
+      throw new TypeError(errorMessage);
     }
   }
 
@@ -35,7 +35,7 @@ export class TypeUtils {
       const errorMessage = `Expected type ${expectedType}, but got ${actualType}`;
       console.error(errorMessage);
       console.trace("String check failed");
-      throw new Error(errorMessage);
+      throw new TypeError(errorMessage);
     }
   }
 
@@ -53,7 +53,7 @@ export class TypeUtils {
       const errorMessage = `Expected type ${expectedType}, but got ${actualType}`;
       console.error(errorMessage);
       console.trace("Number check failed");
-      throw new Error(errorMessage);
+      throw new TypeError(errorMessage);
     }
   }
 
@@ -65,7 +65,7 @@ export class TypeUtils {
    */
   static ensureFunction(value, message) {
     if (typeof value !== 'function') {
-      throw new Error(message || 'Expected a function');
+      throw new TypeError(message || 'Expected a function');
     }
   }
 
@@ -77,12 +77,8 @@ export class TypeUtils {
   */
   static ensureArray(value, message) {
     if (!Array.isArray(value)) {
-      throw new Error(message || 'Expected an array');
+      throw new TypeError(message || 'Expected an array');
     }
   }
 
 }
-
-// Usage
-// Assuming 'beliefUpdater' and 'BeliefUpdater' are defined elsewhere
-//TypeUtils.ensureInstanceOf(beliefUpdater, BeliefUpdater);
