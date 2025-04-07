@@ -10,9 +10,9 @@ export { Movement } from './bdiagent/movement/Movement.js';
 
 export { Belief } from './bdiagent/belief/Belief.js';
 export { IntegerPercentageBelief } from './bdiagent/belief/IntegerPercentageBelief.js';
-
 export { BeliefUpdater } from './bdiagent/belief/BeliefUpdater.js';
 export { IntegerPercentageBeliefUpdater } from './bdiagent/belief/IntegerPercentageBeliefUpdater.js';
+export { BeliefManager } from './bdiagent/belief/BeliefManager.js';
 
 export { Desire } from './bdiagent/desire/Desire.js';
 export { DesireFactory } from './bdiagent/desire/DesireFactory.js';

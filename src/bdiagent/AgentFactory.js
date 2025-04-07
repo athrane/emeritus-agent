@@ -10,13 +10,23 @@ import { LocationFactory } from '../internal.js'; // Import the LocationFactory
  */
 export class AgentFactory {
 
-    static createOldManAgent() {
+    static MOVEMENT_SPEED = 1; // Speed of the agent
 
-        const MOVEMENT_SPEED = 1; // Speed of the agent
+    /**
+     * Creates a new null Agent.
+     * 
+     * @returns {Agent} The created agent.
+     */
+    static createNullAgent() {
+        const initialLocation = LocationFactory.createNullLocation();
+        return new Agent("NULL Agent", initialLocation, AgentFactory.MOVEMENT_SPEED)
+    }
+
+    static createOldManAgent() {
 
         // Create the agent
         const initialLocation = LocationFactory.createBedroom();
-        const oldMan = new Agent("Acticus", initialLocation, MOVEMENT_SPEED);
+        const oldMan = new Agent("Acticus", initialLocation, AgentFactory.MOVEMENT_SPEED);
 
         // Add beliefs
         const hungerBelief = new IntegerPercentageBelief("hunger", 0);

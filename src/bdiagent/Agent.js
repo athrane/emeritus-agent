@@ -6,13 +6,14 @@ import { IntentionFactory } from '../internal.js';
 import { TypeUtils } from '../internal.js';
 import { Movement } from '../internal.js';
 import { Location } from '../internal.js';
+import { BeliefManager } from '../internal.js';
 
 /**
  * Represents an agent in the simulation.
  * An agent has beliefs and can update them using BeliefUpdaters.
  */
 export class Agent {
-
+  
   /**
    * A constant representing a null location.
    */
@@ -39,6 +40,7 @@ export class Agent {
     this.intentions = [];
     this.currentIntention = Agent.NULL_INTENTION;
     this.movement = new Movement(initialLocation, movementSpeed); 
+    this.beliefManager = new BeliefManager(this);    
   }
 
   /**

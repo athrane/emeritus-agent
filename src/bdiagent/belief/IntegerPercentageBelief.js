@@ -14,10 +14,7 @@ export class IntegerPercentageBelief extends Belief {
    * @param {number} value The initial value of the belief.
    */
   constructor(name, value) {
-    super()
-    TypeUtils.ensureString(name);
-    TypeUtils.ensureNumber(value);
-    this.name = name;
+    super(name, value);
     this.value = IntegerPercentageBelief.clampPercentage(value);
   }
 
