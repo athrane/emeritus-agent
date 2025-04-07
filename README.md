@@ -125,7 +125,7 @@ const config = {
   moduleDirectories: ['node_modules', '<rootDir>/src'],
 };
 
-module.exports = config;
+export default config;
 ```
 
 ## Description
