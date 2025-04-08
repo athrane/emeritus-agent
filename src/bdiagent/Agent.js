@@ -38,7 +38,7 @@ export class Agent {
     this.intentions = [];
     this.currentIntention = Agent.NULL_INTENTION;
     this.movement = new Movement(initialLocation, movementSpeed); 
-    this.beliefManager = new BeliefManager(this);    
+    this.beliefManager = new BeliefManager();    
   }
 
   /**
@@ -58,7 +58,7 @@ export class Agent {
    * @returns {Belief | undefined} The belief with the given name, or undefined if not found.
    */
   getBelief(name) {
-    this.beliefManager.getBelief(name);
+    return this.beliefManager.getBelief(name);
   }
 
   /**
@@ -184,7 +184,7 @@ export class Agent {
    * Runs the agent for a single iteration of the simulation.
    */
   run() {
-    this.beliefManager.update(); // Update beliefs
+    this.beliefManager.update(this); // Update beliefs
     this.reason(); // Determine what to do
     this.movement.update(); // update movement
     this.act();    // Perform the action

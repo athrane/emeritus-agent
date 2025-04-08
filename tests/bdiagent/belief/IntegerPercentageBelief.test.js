@@ -1,4 +1,4 @@
-import { IntegerPercentageBelief } from "../../../src/bdiagent/belief/IntegerPercentageBelief.js";
+import { IntegerPercentageBelief } from "../../../src/internal.js";
 
 describe('IntegerPercentageBelief', () => {
     let belief;

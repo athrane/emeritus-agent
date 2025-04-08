@@ -15,7 +15,6 @@ export class IntegerPercentageBelief extends Belief {
    */
   constructor(name, value) {
     super(name, IntegerPercentageBelief.clampPercentage(value));
-    this.value = IntegerPercentageBelief.clampPercentage(value);
   }
 
   increase(amount) {

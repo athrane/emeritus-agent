@@ -11,13 +11,8 @@ export class BeliefManager {
 
     /**
      * Constructor for the BeliefManager class.
-     * 
-     * @param {Agent} agent The agent to which this belief manager belongs.
-     * @throws {Error} If the provided agent is not an instance of the Agent class.
      */
-    constructor(agent) {
-        TypeUtils.ensureInstanceOf(agent, Agent);
-        this.agent = agent; // Keep a reference to the agent
+    constructor() {
         this.beliefs = [];
         this.beliefUpdaters = [];
     }
@@ -26,7 +21,7 @@ export class BeliefManager {
      * Adds a belief to the agent's list of beliefs.
      * 
      * @param {Belief} belief The belief to add.
-     * @throws {Error} If the provided belief is not an instance of the Belief class.
+     * @throws {TypeError} If the provided belief is not an instance of the Belief class.
      */
     addBelief(belief) {
         TypeUtils.ensureInstanceOf(belief, Belief);
@@ -38,7 +33,7 @@ export class BeliefManager {
      * 
      * @param {string} name The name of the belief to retrieve.
      * @returns {Belief | undefined} The belief object if found, otherwise undefined.
-     * @throws {Error} If the provided name is not a string.
+     * @throws {TypeError} If the provided name is not a string.
      */
     getBelief(name) {
         TypeUtils.ensureString(name);
@@ -49,7 +44,7 @@ export class BeliefManager {
      * Registers a belief updater to the belief manager.
      * 
      * @param {BeliefUpdater} beliefUpdater The belief updater to register.
-     * @throws {Error} If the provided beliefUpdater is not an instance of the BeliefUpdater class.
+     * @throws {TypeError} If the provided beliefUpdater is not an instance of the BeliefUpdater class.
      */
     registerBeliefUpdater(beliefUpdater) {
         TypeUtils.ensureInstanceOf(beliefUpdater, BeliefUpdater);
@@ -59,11 +54,12 @@ export class BeliefManager {
     /**
      * Updates the beliefs of the agent using the registered belief updaters.
      * 
-     * @throws {Error} If no belief updaters are registered.
+     * @throws {TypeError} If no belief updaters are registered.
      */ 
-    update() {
+    update(agent) {
+        TypeUtils.ensureInstanceOf(agent, Agent); 
         this.beliefUpdaters.forEach(bu => {
-            bu.update(this.agent); // Use the agent reference
+            bu.update(agent); // Use the agent reference
         });
     }
 };

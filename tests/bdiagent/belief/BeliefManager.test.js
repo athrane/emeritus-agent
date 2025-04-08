@@ -12,13 +12,12 @@ describe('BeliefManager', () => {
 
     beforeEach(() => {
         agent = AgentFactory.createNullAgent();
-        beliefManager = new BeliefManager(agent);
+        beliefManager = new BeliefManager();
     });
 
     it('should initialize beliefs and beliefUpdaters arrays', () => {
         expect(beliefManager.beliefs).toEqual([]);
         expect(beliefManager.beliefUpdaters).toEqual([]);
-        expect(beliefManager.agent).toBe(agent);
     });
 
     it('should add a belief', () => {
@@ -60,14 +59,14 @@ describe('BeliefManager', () => {
         beliefManager.registerBeliefUpdater(beliefUpdater1);
         beliefManager.registerBeliefUpdater(beliefUpdater2);
 
-        beliefManager.update();
+        beliefManager.update(agent);
 
         expect(spy1).toHaveBeenCalledWith(agent);
         expect(spy2).toHaveBeenCalledWith(agent);
     });
 
     it('should not throw an error if no belief updaters are registered', () => {
-        expect(() => beliefManager.update()).not.toThrow();
+        expect(() => beliefManager.update(agent)).not.toThrow();
     });
 
     it('should handle multiple beliefs with the same name (returns the first one)', () => {
