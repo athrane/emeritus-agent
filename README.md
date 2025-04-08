@@ -146,6 +146,7 @@ This project includes the following classes, grouped by their respective directo
 - **`Belief`**: A base class representing a belief of the agent.
 - **`IntegerPercentageBelief`**: Represents a belief with a value between 0 and 100 (e.g., hunger, fatigue).
 - **`IntegerPercentageBeliefUpdater`**: Updates the value of an `IntegerPercentageBelief` over time.
+- **`BeliefManager`**: Manages the beliefs of the agent, including adding, retrieving, and updating beliefs. It also handles the registration and execution of belief updaters.
 
 ### `src/bdiagent/desire/`
 - **`Desire`**: Represents a desire of the agent, with conditions for activation and a priority level.
