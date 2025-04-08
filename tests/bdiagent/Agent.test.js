@@ -2,8 +2,8 @@ import { Agent } from "../../src/internal.js";
 import { Belief } from "../../src/internal.js";
 import { Desire } from "../../src/internal.js";
 import { Intention } from "../../src/internal.js";
+import { IntentionManager } from "../../src/internal.js";
 import { Location } from "../../src/internal.js";
-
 
 describe('Agent', () => {
     let initialLocation;
@@ -21,7 +21,7 @@ describe('Agent', () => {
             expect(agent.movement.getLocation()).toEqual(initialLocation);
             expect(agent.movement.speed).toBe(5);
             expect(agent.intentions).toEqual([]);
-            expect(agent.getCurrentIntention()).toEqual(Agent.NULL_INTENTION);
+            expect(agent.getCurrentIntention()).toEqual(IntentionManager.NULL_INTENTION);
             expect(agent.beliefManager).toBeDefined();
             expect(agent.desireManager).toBeDefined();
         });

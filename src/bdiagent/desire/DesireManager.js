@@ -34,13 +34,12 @@ export class DesireManager {
     /**
        * Determines the agent's current intention based on its desires and intentions.
        */
-    reason() {
+    update() {
         // get desires 
         const activeDesires = this.desires.filter(desire => desire.isSatisfied(this));
 
         // exit if no active desires
         if (activeDesires.length === 0) {
-            this.currentIntention = Agent.NULL_INTENTION;
             return;
         }
 
@@ -49,16 +48,6 @@ export class DesireManager {
 
         // select the best desire
         this.bestDesire = activeDesires[0];
-
-        // find the intention that corresponds to the best desire - found by name
-        this.currentIntention = this.intentions.find(
-            intention => intention.name === this.bestDesire.name
-                && intention.canExecute(this));
-
-        // if no intentions where found, set the null intention
-        if (!this.currentIntention) {
-            this.currentIntention = Agent.NULL_INTENTION;
-        }
     }
 
 }

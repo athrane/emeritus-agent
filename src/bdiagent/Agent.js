@@ -8,6 +8,7 @@ import { Movement } from '../internal.js';
 import { Location } from '../internal.js';
 import { BeliefManager } from '../internal.js';
 import { DesireManager } from '../internal.js';
+import { IntentionManager } from '../internal.js';
 
 /**
  * Represents an agent in the simulation.
@@ -15,11 +16,6 @@ import { DesireManager } from '../internal.js';
  */
 export class Agent {
   
-  /**
-   * A constant representing a null location.
-   */
-  static NULL_INTENTION = IntentionFactory.createNullIntention();
-
   /**
      * Constructor for the Agent class.
      * 
@@ -38,6 +34,7 @@ export class Agent {
     this.movement = new Movement(initialLocation, movementSpeed); 
     this.beliefManager = new BeliefManager();    
     this.desireManager = new DesireManager();
+    this.intentionManager = new IntentionManager();
   }
 
   /**
@@ -84,8 +81,7 @@ export class Agent {
    * @param {Intention} intention The intention to add to the agent.
    */
   addIntention(intention) {
-    TypeUtils.ensureInstanceOf(intention, Intention);
-    this.intentions.push(intention);
+    this.intentionManager.addIntention(intention);
   }
 
   /**
@@ -94,7 +90,7 @@ export class Agent {
    * @returns {Intention | null} The agent's current intention, or null if there is none.
    */
   getCurrentIntention() {
-    return this.currentIntention;
+    return this.intentionManager.getCurrentIntention();
   }
 
   /**
@@ -134,26 +130,22 @@ export class Agent {
   }
 
   /**
-   * Performs the agent's current intention.
-   */
-  act() {
-
-    // if not within reasonable range of the intention's location, move towards it
-    if (!this.currentIntention.isWithinReasonbleRange(this.getCurrentLocation())) {
-      this.movement.moveTo(this.currentIntention.location); // Start moving
-      return;
-    }
-
-    // execute
-    this.currentIntention.execute(this);
-  }
-  /**
    * Runs the agent for a single iteration of the simulation.
    */
   run() {
-    this.beliefManager.update(this); // Update beliefs
-    this.desireManager.reason(); // Determine what to do
-    this.movement.update(); // update movement
-    this.act();    // Perform the action
+    this.beliefManager.update(this); 
+    this.desireManager.update(); 
+    this.movement.update(); 
+    this.intentionManager.update(this, this.getCurrentBestDesire()); 
+
+     // if not within reasonable range of the intention's location, move towards it
+     const currentIntention = this.getCurrentIntention();
+     if (!currentIntention.isWithinReasonbleRange(this.getCurrentLocation())) {
+      this.movement.moveTo(currentIntention.location);
+      return;
+     } 
+    
+    // execute intention  
+    this.intentionManager.executeCurrentIntention(this); 
   }
 }

@@ -51,10 +51,10 @@ describe('AgentFactory', () => {
         expect(oldMan).toBeDefined();
 
         // Check intentions
-        expect(oldMan.intentions.length).toBe(4);
-        expect(oldMan.intentions[0].constructor.name).toBe(IntentionFactory.createSleepIntention().constructor.name);
-        expect(oldMan.intentions[1].constructor.name).toBe(IntentionFactory.createEatIntention().constructor.name);
-        expect(oldMan.intentions[2].constructor.name).toBe(IntentionFactory.createEntertainIntention().constructor.name);
-        expect(oldMan.intentions[3].constructor.name).toBe(IntentionFactory.createSitIdleIntention().constructor.name);
+        expect(oldMan.intentionManager.intentions.length).toBe(4);
+        expect(oldMan.intentionManager.intentions[0].constructor.name).toBe(IntentionFactory.createSleepIntention().constructor.name);
+        expect(oldMan.intentionManager.intentions[1].constructor.name).toBe(IntentionFactory.createEatIntention().constructor.name);
+        expect(oldMan.intentionManager.intentions[2].constructor.name).toBe(IntentionFactory.createEntertainIntention().constructor.name);
+        expect(oldMan.intentionManager.intentions[3].constructor.name).toBe(IntentionFactory.createSitIdleIntention().constructor.name);
     });
 });

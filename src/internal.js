@@ -20,6 +20,7 @@ export { DesireManager } from './bdiagent/desire/DesireManager.js';
 
 export { Intention } from './bdiagent/intention/Intention.js';
 export { IntentionFactory } from './bdiagent/intention/IntentionFactory.js';
+export { IntentionManager } from './bdiagent/intention/IntentionManager.js';
 
 export { Agent } from './bdiagent/Agent.js';
 export { AgentFactory } from './bdiagent/AgentFactory.js';
