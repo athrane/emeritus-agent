@@ -37,12 +37,12 @@ describe('AgentFactory', () => {
         expect(oldMan).toBeDefined();
 
         // Check desires
-        expect(oldMan.desires.length).toBe(5);
-        expect(oldMan.desires[0].constructor.name).toBe(DesireFactory.createSleepDesire().constructor.name);
-        expect(oldMan.desires[1].constructor.name).toBe(DesireFactory.createEatDesire().constructor.name);
-        expect(oldMan.desires[2].constructor.name).toBe(DesireFactory.createEntertainDesire().constructor.name);
-        expect(oldMan.desires[3].constructor.name).toBe(DesireFactory.createSitIdleDesire().constructor.name);
-        expect(oldMan.desires[4].constructor.name).toBe(DesireFactory.createNullDesire().constructor.name);
+        expect(oldMan.desireManager.desires.length).toBe(5);
+        expect(oldMan.desireManager.desires[0].constructor.name).toBe(DesireFactory.createSleepDesire().constructor.name);
+        expect(oldMan.desireManager.desires[1].constructor.name).toBe(DesireFactory.createEatDesire().constructor.name);
+        expect(oldMan.desireManager.desires[2].constructor.name).toBe(DesireFactory.createEntertainDesire().constructor.name);
+        expect(oldMan.desireManager.desires[3].constructor.name).toBe(DesireFactory.createSitIdleDesire().constructor.name);
+        expect(oldMan.desireManager.desires[4].constructor.name).toBe(DesireFactory.createNullDesire().constructor.name);
     });
 
     it('should create an old man agent with correct intentions', () => {

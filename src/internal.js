@@ -16,6 +16,7 @@ export { BeliefManager } from './bdiagent/belief/BeliefManager.js';
 
 export { Desire } from './bdiagent/desire/Desire.js';
 export { DesireFactory } from './bdiagent/desire/DesireFactory.js';
+export { DesireManager } from './bdiagent/desire/DesireManager.js';
 
 export { Intention } from './bdiagent/intention/Intention.js';
 export { IntentionFactory } from './bdiagent/intention/IntentionFactory.js';

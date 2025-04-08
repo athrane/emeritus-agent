@@ -7,6 +7,7 @@ import { TypeUtils } from '../internal.js';
 import { Movement } from '../internal.js';
 import { Location } from '../internal.js';
 import { BeliefManager } from '../internal.js';
+import { DesireManager } from '../internal.js';
 
 /**
  * Represents an agent in the simulation.
@@ -32,13 +33,11 @@ export class Agent {
     TypeUtils.ensureInstanceOf(initialLocation, Location);
     TypeUtils.ensureNumber(movementSpeed);
     this.name = name;
-    this.desires = [];
-    this.activeDesires = [];
-    this.bestDesire = null;
     this.intentions = [];
     this.currentIntention = Agent.NULL_INTENTION;
     this.movement = new Movement(initialLocation, movementSpeed); 
     this.beliefManager = new BeliefManager();    
+    this.desireManager = new DesireManager();
   }
 
   /**
@@ -76,8 +75,7 @@ export class Agent {
    * * @param {Desire} desire The desire to add to the agent.
    */
   addDesire(desire) {
-    TypeUtils.ensureInstanceOf(desire, Desire);
-    this.desires.push(desire);
+    this.desireManager.addDesire(desire);
   }
 
   /**
@@ -105,7 +103,7 @@ export class Agent {
    * @returns {Desire | null} The agent's current best desire, or null if there is none.
    */
   getCurrentBestDesire() {
-    return this.bestDesire;
+    return this.desireManager.getCurrentBestDesire();
   }
 
   /**
@@ -136,37 +134,6 @@ export class Agent {
   }
 
   /**
-   * Determines the agent's current intention based on its desires and intentions.
-   */
-  reason() {
-    // get desires 
-    const activeDesires = this.desires.filter(desire => desire.isSatisfied(this));
-
-    // exit if no active desires
-    if (activeDesires.length === 0) {
-      this.currentIntention = Agent.NULL_INTENTION;
-      return;
-    }
-
-    // sort the active desires by priority
-    this.activeDesires.sort((a, b) => b.priority - a.priority);
-
-    // select the best desire
-    this.bestDesire = activeDesires[0];
-
-    // find the intention that corresponds to the best desire - found by name
-    this.currentIntention = this.intentions.find(
-      intention => intention.name === this.bestDesire.name 
-      && intention.canExecute(this));
-
-    // if no intentions where found, set the null intention
-    if (!this.currentIntention) {
-      this.currentIntention = Agent.NULL_INTENTION;
-    }
-
-  }
-
-  /**
    * Performs the agent's current intention.
    */
   act() {
@@ -185,7 +152,7 @@ export class Agent {
    */
   run() {
     this.beliefManager.update(this); // Update beliefs
-    this.reason(); // Determine what to do
+    this.desireManager.reason(); // Determine what to do
     this.movement.update(); // update movement
     this.act();    // Perform the action
   }

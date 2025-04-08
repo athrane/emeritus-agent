@@ -20,15 +20,13 @@ describe('Agent', () => {
             expect(agent.name).toBe('TestAgent');
             expect(agent.movement.getLocation()).toEqual(initialLocation);
             expect(agent.movement.speed).toBe(5);
-            expect(agent.desires).toEqual([]);
             expect(agent.intentions).toEqual([]);
             expect(agent.getCurrentIntention()).toEqual(Agent.NULL_INTENTION);
-            expect(agent.bestDesire).toBeNull();
-            expect(agent.activeDesires).toEqual([]);
             expect(agent.beliefManager).toBeDefined();
+            expect(agent.desireManager).toBeDefined();
         });
 
-        it('should added be registered at belief manager', () => {
+        it('should added belief be registered at belief manager', () => {
             const belief = new Belief('testBelief', 50);
             agent.addBelief(belief);
 
