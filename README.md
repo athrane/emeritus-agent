@@ -150,6 +150,7 @@ This project includes the following classes, grouped by their respective directo
 
 ### `src/bdiagent/desire/`
 - **`Desire`**: Represents a desire of the agent, with conditions for activation and a priority level.
+- **`DesireManager`**: Manages the desires of the agent, including adding, retrieving, and evaluating desires based on the agent's beliefs.
 
 ### `src/bdiagent/intention/`
 - **`Intention`**: Represents an intention of the agent, with actions to execute and conditions for activation.
