@@ -161,3 +161,4 @@ This project includes the following classes, grouped by their respective directo
 - **`Location`**: Represents a 2D location with x and y coordinates.
 - **`LocationFactory`**: A factory class for creating `Location` instances.
 - **`Movement`**: Manages the movement of an agent within the simulation.
+- **`Room`**: Represents a room in the simulation, containing locations and adjacent rooms.
