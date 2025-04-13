@@ -1,19 +1,25 @@
 import { Location } from "../../../src/internal.js";
-import { Movement } from "../../../src/internal.js";
+import { Movement, RoomManager } from "../../../src/internal.js";
 
 // filepath: src/bdiagent/movement/Movement.test.js
 
 describe('Movement', () => {
     let initialLocation;
     let movement;
+    let roomManager;
 
     beforeEach(() => {
-        initialLocation = new Location("L1", 0, 0);
-        movement = new Movement(initialLocation, 5);
+        roomManager = new RoomManager(); 
+        initialLocation = new Location("Start", 0, 0);
+        movement = new Movement(initialLocation, 5, roomManager);
+    });
+
+    it('should be able to create movement instance', () => {
+        expect(movement).toBe
     });
 
     it('should initialize with the correct location and speed', () => {
-        expect(movement.getLocation().name).toBe("L1");
+        expect(movement.getLocation().name).toBe("Start");
         expect(movement.getLocation().x).toBe(0);
         expect(movement.getLocation().y).toBe(0);
         expect(movement.speed).toBe(5);

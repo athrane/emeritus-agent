@@ -10,13 +10,67 @@ export class Room {
    * Constructor for the Room class.
    *
    * @param {string} name The name of the room.
+   * @param {number} x The x-coordinate of the room.
+   * @param {number} y The y-coordinate of the room.
+   * @param {number} width The width of the room.
+   * @param {number} height The height of the room.
    */
-  constructor(name) {
+  constructor(name, x, y, width, height) {
     TypeUtils.ensureString(name);
+    TypeUtils.ensureNumber(x);
+    TypeUtils.ensureNumber(y);
+    TypeUtils.ensureNumber(width);
+    TypeUtils.ensureNumber(height);
+
     this.name = name;
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
     this.locations = [];
     this.adjacentRooms = [];
   }
+
+  /**
+   * Gets the x-coordinate of the room.
+   * @returns {number} The x-coordinate.
+   */
+  getX() {
+    return this.x;
+  }
+
+  /**
+   * Gets the y-coordinate of the room.
+   * @returns {number} The y-coordinate.
+   */
+  getY() {
+    return this.y;
+  }
+
+  /**
+   * Gets the width of the room.
+   * @returns {number} The width.
+   */
+  getWidth() {
+    return this.width;
+  }
+
+  /**
+   * Gets the height of the room.
+   * @returns {number} The height.
+   */
+  getHeight() {
+    return this.height;
+  }
+
+  /**
+   * Gets the name of the room.
+   * @returns {string} The name of the room.
+   */
+  getName() {
+    return this.name;
+  }
+
 
   /**
    * Adds a location to the room.
@@ -31,15 +85,13 @@ export class Room {
   /**
    * Checks if a location is in the room.
    *
-   * @param {Location} location The location to check.
-   * @returns {boolean} True if the location is in the room, false otherwise.
+   * @param {locationName} location The location name to check.
+   * @returns {boolean} True if a location with the name is in the room, false otherwise.
    */
-  hasLocation(location) {
-    TypeUtils.ensureInstanceOf(location, Location);
-    return this.locations.some(
-      (loc) => loc.x === location.x && loc.y === location.y && loc.name === location.name
-    );
-  }
+  hasLocation(locationName) {
+    TypeUtils.ensureString(locationName);
+    return this.locations.some(loc => loc.name === locationName);
+    }
 
   /**
    * Adds an adjacent room to the room.

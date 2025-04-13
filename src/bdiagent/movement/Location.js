@@ -2,6 +2,8 @@ import { TypeUtils } from '../../internal.js';
 
 /**
  * Represents a location in the simulation.
+ * A location is defined by its name and coordinates (x, y).
+ * A location is used to represent a specific point in the environment within a room.
  * Object are mutable.
  */
 export class Location {

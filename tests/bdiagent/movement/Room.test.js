@@ -5,11 +5,15 @@ describe('Room', () => {
   let room;
 
   beforeEach(() => {
-    room = new Room('Living Room');
+    room = new Room('Living Room', 0, 0, 10, 10);
   });
 
-  test('should initialize with a name, empty locations, and empty adjacent rooms', () => {
+  test('should initialize with a name, coordinates, dimensions, empty locations, and empty adjacent rooms', () => {
     expect(room.name).toBe('Living Room');
+    expect(room.x).toBe(0);
+    expect(room.y).toBe(0);
+    expect(room.width).toBe(10);
+    expect(room.height).toBe(10);
     expect(room.locations).toEqual([]);
     expect(room.adjacentRooms).toEqual([]);
   });
@@ -24,9 +28,18 @@ describe('Room', () => {
     const location = new Location('Corner', 1, 2);
     room.addLocation(location);
     const anotherLocation = new Location('Center', 3, 4);
-    expect(room.hasLocation(location)).toBe(true);
-    expect(room.hasLocation(anotherLocation)).toBe(false);
+    expect(room.hasLocation(location.name)).toBe(true);
+    expect(room.hasLocation(anotherLocation.name)).toBe(false);
   });
+
+  test('should check if upper and lower isnt identical', () => {
+    const lowercase = new Location('corner', 1, 2);
+    room.addLocation(lowercase);
+    const uppercase = new Location('CORNER', 1, 2);
+    expect(room.hasLocation(lowercase.name)).toBe(true);
+    expect(room.hasLocation(uppercase.name)).toBe(false);
+  });
+
 
   test('should add an adjacent room', () => {
     room.addAdjacentRoom('Kitchen');

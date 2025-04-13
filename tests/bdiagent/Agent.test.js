@@ -1,17 +1,18 @@
 import { Agent } from "../../src/internal.js";
 import { Belief } from "../../src/internal.js";
-import { Desire } from "../../src/internal.js";
-import { Intention } from "../../src/internal.js";
 import { IntentionManager } from "../../src/internal.js";
 import { Location } from "../../src/internal.js";
+import { RoomManager } from "../../src/internal.js";
 
 describe('Agent', () => {
+    let roomManager;   
     let initialLocation;
     let agent;
 
     beforeEach(() => {
+        roomManager = new RoomManager();
         initialLocation = new Location("L1", 0, 0);
-        agent = new Agent('TestAgent', initialLocation, 5);
+        agent = new Agent('TestAgent', initialLocation, 5, roomManager);
     });
 
     describe('run', () => {

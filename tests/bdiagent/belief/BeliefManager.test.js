@@ -3,15 +3,16 @@ import { BeliefUpdater } from "../../../src/internal.js";
 import { BeliefManager } from "../../../src/internal.js";
 import { Agent } from "../../../src/internal.js";
 import { AgentFactory } from "../../../src/internal.js";
-
-// filepath: /workspaces/emeritus-agent/tests/bdiagent/belief/BeliefManager.test.js
+import { RoomManager } from "../../../src/internal.js";
 
 describe('BeliefManager', () => {
+    let roomManager;   
     let beliefManager;
     let agent;
 
     beforeEach(() => {
-        agent = AgentFactory.createNullAgent();
+        roomManager = new RoomManager(); 
+        agent = AgentFactory.createNullAgent(roomManager);
         beliefManager = new BeliefManager();
     });
 

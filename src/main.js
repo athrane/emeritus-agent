@@ -1,8 +1,10 @@
+import { RoomFactory } from './bdiagent/movement/RoomFactory.js';
 import { AgentFactory } from './internal.js';
 import { Agent } from './internal.js';
 
 // Create the agent using the factory
-const oldMan = AgentFactory.createOldManAgent();
+const roomManager = RoomFactory.createHouse();
+const oldMan = AgentFactory.createOldManAgent(roomManager);
 
 // Run the agent
 for (let i = 0; i < 100; i++) {

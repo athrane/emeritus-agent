@@ -1,6 +1,7 @@
 import { TypeUtils } from "../../internal.js";
 import { Location } from "../../internal.js";
 import { LocationFactory } from "../../internal.js";
+import { RoomManager } from "../../internal.js";
 
 /**
  * Represents a movement system for an agent.
@@ -19,15 +20,18 @@ export class Movement {
      * 
      * @param {Location} initialLocation The initial location of the agent.
      * @param {number} speed The speed of the agent.
+     * @param {RoomManager} roomManager The room manager for the agent.
      * @throws {Error} If the provided agent is not an instance of Agent or if speed is not a number.
      */
-    constructor(initialLocation, speed) {
+    constructor(initialLocation, speed, roomManager) {
         TypeUtils.ensureInstanceOf(initialLocation, Location);
         TypeUtils.ensureNumber(speed);
+        TypeUtils.ensureInstanceOf(roomManager, RoomManager);
         this.speed = speed;
         this.location = initialLocation.copy();
         this.destination = Movement.NULL_LOCATION;
         this.isAgentMoving = false;
+        this.roomManager = roomManager;
     }
 
     /**

@@ -6,6 +6,8 @@ export { LogBuffer } from './utils/log/LogBuffer.js';
 export { Location } from './bdiagent/movement/Location.js';
 export { LocationFactory } from './bdiagent/movement/LocationFactory.js';
 export { Room } from './bdiagent/movement/Room.js';
+export { RoomManager } from './bdiagent/movement/RoomManager.js';
+export { RoomFactory } from './bdiagent/movement/Room.js';
 export { Movement } from './bdiagent/movement/Movement.js';
 
 export { Belief } from './bdiagent/belief/Belief.js';
