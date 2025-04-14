@@ -17,8 +17,8 @@ export class RoomManager {
      * Creates a new room.
      *
      * @param {string} name The name of the room.
-     * @param {number} x The x-coordinate of the room.
-     * @param {number} y The y-coordinate of the room.
+     * @param {number} x The x-coordinate of the room. Coordinate defined upper left corner.
+     * @param {number} y The y-coordinate of the room. Coordinate defined upper left corner.
      * @param {number} width The width of the room.   
      * @param {number} height The height of the room.
      * @returns {Room} The created Room object.

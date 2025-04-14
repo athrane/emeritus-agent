@@ -2,7 +2,13 @@ import { TypeUtils } from '../../internal.js';
 import { Location } from '../../internal.js';
 
 /**
- * Represents a room and its properties.
+ * Represents a Room in the simulation.
+ * A room is defined by its name, coordinates (x, y), dimensions (width, height),
+ * a list of locations, and a list of adjacent rooms.
+ * The room is mutable.
+ * The coordinates are defined by the upper left corner of the room.
+ * The dimensions are defined by the width and height of the room.
+ * The room can contain multiple locations and can be adjacent to other rooms.
  */
 export class Room {
 

@@ -3,6 +3,7 @@
 export { TypeUtils } from './utils/TypeUtils.js';
 export { LogBuffer } from './utils/log/LogBuffer.js';
 
+export { Position } from './bdiagent/movement/Position.js';
 export { Location } from './bdiagent/movement/Location.js';
 export { LocationFactory } from './bdiagent/movement/LocationFactory.js';
 export { Room } from './bdiagent/movement/Room.js';
