@@ -60,7 +60,7 @@ export class RoomManager {
      * @returns {Location} The created Location object.
      */
     createLocation(name, x, y, roomName) {
-        const location = new Location(name, x, y);
+        const location = Location.create(name, x, y);
         location.roomName = roomName;
         const room = this.getRoom(roomName);
         if (room) {

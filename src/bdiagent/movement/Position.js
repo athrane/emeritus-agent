@@ -37,6 +37,26 @@ export class Position {
     }   
 
     /**
+     * Sets the x-coordinate of the position.
+     * 
+     * @param {number} x The new x-coordinate.
+     */
+    setX(x) {
+        TypeUtils.ensureNumber(x);
+        this.x = x;
+    }
+
+    /**
+     * Sets the y-coordinate of the position.
+     * 
+     * @param {number} y The new y-coordinate.
+     */
+    setY(y) {
+        TypeUtils.ensureNumber(y);
+        this.y = y;
+    }
+
+    /**
      * Creates a copy of the current position.
      *
      * @returns {Position} A new Position object with the same properties as the original.
@@ -57,6 +77,17 @@ export class Position {
             Math.pow(this.x - otherPosition.x, 2) +
             Math.pow(this.y - otherPosition.y, 2)
         );
+    }
+
+    /**
+     * Creates a new Position object from x and y coordinates.
+     *
+     * @param {number} x The x-coordinate of the position.
+     * @param {number} y The y-coordinate of the position.
+     * @returns {Position} A new Position object.   
+     */ 
+    static create(x, y) {
+        return new Position(x, y);
     }
 
 }
