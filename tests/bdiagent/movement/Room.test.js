@@ -19,23 +19,23 @@ describe('Room', () => {
   });
 
   test('should add a location to the room', () => {
-    const location = new Location('Corner', 1, 2);
+    const location = Location.create('Corner', 1, 2);
     room.addLocation(location);
     expect(room.locations).toContain(location);
   });
 
   test('should check if a location is in the room', () => {
-    const location = new Location('Corner', 1, 2);
+    const location = Location.create('Corner', 1, 2);
     room.addLocation(location);
-    const anotherLocation = new Location('Center', 3, 4);
+    const anotherLocation = Location.create('Center', 3, 4);
     expect(room.hasLocation(location.name)).toBe(true);
     expect(room.hasLocation(anotherLocation.name)).toBe(false);
   });
 
   test('should check if upper and lower isnt identical', () => {
-    const lowercase = new Location('corner', 1, 2);
+    const lowercase = Location.create('corner', 1, 2);
     room.addLocation(lowercase);
-    const uppercase = new Location('CORNER', 1, 2);
+    const uppercase = Location.create('CORNER', 1, 2);
     expect(room.hasLocation(lowercase.name)).toBe(true);
     expect(room.hasLocation(uppercase.name)).toBe(false);
   });
