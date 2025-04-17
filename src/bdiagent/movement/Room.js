@@ -97,7 +97,7 @@ export class Room {
   hasLocation(locationName) {
     TypeUtils.ensureString(locationName);
     return this.locations.some(loc => loc.name === locationName);
-    }
+  }
 
   /**
    * Adds an adjacent room to the room.
@@ -121,4 +121,19 @@ export class Room {
     TypeUtils.ensureString(roomName);
     return this.adjacentRooms.includes(roomName);
   }
+
+  /**
+    * Creates a new Room object.
+    *
+    * @param {string} name The name of the room.
+    * @param {number} x The x-coordinate of the room.
+    * @param {number} y The y-coordinate of the room.
+    * @param {number} width The width of the room.
+    * @param {number} height The height of the room.
+    * @returns {Room} A new Room object.   
+    */
+  static create(name, x, y, width, height) {
+    return new Room(name, x, y, width, height);
+  }
+
 }

@@ -25,7 +25,7 @@ export class Location {
         this.name = name;
         this.x = x;
         this.y = y;
-        this.position = new Position(x, y);
+        this.position = Position.create(x, y);
     }
 
     /**

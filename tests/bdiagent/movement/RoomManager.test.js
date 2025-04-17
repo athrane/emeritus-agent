@@ -6,7 +6,6 @@ describe('RoomManager', () => {
     let roomManager;
 
     beforeEach(() => {
-        // Create a new RoomManager instance before each test
         roomManager = new RoomManager();
     });
 

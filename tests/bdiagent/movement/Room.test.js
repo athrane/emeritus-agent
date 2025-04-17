@@ -5,7 +5,7 @@ describe('Room', () => {
   let room;
 
   beforeEach(() => {
-    room = new Room('Living Room', 0, 0, 10, 10);
+    room = Room.create('Living Room', 0, 0, 10, 10);
   });
 
   test('should initialize with a name, coordinates, dimensions, empty locations, and empty adjacent rooms', () => {
