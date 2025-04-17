@@ -22,7 +22,8 @@ export class LocationFactory {
      * @returns {Location} A Location instance representing a bedroom.
      */
     static createBedroom() {
-        return  Location.create("Bedroom", -1.5, -0.5);
+        const position = Position.create(-1.5, -0.5);
+        return Location.create("Bedroom", position);
     }
 
     /**
@@ -31,7 +32,8 @@ export class LocationFactory {
      * @returns {Location} A Location instance representing the kitchen.
      */
     static createKitchen() {
-        return Location.create("Kitchen", 0.5, -0.5);
+        const position = Position.create(0.5, -0.5);
+        return Location.create("Kitchen", position);
     }
 
     /**
@@ -40,7 +42,8 @@ export class LocationFactory {
      * @returns {Location} A Location instance representing the living room.
      */
     static createLivingRoom() {
-        return Location.create("Living Room", -0.5, -0.5); 
+        const position = Position.create(-0.5, -0.5);
+        return Location.create("Living Room", position);
     }
 
     /**
@@ -49,7 +52,8 @@ export class LocationFactory {
      * @returns {Location} A Location instance representing the hall.
      */
     static createHall() {
-        return Location.create("Hall", 1.25, -0.5);
+        const position = Position.create(1.25, -0.5);
+        return Location.create("Hall", position);
     }
 
     /**
@@ -58,7 +62,8 @@ export class LocationFactory {
      * @returns {Location} A Location instance representing the garden.
      */
     static createGarden() {
-        return Location.create("Garden", 1.90, -0.5);
+        const position = Position.create(1.9, -0.5);
+        return Location.create("Garden", position);
     }
 
 }

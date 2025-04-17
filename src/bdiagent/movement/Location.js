@@ -15,17 +15,13 @@ export class Location {
      * Constructor for the Location class.
      * 
      * @param {string} name The name of the location.
-     * @param {number} x The x-coordinate of the location.
-     * @param {number} y The y-coordinate of the location.
+     * @param {Position} position The Position object representing the coordinates of the location. The location is relative to the room. The location takes a copy of the position.
      */
-    constructor(name, x, y) {
+    constructor(name, position) {
         TypeUtils.ensureString(name);
-        TypeUtils.ensureNumber(x);
-        TypeUtils.ensureNumber(y);
+        TypeUtils.ensureInstanceOf(position, Position);
         this.name = name;
-        this.x = x;
-        this.y = y;
-        this.position = Position.create(x, y);
+        this.position = position.copy();
     }
 
     /**
@@ -47,10 +43,10 @@ export class Location {
     /**
      * Creates a copy of the current location.
      *
-     * @returns {Location} A new Location object with the same properties as the original.
+     * @returns {Location} A new Location object with the same properties as the original. The location takes a copy of the position.
      */
     copy() {
-        return new Location(this.name, this.x, this.y);
+        return new Location(this.name, this.position.copy());
     }
 
     /**
@@ -71,13 +67,11 @@ export class Location {
      * Creates a new Location object from a name and a Position object.
      *
      * @param {string} name The name of the location.
-     * @param {Position} position The Position object representing the coordinates of the location. The location is relative to the room. The location takes the coordinates of the position.
+     * @param {Position} position The Position object representing the coordinates of the location. The location is relative to the room. The location takes a copy of the position.
      * @returns {Location} A new Location object with the specified name and coordinates.
      */
     static create(name, position) {
-        TypeUtils.ensureString(name);
-        TypeUtils.ensureInstanceOf(position, Position);
-        return new Location(name, position.getX(), position.getY());
+        return new Location(name, position);
     }
 
 }

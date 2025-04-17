@@ -1,4 +1,4 @@
-import { TypeUtils } from '../../internal.js';
+import { Position, TypeUtils } from '../../internal.js';
 import { Room } from '../../internal.js';
 import { Location } from '../../internal.js';
 
@@ -60,7 +60,8 @@ export class RoomManager {
      * @returns {Location} The created Location object.
      */
     createLocation(name, x, y, roomName) {
-        const location = Location.create(name, x, y);
+        const position = Position.create(x, y);
+        const location = Location.create(name, position);
         location.roomName = roomName;
         const room = this.getRoom(roomName);
         if (room) {
