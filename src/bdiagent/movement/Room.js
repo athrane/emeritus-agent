@@ -17,8 +17,8 @@ export class Room {
    * Constructor for the Room class.
    *
    * @param {string} name The name of the room.
-   * @param {Position} position The Position object representing the position of the room. The room takes a copy of the position.
-   * @param {Position} size The Position object representing the size of the room (width, height). The room takes a copy of the size.
+   * @param {Position} position The Position object representing the position of the room. 
+   * @param {Position} size The Position object representing the size of the room (width, height). 
    */
   constructor(name, position, size) {
     TypeUtils.ensureString(name);
@@ -26,8 +26,8 @@ export class Room {
     TypeUtils.ensureInstanceOf(size, Position);
 
     this.name = name;
-    this.position = position.copy();
-    this.size = size.copy();
+    this.position = position;
+    this.size = size;
     this.locations = [];
     this.adjacentRooms = [];
   }
