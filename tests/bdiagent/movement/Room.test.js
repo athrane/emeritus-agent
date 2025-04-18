@@ -40,6 +40,13 @@ describe('Room', () => {
     expect(room.hasLocation(anotherLocation.name)).toBe(false);
   });
 
+  test('should not add duplicate locations', () => {
+    const position = Position.create(1, 2);
+    const location = Location.create('Corner', position);
+    room.addLocation(location);
+    expect(() => room.addLocation(location)).toThrowError();
+  } );
+
   test('should check if upper and lower isnt identical', () => {
     const position = Position.create(1, 2);
     const lowercase = Location.create('Corner', position);

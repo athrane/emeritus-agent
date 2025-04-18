@@ -63,6 +63,13 @@ export class Room {
    */
   addLocation(location) {
     TypeUtils.ensureInstanceOf(location, Location);
+
+    // throw error if location is already in the room
+    if (this.hasLocation(location.name)) {
+      throw new Error(`Location with name ${location.name} already exists in the room.`);
+    }
+
+    // add location to the room
     this.locations.push(location);
   }
 
