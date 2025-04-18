@@ -1,5 +1,6 @@
 import { TypeUtils } from '../../internal.js';
 import { Location } from '../../internal.js';
+import { Position } from '../../internal.js';
 
 /**
  * Represents a Room in the simulation.
@@ -16,57 +17,35 @@ export class Room {
    * Constructor for the Room class.
    *
    * @param {string} name The name of the room.
-   * @param {number} x The x-coordinate of the room.
-   * @param {number} y The y-coordinate of the room.
-   * @param {number} width The width of the room.
-   * @param {number} height The height of the room.
+   * @param {Position} position The Position object representing the position of the room. The room takes a copy of the position.
+   * @param {Position} size The Position object representing the size of the room (width, height). The room takes a copy of the size.
    */
-  constructor(name, x, y, width, height) {
+  constructor(name, position, size) {
     TypeUtils.ensureString(name);
-    TypeUtils.ensureNumber(x);
-    TypeUtils.ensureNumber(y);
-    TypeUtils.ensureNumber(width);
-    TypeUtils.ensureNumber(height);
+    TypeUtils.ensureInstanceOf(position, Position);
+    TypeUtils.ensureInstanceOf(size, Position);
 
     this.name = name;
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
+    this.position = position.copy();
+    this.size = size.copy();
     this.locations = [];
     this.adjacentRooms = [];
   }
 
   /**
-   * Gets the x-coordinate of the room.
-   * @returns {number} The x-coordinate.
+   * Gets the position of the room.
+   * @returns {Position} The position of the room.
    */
-  getX() {
-    return this.x;
-  }
+  getPosition() {
+    return this.position;
+  } 
 
   /**
-   * Gets the y-coordinate of the room.
-   * @returns {number} The y-coordinate.
+   * Gets the size of the room.
+   * @returns {Position} The size of the room.
    */
-  getY() {
-    return this.y;
-  }
-
-  /**
-   * Gets the width of the room.
-   * @returns {number} The width.
-   */
-  getWidth() {
-    return this.width;
-  }
-
-  /**
-   * Gets the height of the room.
-   * @returns {number} The height.
-   */
-  getHeight() {
-    return this.height;
+  getSize() {
+    return this.size;
   }
 
   /**
@@ -76,7 +55,6 @@ export class Room {
   getName() {
     return this.name;
   }
-
 
   /**
    * Adds a location to the room.
@@ -126,14 +104,12 @@ export class Room {
     * Creates a new Room object.
     *
     * @param {string} name The name of the room.
-    * @param {number} x The x-coordinate of the room.
-    * @param {number} y The y-coordinate of the room.
-    * @param {number} width The width of the room.
-    * @param {number} height The height of the room.
+    * @param {Position} position The Position object representing the position of the room. The room takes a copy of the position.
+    * @param {Position} size The Position object representing the size of the room (width, height). The room takes a copy of the size.
     * @returns {Room} A new Room object.   
     */
-  static create(name, x, y, width, height) {
-    return new Room(name, x, y, width, height);
+  static create(name, position, size) {
+    return new Room(name, position, size);
   }
 
 }
