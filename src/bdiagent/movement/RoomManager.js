@@ -1,4 +1,5 @@
-import { Position, TypeUtils } from '../../internal.js';
+import { TypeUtils } from '../../internal.js';
+import { Position } from '../../internal.js';
 import { Room } from '../../internal.js';
 import { Location } from '../../internal.js';
 
@@ -9,6 +10,11 @@ import { Location } from '../../internal.js';
  * and finding paths between rooms.
  */
 export class RoomManager {
+
+    /**
+     * Constructor for the RoomManager class.
+     * Initializes an empty map to store rooms.
+     */
     constructor() {
         this.rooms = new Map();
     }
@@ -29,15 +35,12 @@ export class RoomManager {
         TypeUtils.ensureNumber(y);
         TypeUtils.ensureNumber(width);
         TypeUtils.ensureNumber(height);
-        const room = new Room(name, x, y, width, height);
+        const position = Position.create(x, y);
+        const size = Position.create(width, height);
+        const room = Room.create(name, position, size);
         this.rooms.set(name, room);
         return room;
     }
-    /**
-     * Gets all rooms.
-     *
-     * @returns {Array<Room>} An array of all Room objects.
-     */
 
     /**
      * Gets a room by its name.
@@ -54,19 +57,30 @@ export class RoomManager {
      * Creates a new location and adds it to the specified room.
      *
      * @param {string} name The name of the location.
-     * @param {number} x The x-coordinate of the location.
-     * @param {number} y The y-coordinate of the location.
+     * @param {Position} position The poistion of the location.
      * @param {string} roomName The name of the room to add the location to.
      * @returns {Location} The created Location object.
      */
-    createLocation(name, x, y, roomName) {
-        const position = Position.create(x, y);
+    createLocation(name, position, roomName) {
+        TypeUtils.ensureString(name);
+        TypeUtils.ensureInstanceOf(position, Position);
+        TypeUtils.ensureString(roomName);
         const location = Location.create(name, position);
-        location.roomName = roomName;
-        const room = this.getRoom(roomName);
-        if (room) {
-            room.addLocation(location);
+
+        // throw error if room not found
+        const aRoom = this.getRoom(roomName);
+        if (!aRoom) {
+            throw new Error(`Room ${roomName} not found`);
         }
+
+        // throw error if location already exists
+        if (aRoom.hasLocation(name)) {
+            throw new Error(`Location ${name} already exists in room ${roomName}`);
+        }
+        
+        // add location to room        
+        aRoom.addLocation(location);
+
         return location;
     }
 
