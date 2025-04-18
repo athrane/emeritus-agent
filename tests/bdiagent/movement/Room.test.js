@@ -50,7 +50,6 @@ describe('Room', () => {
     expect(room.hasLocation(uppercase.name)).toBe(false);
   });
 
-
   test('should add an adjacent room', () => {
     room.addAdjacentRoom('Kitchen');
     expect(room.adjacentRooms).toContain('Kitchen');
@@ -67,5 +66,5 @@ describe('Room', () => {
     expect(room.isAdjacent('Kitchen')).toBe(true);
     expect(room.isAdjacent('Bathroom')).toBe(false);
   });
-  
+
 });
