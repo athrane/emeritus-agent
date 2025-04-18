@@ -15,13 +15,13 @@ export class Location {
      * Constructor for the Location class.
      * 
      * @param {string} name The name of the location.
-     * @param {Position} position The Position object representing the coordinates of the location. The location is relative to the room. The location takes a copy of the position.
+     * @param {Position} position The Position object representing the coordinates of the location. The location is relative to the room. 
      */
     constructor(name, position) {
         TypeUtils.ensureString(name);
         TypeUtils.ensureInstanceOf(position, Position);
         this.name = name;
-        this.position = position.copy();
+        this.position = position;
     }
 
     /**
@@ -43,10 +43,10 @@ export class Location {
     /**
      * Creates a copy of the current location.
      *
-     * @returns {Location} A new Location object with the same properties as the original. The location takes a copy of the position.
+     * @returns {Location} A new Location object with the same properties as the original.
      */
     copy() {
-        return new Location(this.name, this.position.copy());
+        return new Location(this.name, this.position);
     }
 
     /**
