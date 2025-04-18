@@ -1,7 +1,7 @@
 import { RoomManager } from '../../internal.js';
 
 /**
- * Factory class for creating Room configurations.
+ * Factory class for creating Room configurations (RoomManager instances).
  */
 export class RoomFactory {
 

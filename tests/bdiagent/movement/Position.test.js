@@ -7,7 +7,6 @@ describe('Position', () => {
             const x = 10;
             const y = 20;
             const pos = Position.create(x, y);
-
             expect(pos).toBeInstanceOf(Position);
             expect(pos.x).toBe(x);
             expect(pos.y).toBe(y);
@@ -27,7 +26,6 @@ describe('Position', () => {
             expect(pos.y).toBe(y);
         });
 
-        // Add tests for TypeUtils ensuring correct types if needed (might require mocking TypeUtils)
         test('should throw error if x is not a number (assuming TypeUtils throws)', () => {
             expect(() => Position.create("a", 5)).toThrow(TypeError);
         });
@@ -56,9 +54,15 @@ describe('Position', () => {
     describe('setX', () => {
         test('should set the x-coordinate correctly', () => {
             const pos = Position.create(0, 0);
-            const newX = 100;
-            pos.setX(newX);
-            expect(pos.x).toBe(newX);
+            const newPos = pos.setX(100);
+            expect(newPos.getX()).toBe(100);
+            expect(newPos.getY()).toBe(0);
+        });
+
+        test('should get new position object setting x', () => {
+            const pos = Position.create(1, 2);
+            const newPos = pos.setX(5);
+            expect(newPos).not.toBe(pos); 
         });
 
         test('should throw error if x is not a number (assuming TypeUtils throws)', () => {
@@ -70,11 +74,17 @@ describe('Position', () => {
     describe('setY', () => {
         test('should set the y-coordinate correctly', () => {
             const pos = Position.create(0, 0);
-            const newY = 200;
-            pos.setY(newY);
-            expect(pos.y).toBe(newY);
+            const newPos = pos.setY(100);
+            expect(newPos.getX()).toBe(0);
+            expect(newPos.getY()).toBe(100);
         });
-     
+
+        test('should get new position object setting y', () => {
+            const pos = Position.create(1, 2);
+            const newPos = pos.setY(5);
+            expect(newPos).not.toBe(pos); 
+        });
+        
         test('should throw error if y is not a number (assuming TypeUtils throws)', () => {
             const pos = Position.create(0, 0);
             expect(() => pos.setY("not-a-number")).toThrow(TypeError);
@@ -87,21 +97,19 @@ describe('Position', () => {
             const copiedPos = originalPos.copy();
 
             expect(copiedPos).toBeInstanceOf(Position);
-            expect(copiedPos.x).toBe(originalPos.x);
-            expect(copiedPos.y).toBe(originalPos.y);
+            expect(copiedPos.getX()).toBe(originalPos.getX());
+            expect(copiedPos.getY()).toBe(originalPos.getY());
         });
 
         test('should create a distinct object (not the same reference)', () => {
             const originalPos = Position.create(1, 2);
             const copiedPos = originalPos.copy();
-
             expect(copiedPos).not.toBe(originalPos); // Check they are different objects in memory
         });
 
         test('modifying the copied position should not affect the original', () => {
             const originalPos = Position.create(10, 10);
             const copiedPos = originalPos.copy();
-
             copiedPos.x = 100; // Modify the copy
 
             expect(originalPos.x).toBe(10); // Original should remain unchanged

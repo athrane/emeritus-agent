@@ -3,7 +3,7 @@ import { TypeUtils } from '../../internal.js';
 /**
  * Represents a position in the simulation.
  * A position is defined by coordinates (x, y).
- * Object are mutable.
+ * Object are immutable.
  */
 export class Position {
     
@@ -37,26 +37,6 @@ export class Position {
     }   
 
     /**
-     * Sets the x-coordinate of the position.
-     * 
-     * @param {number} x The new x-coordinate.
-     */
-    setX(x) {
-        TypeUtils.ensureNumber(x);
-        this.x = x;
-    }
-
-    /**
-     * Sets the y-coordinate of the position.
-     * 
-     * @param {number} y The new y-coordinate.
-     */
-    setY(y) {
-        TypeUtils.ensureNumber(y);
-        this.y = y;
-    }
-
-    /**
      * Creates a copy of the current position.
      *
      * @returns {Position} A new Position object with the same properties as the original.
@@ -77,6 +57,43 @@ export class Position {
             Math.pow(this.x - otherPosition.x, 2) +
             Math.pow(this.y - otherPosition.y, 2)
         );
+    }
+
+    /**
+     * Sets the x-coordinate of the position.
+     * 
+     * @param {number} x The new x-coordinate.
+     * @param {number} y The new y-coordinate.
+     * @returns {Position} A new Position object with the updated coordinates.
+     */
+    set(x,y) {
+        TypeUtils.ensureNumber(x);
+        TypeUtils.ensureNumber(y);
+        this.x = x;
+        this.y = y;
+        return new Position(x, y);
+    }
+
+    /**
+     * Sets the x-coordinate of the position.
+     * 
+     * @param {number} x The new x-coordinate.
+     * @returns {Position} A new Position object with the updated x-coordinate.
+     */
+    setX(x) {
+        TypeUtils.ensureNumber(x);
+        return new Position(x, this.y);
+    }
+
+    /**
+     * Sets the y-coordinate of the position.
+     * 
+     * @param {number} y The new y-coordinate.
+     * @returns {Position} A new Position object with the updated y-coordinate.
+     */
+    setY(y) {
+        TypeUtils.ensureNumber(y);
+        return new Position(this.x, y);
     }
 
     /**
