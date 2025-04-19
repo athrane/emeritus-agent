@@ -1,6 +1,7 @@
 import { Room } from "../../../src/internal.js";
 import { Location } from "../../../src/internal.js";
 import { RoomManager } from "../../../src/internal.js";
+import { Position } from "../../../src/internal.js";
 
 describe('RoomManager', () => {
     let roomManager;
@@ -21,44 +22,33 @@ describe('RoomManager', () => {
             const y = 0;
             const width = 10;
             const height = 10;
-
             const room = roomManager.createRoom(roomName, x, y, width, height);
 
-            // Check if the returned object is a Room instance
             expect(room).toBeInstanceOf(Room);
             expect(room.name).toBe(roomName);
-            expect(room.x).toBe(x);
-            expect(room.y).toBe(y);
-            expect(room.width).toBe(width);
-            expect(room.height).toBe(height);
+            expect(room.getPosition().getX()).toBe(x);
+            expect(room.getPosition().getY()).toBe(y);
+            expect(room.getSize().getX()).toBe(width);
+            expect(room.getSize().getY()).toBe(height);
 
             // Check if the room was added to the internal map
             expect(roomManager.rooms.size).toBe(1);
             expect(roomManager.rooms.get(roomName)).toBe(room);
         });
 
-        test('should overwrite an existing room if created with the same name', () => {
+        test('should throw error if room is created with the same name', () => {
             const roomName = 'Kitchen';
-            roomManager.createRoom(roomName, 0, 0, 5, 5); // Initial room
-            const newRoom = roomManager.createRoom(roomName, 10, 10, 8, 8); // New room with same name
-
-            expect(roomManager.rooms.size).toBe(1);
-            expect(roomManager.rooms.get(roomName)).toBe(newRoom);
-            expect(roomManager.rooms.get(roomName).x).toBe(10); // Verify new coordinates
+            roomManager.createRoom(roomName, 0, 0, 5, 5); 
+            expect(() => roomManager.createRoom(roomName, 1, 2, 3, 4)).toThrowError();
         });
 
-        // Add tests for TypeUtils ensuring correct types if needed (might require mocking TypeUtils)
-        test('should throw error if name is not a string (assuming TypeUtils throws)', () => {
-             // This depends on TypeUtils implementation. If it throws, test for it.
-             // Example: expect(() => roomManager.createRoom(123, 0, 0, 10, 10)).toThrow();
-             // If TypeUtils doesn't throw but logs/handles differently, adjust the test.
-             // For now, we assume TypeUtils handles type checking.
+        test('should throw error if room is created with non-string name', () => {
+            expect(() => roomManager.createRoom(123, 0, 0, 3, 4)).toThrowError();
         });
     });
 
     describe('getRoom', () => {
         beforeEach(() => {
-            // Pre-populate with a room for testing get
             roomManager.createRoom('Bedroom', 20, 20, 15, 15);
         });
 
@@ -70,16 +60,13 @@ describe('RoomManager', () => {
             expect(room.name).toBe(roomName);
         });
 
-        test('should return undefined if the room does not exist', () => {
+        test('should throw error if the room does not exist', () => {
             const roomName = 'NonExistentRoom';
-            const room = roomManager.getRoom(roomName);
-
-            expect(room).toBeUndefined();
+            expect(() => roomManager.getRoom(roomName)).toThrowError();
         });
 
          test('should throw error if name is not a string (assuming TypeUtils throws)', () => {
-             // Similar to createRoom, depends on TypeUtils behavior.
-             // Example: expect(() => roomManager.getRoom(123)).toThrow();
+            expect(() => roomManager.getRoom(123)).toThrowError();
          });
     });
 
@@ -88,57 +75,37 @@ describe('RoomManager', () => {
         let testRoom;
 
         beforeEach(() => {
-            // Create a room to add locations to
             testRoom = roomManager.createRoom(roomName, 50, 50, 20, 20);
-             // Spy on the room's addLocation method to check if it's called
-            jest.spyOn(testRoom, 'addLocation');
-        });
-
-        afterEach(() => {
-            // Restore the original method after the test
-             jest.restoreAllMocks();
         });
 
         test('should create a new location and add it to the specified room', () => {
             const locName = 'Desk';
-            const x = 55;
-            const y = 55;
+            const locPosition = Position.create(1, 2);
+            const location = roomManager.createLocation(locName, locPosition, roomName);
 
-            const location = roomManager.createLocation(locName, x, y, roomName);
-
-            // Check if the returned object is a Location instance
             expect(location).toBeInstanceOf(Location);
-            expect(location.name).toBe(locName);
-            expect(location.x).toBe(x);
-            expect(location.y).toBe(y);
-            expect(location.roomName).toBe(roomName);
+            expect(location.getName()).toBe(locName);
+            expect(location.getPosition()).toBe(locPosition);
 
             // Check if the location was added to the room
-            expect(testRoom.addLocation).toHaveBeenCalledTimes(1);
-            expect(testRoom.addLocation).toHaveBeenCalledWith(location);
-            // Optionally, check the room's internal locations array if accessible
-            // expect(testRoom.locations.get(locName)).toBe(location);
+            expect(testRoom.hasLocation(locName)).toBe(true);
         });
 
-        test('should create a location even if the room does not exist', () => {
-            const locName = 'Phantom Chair';
-            const x = 100;
-            const y = 100;
+        test('should throw error if the room does not exist', () => {
+            const locName = 'Chair';
+            const locPosition = Position.create(3, 4);
             const nonExistentRoomName = 'Basement';
+            expect(() => roomManager.createLocation(locName, locPosition, nonExistentRoomName)).toThrowError();
+        });
 
-            const location = roomManager.createLocation(locName, x, y, nonExistentRoomName);
-
-            // Check location properties
-            expect(location).toBeInstanceOf(Location);
-            expect(location.name).toBe(locName);
-            expect(location.x).toBe(x);
-            expect(location.y).toBe(y);
-            expect(location.roomName).toBe(nonExistentRoomName);
-
-            // Ensure addLocation was not called on the existing testRoom
-            expect(testRoom.addLocation).not.toHaveBeenCalled();
+        test('should throw error if the location already exists in the room', () => {
+            const locName = 'Desk';
+            const locPosition = Position.create(1, 2);
+            roomManager.createLocation(locName, locPosition, roomName); // Create the location first
+            expect(() => roomManager.createLocation(locName, locPosition, roomName)).toThrowError();        
         });
     });
+
 
     describe('findShortestPath', () => {
         beforeEach(() => {

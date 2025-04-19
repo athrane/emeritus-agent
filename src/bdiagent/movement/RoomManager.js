@@ -35,6 +35,18 @@ export class RoomManager {
         TypeUtils.ensureNumber(y);
         TypeUtils.ensureNumber(width);
         TypeUtils.ensureNumber(height);
+
+        // Check if room already exists
+        if (this.rooms.has(name)) {
+            throw new Error(`Room ${name} already exists`);
+        }
+
+        // Check if room dimensions are valid
+        if (width <= 0 || height <= 0) {
+            throw new Error(`Room dimensions must be positive`);
+        }
+
+        // create room
         const position = Position.create(x, y);
         const size = Position.create(width, height);
         const room = Room.create(name, position, size);
@@ -50,6 +62,13 @@ export class RoomManager {
      */
     getRoom(name) {
         TypeUtils.ensureString(name);
+
+        // throw error if room doesn't exists
+        if (!this.rooms.has(name)) {
+            throw new Error(`Room ${name} not found`);
+        }
+
+        // return room
         return this.rooms.get(name);
     }
 
@@ -65,22 +84,21 @@ export class RoomManager {
         TypeUtils.ensureString(name);
         TypeUtils.ensureInstanceOf(position, Position);
         TypeUtils.ensureString(roomName);
-        const location = Location.create(name, position);
 
         // throw error if room not found
-        const aRoom = this.getRoom(roomName);
-        if (!aRoom) {
+        const room = this.getRoom(roomName);
+        if (!room) {
             throw new Error(`Room ${roomName} not found`);
         }
 
         // throw error if location already exists
-        if (aRoom.hasLocation(name)) {
+        if (room.hasLocation(name)) {
             throw new Error(`Location ${name} already exists in room ${roomName}`);
         }
-        
-        // add location to room        
-        aRoom.addLocation(location);
 
+        // add location to room        
+        const location = Location.create(name, position);
+        room.addLocation(location);
         return location;
     }
 
