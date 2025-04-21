@@ -2,24 +2,24 @@ import { AgentFactory } from "../../src/internal.js";
 import { IntegerPercentageBelief } from "../../src/internal.js";
 import { DesireFactory } from "../../src/internal.js";
 import { IntentionFactory } from "../../src/internal.js";
-import { RoomManager } from "../../src/internal.js";
+import { Scene } from "../../src/internal.js";
 
 describe('AgentFactory', () => {
-    let roomManager;
+    let scene;
 
     beforeEach(() => {
-        roomManager = new RoomManager(); 
+        scene = new Scene(); 
     });
 
     it('should create null agent', () => {
-        const agent = AgentFactory.createNullAgent(roomManager);
+        const agent = AgentFactory.createNullAgent(scene);
 
         expect(agent).toBeDefined();
         expect(agent.name).toBe("NULL Agent");
     });
 
     it('should create agent with correct beliefs', () => {
-        const oldMan = AgentFactory.createOldManAgent(roomManager);
+        const oldMan = AgentFactory.createOldManAgent(scene);
 
         expect(oldMan).toBeDefined();
         expect(oldMan.name).toBe("Acticus");
@@ -38,7 +38,7 @@ describe('AgentFactory', () => {
     });
 
     it('should create an old man agent with correct desires', () => {
-        const oldMan = AgentFactory.createOldManAgent(roomManager);
+        const oldMan = AgentFactory.createOldManAgent(scene);
 
         expect(oldMan).toBeDefined();
 
@@ -52,7 +52,7 @@ describe('AgentFactory', () => {
     });
 
     it('should create an old man agent with correct intentions', () => {
-        const oldMan = AgentFactory.createOldManAgent(roomManager);
+        const oldMan = AgentFactory.createOldManAgent(scene);
 
         expect(oldMan).toBeDefined();
 

@@ -3,16 +3,16 @@ import { BeliefUpdater } from "../../../src/internal.js";
 import { BeliefManager } from "../../../src/internal.js";
 import { Agent } from "../../../src/internal.js";
 import { AgentFactory } from "../../../src/internal.js";
-import { RoomManager } from "../../../src/internal.js";
+import { Scene } from "../../../src/internal.js";
 
 describe('BeliefManager', () => {
-    let roomManager;   
+    let scene;   
     let beliefManager;
     let agent;
 
     beforeEach(() => {
-        roomManager = new RoomManager(); 
-        agent = AgentFactory.createNullAgent(roomManager);
+        scene = new Scene(); 
+        agent = AgentFactory.createNullAgent(scene);
         beliefManager = new BeliefManager();
     });
 

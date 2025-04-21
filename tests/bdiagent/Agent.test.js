@@ -2,17 +2,19 @@ import { Agent } from "../../src/internal.js";
 import { Belief } from "../../src/internal.js";
 import { IntentionManager } from "../../src/internal.js";
 import { Location } from "../../src/internal.js";
-import { RoomManager } from "../../src/internal.js";
+import { Scene } from "../../src/internal.js";
+import { Position } from "../../src/internal.js";
 
 describe('Agent', () => {
-    let roomManager;   
+    let scene;   
     let initialLocation;
     let agent;
 
     beforeEach(() => {
-        roomManager = new RoomManager();
-        initialLocation = new Location("L1", 0, 0);
-        agent = new Agent('TestAgent', initialLocation, 5, roomManager);
+        scene = new Scene();
+        const position = Position.create(0, 0);
+        initialLocation = Location.create("L1", position);
+        agent = new Agent('TestAgent', initialLocation, 5, scene);
     });
 
     describe('run', () => {

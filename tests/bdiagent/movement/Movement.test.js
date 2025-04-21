@@ -1,7 +1,7 @@
 import { Location } from "../../../src/internal.js";
 import { Position } from "../../../src/internal.js";
 import { Movement } from "../../../src/internal.js";
-import { RoomManager } from "../../../src/internal.js";
+import { Scene } from "../../../src/internal.js";
 
 
 describe('Movement', () => {

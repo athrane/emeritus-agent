@@ -30,7 +30,7 @@ export class AgentFactory {
      * @param {Scene} scene The scene where the agent resides.
      * @returns {Agent} The created agent.
      */    
-    static createOldManAgent(roomManager) {
+    static createOldManAgent(scene) {
 
         // Create the agent
         const initialLocation = LocationFactory.createBedroom();

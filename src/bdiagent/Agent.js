@@ -26,7 +26,7 @@ export class Agent {
      * @param {Scene} scene The scene where the agent resides.
      * @throws {Error} If the provided name is not a string.
      */
-  constructor(name, initialLocation, movementSpeed, roomManager) {
+  constructor(name, initialLocation, movementSpeed, scene) {
     TypeUtils.ensureString(name);
     TypeUtils.ensureInstanceOf(initialLocation, Location);
     TypeUtils.ensureNumber(movementSpeed);
@@ -34,7 +34,7 @@ export class Agent {
     this.name = name;
     this.intentions = [];
     this.currentIntention = Agent.NULL_INTENTION;
-    this.movement = new Movement(initialLocation, movementSpeed, roomManager); 
+    this.movement = new Movement(initialLocation, movementSpeed, scene); 
     this.beliefManager = new BeliefManager();    
     this.desireManager = new DesireManager();
     this.intentionManager = new IntentionManager();
