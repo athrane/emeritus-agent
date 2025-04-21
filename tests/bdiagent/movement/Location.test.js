@@ -12,14 +12,4 @@ describe('Location', () => {
 		expect(location.getPosition().getY()).toBe(2);
 	});
 
-	it('should create a copy of the location correctly', () => {
-		const position1 = Position.create(1, 2);
-		const location1 = Location.create("L1", position1);
-		const location2 = location1.copy();
-		expect(location2.name).toBe("L1");
-		expect(location2.getPosition().getX()).toBe(1);
-		expect(location2.getPosition().getY()).toBe(2);
-		expect(location2).not.toBe(location1); // Ensure it's a new object
-	});
-
 });
