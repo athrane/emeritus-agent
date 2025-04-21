@@ -36,6 +36,15 @@ export class Intention {
     }
 
     /**
+     * Returns the location associated with the intention.
+     * 
+     * @returns {Location} The location of the intention.
+     */  
+    getLocation() {
+        return this.location;
+    }
+
+    /**
      * Return if plan of action can be executed.
      * 
      * @returns {string} True if intention can be executed, false otherwise.
@@ -43,17 +52,6 @@ export class Intention {
     canExecute(agent) {
         TypeUtils.ensureInstanceOf(agent, Agent);
         return this.preconditions(agent);
-    }
-
-    /**
-     * Checks if the given location is within a reasonable range of the intention's location.
-     * 
-     * @param {Location} location The location to check.
-     * @returns {boolean} True if the location is within a reasonable range, false otherwise.
-     */
-    isWithinReasonbleRange(location) {
-        TypeUtils.ensureInstanceOf(location, Location);
-        return this.location.distanceTo(location) <= Intention.EXECUTION_RANGE;
     }
 
     /**

@@ -91,6 +91,56 @@ describe('Position', () => {
         });
     });
 
+    describe('set', () => {
+        test('should set the coordinates correctly', () => {
+            const pos = Position.create(0, 0);
+            const newPos = pos.set(100,200);
+            expect(newPos.getX()).toBe(100);
+            expect(newPos.getY()).toBe(200);
+        });
+
+        test('should get new position object setting x and y', () => {
+            const pos = Position.create(1, 2);
+            const newPos = pos.set(5, 10);
+            expect(newPos).not.toBe(pos); 
+        });
+
+        test('should throw error if x is not a number (assuming TypeUtils throws)', () => {
+            const pos = Position.create(0, 0);
+            expect(() => pos.set("not-a-number", 5)).toThrow(TypeError);
+        });
+
+        test('should throw error if y is not a number (assuming TypeUtils throws)', () => {
+            const pos = Position.create(0, 0);
+            expect(() => pos.set(5, "not-a-number")).toThrow(TypeError);
+        });
+        
+    });
+
+    describe('set2', () => {
+        test('should set the coordinates correctly', () => {
+            const pos = Position.create(0, 0);
+            const pos2 = Position.create(100, 200);
+            const newPos = pos.set2(pos2);
+            expect(newPos.getX()).toBe(100);
+            expect(newPos.getY()).toBe(200);
+        });
+
+        test('should get new position object setting x and y', () => {
+            const pos = Position.create(0, 0);
+            const pos2 = Position.create(100, 200);
+            const newPos = pos.set2(pos2);
+            expect(newPos).not.toBe(pos); 
+        });
+
+        test('should throw error if x is not a number (assuming TypeUtils throws)', () => {
+            const pos = Position.create(0, 0);
+            expect(() => pos.set2("not-a-number")).toThrow(TypeError);
+        });
+
+    });
+
+
     describe('copy', () => {
         test('should create a new Position instance with the same coordinates', () => {
             const originalPos = Position.create(15, 25);
@@ -124,9 +174,20 @@ describe('Position', () => {
             pos1 = Position.create(3, 4);
         });
 
+        test('should calculate the distance to another location correctly, only x dimension', () => {
+            const pos2 = Position.create(0, 0);
+            const pos3 = Position.create(7, 0);
+            expect(pos2.distanceTo(pos3)).toBe(7);
+        });            
+
+        test('should calculate the distance to another location correctly, only y dimension', () => {
+            const pos2 = Position.create(0, 0);
+            const pos3 = Position.create(0, 32);
+            expect(pos2.distanceTo(pos3)).toBe(32);
+        });            
+
         test('should calculate the correct Euclidean distance to another position', () => {
             const pos2 = Position.create(0, 0);
-            // Distance = sqrt((3-0)^2 + (4-0)^2) = sqrt(9 + 16) = sqrt(25) = 5
             expect(pos1.distanceTo(pos2)).toBeCloseTo(5);
         });
 
@@ -138,20 +199,17 @@ describe('Position', () => {
          test('should calculate the correct distance with negative coordinates', () => {
             const posNeg = Position.create(-3, -4);
             const origin = Position.create(0, 0);
-             // Distance = sqrt((-3-0)^2 + (-4-0)^2) = sqrt(9 + 16) = sqrt(25) = 5
             expect(posNeg.distanceTo(origin)).toBeCloseTo(5);
          });
 
         test('should calculate the correct distance between two non-origin points', () => {
             const posA = Position.create(1, 2);
             const posB = Position.create(4, 6);
-            // Distance = sqrt((4-1)^2 + (6-2)^2) = sqrt(3^2 + 4^2) = sqrt(9 + 16) = sqrt(25) = 5
             expect(posA.distanceTo(posB)).toBeCloseTo(5);
         });
 
-        // Add tests for TypeUtils ensuring correct types if needed
-        test('should throw error if otherPosition is not a Position instance (assuming TypeUtils throws)', () => {
-             expect(() => pos1.distanceTo({ x: 0, y: 0 })).toThrow(TypeError);
+        test('should throw error if otherPosition is not a Position instance', () => {
+             expect(() => pos1.distanceTo("not-a-number")).toThrow(TypeError);
         });
     });
 });

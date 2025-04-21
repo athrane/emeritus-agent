@@ -28,7 +28,7 @@ export class Movement {
         TypeUtils.ensureNumber(speed);
         TypeUtils.ensureInstanceOf(scene, Scene);
         this.speed = speed;
-        this.location = initialLocation;
+        this.position = initialLocation.getPosition();
         this.destination = Movement.NULL_LOCATION;
         this.isAgentMoving = false;
         this.scene = scene;
@@ -40,7 +40,16 @@ export class Movement {
      * @returns {Location} The current location.
      */
     getLocation() {
-        return this.location;
+        return Location.create("Current Location", this.position);        
+    }
+
+    /**
+     * Gets the current position of the agent.
+     * 
+     * @returns {Position} The current position.
+     */
+    getPosition() {
+        return this.position;
     }
 
     /**
@@ -73,6 +82,18 @@ export class Movement {
         this.isAgentMoving = true;
     }
 
+    /**
+     * Checks if the given location is within a reasonable range of the agent's position.
+     * 
+     * @param {Location} location The location to check.
+     * @returns {boolean} True if the location is within a reasonable range, false otherwise.
+     */
+    isWithinReasonbleRange(location) {
+        TypeUtils.ensureInstanceOf(location, Location);
+        const locPosition = location.getPosition();
+        return this.position.distanceTo(locPosition) <= Intention.EXECUTION_RANGE;
+    }
+
     /** 
      * Updates the agent's position based on its speed and destination.
      *
@@ -91,24 +112,22 @@ export class Movement {
         }
 
         // Calculate the distance to the destination
-        const dx = this.destination.x - this.location.x;
-        const dy = this.destination.y - this.location.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+        const dist = this.position.distanceTo(this.destination.getPosition());
 
         // handle case where the agent is already at the destination
         if (dist <= this.speed) {
-            this.location.x = this.destination.x;
-            this.location.y = this.destination.y;
+            this.position = this.position.set2(this.destination.getPosition());
             this.isAgentMoving = false;
             this.destination = Movement.NULL_LOCATION;
             return true; 
         }
 
         // Still moving
+        const dx = this.destination.getPosition().getX() - this.position.getX();
+        const dy = this.destination.getPosition().getY() - this.position.getY();        
         const angle = Math.atan2(dy, dx);
-        this.location.x += this.speed * Math.cos(angle);
-        this.location.y += this.speed * Math.sin(angle);
-        return false; 
-
+        const x = this.position.getX() + this.speed * Math.cos(angle);
+        const y = this.position.getY() + this.speed * Math.sin(angle);
+        this.position = this.position.set(x, y);
     }
 }

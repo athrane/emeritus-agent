@@ -54,8 +54,8 @@ export class Position {
     distanceTo(otherPosition) {
         TypeUtils.ensureInstanceOf(otherPosition, Position);
         return Math.sqrt(
-            Math.pow(this.x - otherPosition.x, 2) +
-            Math.pow(this.y - otherPosition.y, 2)
+            Math.pow(this.x - otherPosition.getX(), 2) +
+            Math.pow(this.y - otherPosition.getY(), 2)
         );
     }
 
@@ -72,6 +72,16 @@ export class Position {
         this.x = x;
         this.y = y;
         return new Position(x, y);
+    }
+
+    /**
+     * Sets the position to a new Position object.
+     * @param {Position} position The new position.
+     * @returns {Position} A new Position object with the updated coordinates.
+     */
+    set2(position) {
+        TypeUtils.ensureInstanceOf(position, Position);
+        return new Position(position.getX(), position.getY());
     }
 
     /**

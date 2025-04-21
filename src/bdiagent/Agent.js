@@ -144,10 +144,10 @@ export class Agent {
 
      // if not within reasonable range of the intention's location, move towards it
      const currentIntention = this.getCurrentIntention();
-     if (!currentIntention.isWithinReasonbleRange(this.getCurrentLocation())) {
+     if(!this.movement.isWithinReasonbleRange(currentIntention.getLocation())) {
       this.movement.moveTo(currentIntention.location);
       return;
-     } 
+     }
     
     // execute intention  
     this.intentionManager.executeCurrentIntention(this); 

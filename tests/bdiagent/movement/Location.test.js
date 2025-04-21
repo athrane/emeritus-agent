@@ -12,30 +12,6 @@ describe('Location', () => {
 		expect(location.getPosition().getY()).toBe(2);
 	});
 
-	it('should calculate the distance to another location correctly, only x dimension', () => {
-		const position1 = Position.create(0, 0);
-		const position2 = Position.create(7, 0);
-		const location1 = Location.create("L1", position1);
-		const location2 = Location.create("L2", position2);
-		expect(location1.distanceTo(location2)).toBe(7);
-	});
-
-	it('should calculate the distance to another location correctly, only y dimension', () => {
-		const position1 = Position.create(0, 0);
-		const position2 = Position.create(0, 32);
-		const location1 = Location.create("L1", position1);
-		const location2 = Location.create("L2", position2);
-		expect(location1.distanceTo(location2)).toBe(32);
-	});
-
-	it('should calculate the distance to another location correctly', () => {
-		const position1 = Position.create(0, 0);
-		const position2 = Position.create(3, 4);
-		const location1 = Location.create("L1", position1);
-		const location2 = Location.create("L2", position2);
-		expect(location1.distanceTo(location2)).toBe(5);
-	});
-
 	it('should create a copy of the location correctly', () => {
 		const position1 = Position.create(1, 2);
 		const location1 = Location.create("L1", position1);
@@ -46,9 +22,4 @@ describe('Location', () => {
 		expect(location2).not.toBe(location1); // Ensure it's a new object
 	});
 
-	it('should throw an error if distanceTo is called with a non-Location object', () => {
-		const position1 = Position.create(0, 0);
-		const location1 = Location.create("L1", position1);
-		expect(() => location1.distanceTo({ x: 3, y: 4 })).toThrowError();
-	});
 });
