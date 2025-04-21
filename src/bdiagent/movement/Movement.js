@@ -28,7 +28,7 @@ export class Movement {
         TypeUtils.ensureNumber(speed);
         TypeUtils.ensureInstanceOf(roomManager, RoomManager);
         this.speed = speed;
-        this.location = initialLocation.copy();
+        this.location = initialLocation;
         this.destination = Movement.NULL_LOCATION;
         this.isAgentMoving = false;
         this.roomManager = roomManager;

@@ -1,44 +1,49 @@
 import { Location } from "../../../src/internal.js";
-import { Movement, RoomManager } from "../../../src/internal.js";
+import { Position } from "../../../src/internal.js";
+import { Movement } from "../../../src/internal.js";
+import { RoomManager } from "../../../src/internal.js";
 
-// filepath: src/bdiagent/movement/Movement.test.js
 
 describe('Movement', () => {
     let initialLocation;
+    let initialPosition
     let movement;
-    let roomManager;
+    let scene;
 
     beforeEach(() => {
-        roomManager = new RoomManager(); 
-        initialLocation = new Location("Start", 0, 0);
-        movement = new Movement(initialLocation, 5, roomManager);
+        scene = new Scene(); 
+        initialPosition = Position.create(0, 0);
+        initialLocation = Location.create("Start", initialPosition);
+        movement = new Movement(initialLocation, 5, scene);
     });
 
     it('should be able to create movement instance', () => {
-        expect(movement).toBe
+        expect(movement).toBeInstanceOf(Movement);
     });
 
     it('should initialize with the correct location and speed', () => {
         expect(movement.getLocation().name).toBe("Start");
-        expect(movement.getLocation().x).toBe(0);
-        expect(movement.getLocation().y).toBe(0);
+        expect(movement.getLocation().getPosition().getX()).toBe(0);
+        expect(movement.getLocation().getPosition().getY()).toBe(0)
         expect(movement.speed).toBe(5);
         expect(movement.isMoving()).toBe(false);
         expect(movement.getDestination()).toBe(Movement.NULL_LOCATION);
     });
 
     it('should set a destination and start moving', () => {
-        const destination = new Location("D1", 10, 10);
+        const destPosition = Position.create(10, 10);
+        const destination = Location.create("D1", destPosition);
         movement.moveTo(destination);
         expect(movement.getDestination()).toBe(destination);
         expect(movement.isMoving()).toBe(true);
     });
 
     it('should update the location when moving', () => {
-        const destination = new Location("D1", 10, 0);
+        const destPosition = Position.create(10, 10);
+        const destination = Location.create("D1", destPosition);
         movement.moveTo(destination);
         movement.update();
-        expect(movement.getLocation().x).toBeGreaterThan(0);
+        expect(movement.getLocation().getx).toBeGreaterThan(0);
         expect(movement.getLocation().y).toBe(0);
         expect(movement.isMoving()).toBe(true);
     });

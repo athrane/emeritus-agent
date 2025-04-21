@@ -9,7 +9,7 @@ import { Location } from '../internal.js';
 import { BeliefManager } from '../internal.js';
 import { DesireManager } from '../internal.js';
 import { IntentionManager } from '../internal.js';
-import { RoomManager } from '../internal.js';
+import { Scene } from '../internal.js';
 
 /**
  * Represents an agent in the simulation.
@@ -23,14 +23,14 @@ export class Agent {
      * @param {string} name The name of the agent.
      * @param {Location} initialLocation The initial location of the agent.
      * @param {number} movementSpeed The speed of the agent's movement.
-     * @param {RoomManager} roomManager The room manager for the agent.
+     * @param {Scene} scene The scene where the agent resides.
      * @throws {Error} If the provided name is not a string.
      */
   constructor(name, initialLocation, movementSpeed, roomManager) {
     TypeUtils.ensureString(name);
     TypeUtils.ensureInstanceOf(initialLocation, Location);
     TypeUtils.ensureNumber(movementSpeed);
-    TypeUtils.ensureInstanceOf(roomManager, RoomManager);
+    TypeUtils.ensureInstanceOf(scene, Scene);
     this.name = name;
     this.intentions = [];
     this.currentIntention = Agent.NULL_INTENTION;
@@ -38,6 +38,7 @@ export class Agent {
     this.beliefManager = new BeliefManager();    
     this.desireManager = new DesireManager();
     this.intentionManager = new IntentionManager();
+    this.scene = scene;
   }
 
   /**

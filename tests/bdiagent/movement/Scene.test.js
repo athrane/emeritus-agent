@@ -1,18 +1,18 @@
 import { Room } from "../../../src/internal.js";
 import { Location } from "../../../src/internal.js";
-import { RoomManager } from "../../../src/internal.js";
+import { Scene } from "../../../src/internal.js";
 import { Position } from "../../../src/internal.js";
 
-describe('RoomManager', () => {
-    let roomManager;
+describe('Scene', () => {
+    let scene;
 
     beforeEach(() => {
-        roomManager = new RoomManager();
+        scene = new Scene();
     });
 
     test('constructor initializes an empty map for rooms', () => {
-        expect(roomManager.rooms).toBeInstanceOf(Map);
-        expect(roomManager.rooms.size).toBe(0);
+        expect(scene.rooms).toBeInstanceOf(Map);
+        expect(scene.rooms.size).toBe(0);
     });
 
     describe('createRoom', () => {
@@ -22,7 +22,7 @@ describe('RoomManager', () => {
             const y = 0;
             const width = 10;
             const height = 10;
-            const room = roomManager.createRoom(roomName, x, y, width, height);
+            const room = scene.createRoom(roomName, x, y, width, height);
 
             expect(room).toBeInstanceOf(Room);
             expect(room.name).toBe(roomName);
@@ -32,29 +32,29 @@ describe('RoomManager', () => {
             expect(room.getSize().getY()).toBe(height);
 
             // Check if the room was added to the internal map
-            expect(roomManager.rooms.size).toBe(1);
-            expect(roomManager.rooms.get(roomName)).toBe(room);
+            expect(scene.rooms.size).toBe(1);
+            expect(scene.rooms.get(roomName)).toBe(room);
         });
 
         test('should throw error if room is created with the same name', () => {
             const roomName = 'Kitchen';
-            roomManager.createRoom(roomName, 0, 0, 5, 5); 
-            expect(() => roomManager.createRoom(roomName, 1, 2, 3, 4)).toThrowError();
+            scene.createRoom(roomName, 0, 0, 5, 5); 
+            expect(() => scene.createRoom(roomName, 1, 2, 3, 4)).toThrowError();
         });
 
         test('should throw error if room is created with non-string name', () => {
-            expect(() => roomManager.createRoom(123, 0, 0, 3, 4)).toThrowError();
+            expect(() => scene.createRoom(123, 0, 0, 3, 4)).toThrowError();
         });
     });
 
     describe('getRoom', () => {
         beforeEach(() => {
-            roomManager.createRoom('Bedroom', 20, 20, 15, 15);
+            scene.createRoom('Bedroom', 20, 20, 15, 15);
         });
 
         test('should return the correct room if it exists', () => {
             const roomName = 'Bedroom';
-            const room = roomManager.getRoom(roomName);
+            const room = scene.getRoom(roomName);
 
             expect(room).toBeInstanceOf(Room);
             expect(room.name).toBe(roomName);
@@ -62,11 +62,11 @@ describe('RoomManager', () => {
 
         test('should throw error if the room does not exist', () => {
             const roomName = 'NonExistentRoom';
-            expect(() => roomManager.getRoom(roomName)).toThrowError();
+            expect(() => scene.getRoom(roomName)).toThrowError();
         });
 
          test('should throw error if name is not a string (assuming TypeUtils throws)', () => {
-            expect(() => roomManager.getRoom(123)).toThrowError();
+            expect(() => scene.getRoom(123)).toThrowError();
          });
     });
 
@@ -75,13 +75,13 @@ describe('RoomManager', () => {
         let testRoom;
 
         beforeEach(() => {
-            testRoom = roomManager.createRoom(roomName, 50, 50, 20, 20);
+            testRoom = scene.createRoom(roomName, 50, 50, 20, 20);
         });
 
         test('should create a new location and add it to the specified room', () => {
             const locName = 'Desk';
             const locPosition = Position.create(1, 2);
-            const location = roomManager.createLocation(locName, locPosition, roomName);
+            const location = scene.createLocation(locName, locPosition, roomName);
 
             expect(location).toBeInstanceOf(Location);
             expect(location.getName()).toBe(locName);
@@ -95,14 +95,14 @@ describe('RoomManager', () => {
             const locName = 'Chair';
             const locPosition = Position.create(3, 4);
             const nonExistentRoomName = 'Basement';
-            expect(() => roomManager.createLocation(locName, locPosition, nonExistentRoomName)).toThrowError();
+            expect(() => scene.createLocation(locName, locPosition, nonExistentRoomName)).toThrowError();
         });
 
         test('should throw error if the location already exists in the room', () => {
             const locName = 'Desk';
             const locPosition = Position.create(1, 2);
-            roomManager.createLocation(locName, locPosition, roomName); // Create the location first
-            expect(() => roomManager.createLocation(locName, locPosition, roomName)).toThrowError();        
+            scene.createLocation(locName, locPosition, roomName); // Create the location first
+            expect(() => scene.createLocation(locName, locPosition, roomName)).toThrowError();        
         });
     });
 
@@ -110,15 +110,15 @@ describe('RoomManager', () => {
     describe('findShortestPath', () => {
         beforeEach(() => {
             // Create some rooms for pathfinding tests
-            roomManager.createRoom('Hallway', 0, 0, 5, 20);
-            roomManager.createRoom('Living Room', 5, 5, 10, 10);
-            roomManager.createRoom('Kitchen', 5, 15, 10, 10);
+            scene.createRoom('Hallway', 0, 0, 5, 20);
+            scene.createRoom('Living Room', 5, 5, 10, 10);
+            scene.createRoom('Kitchen', 5, 15, 10, 10);
         });
 
         test('should return the start and end room names (placeholder behavior)', () => {
             const startRoom = 'Living Room';
             const endRoom = 'Kitchen';
-            const path = roomManager.findShortestPath(startRoom, endRoom);
+            const path = scene.findShortestPath(startRoom, endRoom);
 
             expect(path).toEqual([startRoom, endRoom]);
         });
@@ -126,7 +126,7 @@ describe('RoomManager', () => {
         test('should return the same room name twice if start and end are the same (placeholder behavior)', () => {
             const startRoom = 'Hallway';
             const endRoom = 'Hallway';
-            const path = roomManager.findShortestPath(startRoom, endRoom);
+            const path = scene.findShortestPath(startRoom, endRoom);
 
             expect(path).toEqual([startRoom, endRoom]);
         });

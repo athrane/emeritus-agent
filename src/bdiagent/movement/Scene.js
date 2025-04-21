@@ -4,12 +4,12 @@ import { Room } from '../../internal.js';
 import { Location } from '../../internal.js';
 
 /**
- * Class representing a manager for rooms and locations.
+ * Class representing a scene consisting of rooms and locations.
  * 
  * This class is responsible for creating rooms, adding locations to them,
  * and finding paths between rooms.
  */
-export class RoomManager {
+export class Scene {
 
     /**
      * Constructor for the RoomManager class.
@@ -20,7 +20,7 @@ export class RoomManager {
     }
 
     /**
-     * Creates a new room.
+     * Creates and stores a new room.
      *
      * @param {string} name The name of the room.
      * @param {number} x The x-coordinate of the room. Coordinate defined upper left corner.

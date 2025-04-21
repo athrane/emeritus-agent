@@ -4,7 +4,7 @@ import { IntegerPercentageBeliefUpdater } from '../internal.js';
 import { DesireFactory } from '../internal.js';
 import { IntentionFactory } from '../internal.js';
 import { LocationFactory } from '../internal.js'; 
-import { RoomManager } from '../internal.js'; 
+import { Scene } from '../internal.js'; 
 
 /**
  * Factory class for creating agents.
@@ -16,25 +16,25 @@ export class AgentFactory {
     /**
      * Creates a new null Agent.
      * 
-     * @param {RoomManager} roomManager The room manager to use for the agent.
+     * @param {Scene} scene The scene where the agent resides.
      * @returns {Agent} The created agent.
      */
-    static createNullAgent(roomManager) {
+    static createNullAgent(scene) {
         const initialLocation = LocationFactory.createNullLocation();
-        return new Agent("NULL Agent", initialLocation, AgentFactory.MOVEMENT_SPEED, roomManager)
+        return new Agent("NULL Agent", initialLocation, AgentFactory.MOVEMENT_SPEED, scene)
     }
 
     /**
      * Creates a new old man Agent.
      * 
-     * @param {RoomManager} roomManager The room manager to use for the agent.
+     * @param {Scene} scene The scene where the agent resides.
      * @returns {Agent} The created agent.
      */    
     static createOldManAgent(roomManager) {
 
         // Create the agent
         const initialLocation = LocationFactory.createBedroom();
-        const oldMan = new Agent("Acticus", initialLocation, AgentFactory.MOVEMENT_SPEED, roomManager);
+        const oldMan = new Agent("Acticus", initialLocation, AgentFactory.MOVEMENT_SPEED, scene);
 
         // Add beliefs
         const hungerBelief = new IntegerPercentageBelief("hunger", 0);
