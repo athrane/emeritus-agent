@@ -50,20 +50,6 @@ export class Location {
     }
 
     /**
-     * Calculates the distance to another location.
-     * 
-     * @param {Location} otherLocation The other location to calculate the distance to.
-     * @returns {number} The Euclidean distance to the other location.
-     */
-    distanceTo(otherLocation) {
-        TypeUtils.ensureInstanceOf(otherLocation, Location);
-        return Math.sqrt(
-            Math.pow(this.x - otherLocation.x, 2) +
-            Math.pow(this.y - otherLocation.y, 2)
-        );
-    }
-
-    /**
      * Creates a new Location object from a name and a Position object.
      *
      * @param {string} name The name of the location.
