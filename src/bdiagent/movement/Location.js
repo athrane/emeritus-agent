@@ -41,15 +41,6 @@ export class Location {
     }
 
     /**
-     * Creates a copy of the current location.
-     *
-     * @returns {Location} A new Location object with the same properties as the original.
-     */
-    copy() {
-        return new Location(this.name, this.position);
-    }
-
-    /**
      * Creates a new Location object from a name and a Position object.
      *
      * @param {string} name The name of the location.
