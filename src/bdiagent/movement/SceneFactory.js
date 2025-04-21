@@ -1,26 +1,27 @@
-import { RoomManager } from '../../internal.js';
+
+import { Scene } from '../../internal.js';
 
 /**
- * Factory class for creating Room configurations (RoomManager instances).
+ * Factory class for creating scene configurations.
  */
-export class RoomFactory {
+export class SceneFactory {
 
     /**
      * Create a house with predefined rooms.
      *
-     * @returns {RoomManager} The created agent.
+     * @returns {Scene} The created agent.
      */  
     static createHouse() {
 
         // create room manager
-        const roomManager = new RoomManager();
+        const scene = new Scene();
 
         // create and register rooms
-        const bedroom = roomManager.createRoom("Bedroom",0,0,1,1);
-        const kitchen = roomManager.createRoom("Kitchen",1,0,1,1);
-        const livingRoom = roomManager.createRoom("Living Room",2,0,1,1);
-        const hall = roomManager.createRoom("Hall",3,0,1,1);
-        const garden = roomManager.createRoom("Garden",4,0,1,1);
+        const bedroom = scene.createRoom("Bedroom",0,0,1,1);
+        const kitchen = scene.createRoom("Kitchen",1,0,1,1);
+        const livingRoom = scene.createRoom("Living Room",2,0,1,1);
+        const hall = scene.createRoom("Hall",3,0,1,1);
+        const garden = scene.createRoom("Garden",4,0,1,1);
 
         // connect rooms
         bedroom.addAdjacentRoom(livingRoom.getName());
@@ -31,7 +32,7 @@ export class RoomFactory {
         hall.addAdjacentRoom(kitchen.getName());
         hall.addAdjacentRoom(garden.getName());
 
-        return roomManager
+        return scene
     }        
 
     createOldManLocations() {

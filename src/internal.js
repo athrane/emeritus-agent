@@ -7,7 +7,7 @@ export { Position } from './bdiagent/movement/Position.js';
 export { Location } from './bdiagent/movement/Location.js';
 export { LocationFactory } from './bdiagent/movement/LocationFactory.js';
 export { Room } from './bdiagent/movement/Room.js';
-export { RoomFactory } from './bdiagent/movement/RoomFactory.js';
+export { SceneFactory } from './bdiagent/movement/SceneFactory.js';
 export { Movement } from './bdiagent/movement/Movement.js';
 export { Scene } from './bdiagent/movement/Scene.js';
 
