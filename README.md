@@ -162,3 +162,5 @@ This project includes the following classes, grouped by their respective directo
 - **`LocationFactory`**: A factory class for creating `Location` instances.
 - **`Movement`**: Manages the movement of an agent within the simulation.
 - **`Room`**: Represents a room in the simulation, containing locations and adjacent rooms.
+- **`Scene`**: Represents the scene for an agent within the simulation. A scene consists of a set of rooms.
+- **`SceneFactory`**: A factory for creation of scenes.
