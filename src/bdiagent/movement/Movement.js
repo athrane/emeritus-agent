@@ -4,6 +4,7 @@ import { LocationFactory } from "../../internal.js";
 import { Scene } from "../../internal.js";
 import { Path } from "../../internal.js";
 import { Position } from "../../internal.js";
+import { Intention } from "../../internal.js";
 
 /**
  * Represents a movement system for an agent.
