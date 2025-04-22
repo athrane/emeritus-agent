@@ -1,5 +1,6 @@
 import { TypeUtils } from "../../internal.js";
 import { Desire } from "../../internal.js";
+import { Agent } from "../../internal.js";
 
 /**
  * DesireManager class
@@ -33,10 +34,13 @@ export class DesireManager {
 
     /**
        * Determines the agent's current intention based on its desires and intentions.
+       * @param {Agent} agent - The agent to check the desire against.
        */
-    update() {
+    update(agent) {
+        TypeUtils.ensureInstanceOf(agent, Agent);
+
         // get desires 
-        const activeDesires = this.desires.filter(desire => desire.isSatisfied(this));
+        const activeDesires = this.desires.filter(desire => desire.isSatisfied(agent));
 
         // exit if no active desires
         if (activeDesires.length === 0) {

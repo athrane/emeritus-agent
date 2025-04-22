@@ -2,7 +2,6 @@ import { Belief } from '../internal.js';
 import { BeliefUpdater } from '../internal.js';
 import { Desire } from '../internal.js';
 import { Intention } from '../internal.js';
-import { IntentionFactory } from '../internal.js';
 import { TypeUtils } from '../internal.js';
 import { Movement } from '../internal.js';
 import { Location } from '../internal.js';
@@ -138,7 +137,7 @@ export class Agent {
    */
   run() {
     this.beliefManager.update(this); 
-    this.desireManager.update(); 
+    this.desireManager.update(this); 
     this.movement.update(); 
 
     // if moving the exit 
