@@ -2,6 +2,8 @@ import { Room } from "../../../src/internal.js";
 import { Location } from "../../../src/internal.js";
 import { Scene } from "../../../src/internal.js";
 import { Position } from "../../../src/internal.js";
+import { Path } from "../../../src/internal.js";
+
 
 describe('Scene', () => {
     let scene;
@@ -38,7 +40,7 @@ describe('Scene', () => {
 
         test('should throw error if room is created with the same name', () => {
             const roomName = 'Kitchen';
-            scene.createRoom(roomName, 0, 0, 5, 5); 
+            scene.createRoom(roomName, 0, 0, 5, 5);
             expect(() => scene.createRoom(roomName, 1, 2, 3, 4)).toThrowError();
         });
 
@@ -65,9 +67,9 @@ describe('Scene', () => {
             expect(() => scene.getRoom(roomName)).toThrowError();
         });
 
-         test('should throw error if name is not a string (assuming TypeUtils throws)', () => {
+        test('should throw error if name is not a string (assuming TypeUtils throws)', () => {
             expect(() => scene.getRoom(123)).toThrowError();
-         });
+        });
     });
 
     describe('createLocation', () => {
@@ -102,36 +104,80 @@ describe('Scene', () => {
             const locName = 'Desk';
             const locPosition = Position.create(1, 2);
             scene.createLocation(locName, locPosition, roomName); // Create the location first
-            expect(() => scene.createLocation(locName, locPosition, roomName)).toThrowError();        
+            expect(() => scene.createLocation(locName, locPosition, roomName)).toThrowError();
         });
     });
 
 
     describe('findShortestPath', () => {
+        let hallway, livingRoom, kitchen, office; // Define rooms
+        let locHallway, locLivingRoom, locKitchen, locOffice; // Define locations
+
         beforeEach(() => {
+
+            scene = new Scene(); // Recreate scene for each test
+            // Create rooms
+            hallway = scene.createRoom('Hallway', 0, 0, 5, 20);
+            livingRoom = scene.createRoom('Living Room', 5, 5, 10, 10);
+            kitchen = scene.createRoom('Kitchen', 5, 15, 10, 10);
+            office = scene.createRoom('Office', 20, 0, 10, 10); // Unconnected room
+
+            // Create locations within rooms (adjust positions as needed)
+            locHallway = scene.createLocation("Hallway Entrance", Position.create(2, 2), hallway.getName());
+            locLivingRoom = scene.createLocation("Sofa", Position.create(7, 7), livingRoom.getName());
+            locKitchen = scene.createLocation("Stove", Position.create(7, 17), kitchen.getName());
+            locOffice = scene.createLocation("Desk", Position.create(22, 5), office.getName());
+
+            // Define adjacency (important for pathfinding)
+            hallway.addAdjacentRoom(livingRoom.getName());
+            livingRoom.addAdjacentRoom(hallway.getName());
+            livingRoom.addAdjacentRoom(kitchen.getName());
+            kitchen.addAdjacentRoom(livingRoom.getName());
+            // Office is not connected
+
             // Create some rooms for pathfinding tests
-            scene.createRoom('Hallway', 0, 0, 5, 20);
-            scene.createRoom('Living Room', 5, 5, 10, 10);
-            scene.createRoom('Kitchen', 5, 15, 10, 10);
+            //scene.createRoom('Hallway', 0, 0, 5, 20);
+            //scene.createRoom('Living Room', 5, 5, 10, 10);
+            //scene.createRoom('Kitchen', 5, 15, 10, 10);
         });
 
-        test('should return the start and end room names (placeholder behavior)', () => {
-            const startRoom = 'Living Room';
-            const endRoom = 'Kitchen';
-            const path = scene.findShortestPath(startRoom, endRoom);
-
-            expect(path).toEqual([startRoom, endRoom]);
+        test('should return a Path object', () => {
+            const path = scene.findShortestPath(locLivingRoom, locKitchen);
+            expect(path).toBeInstanceOf(Path);
         });
 
-        test('should return the same room name twice if start and end are the same (placeholder behavior)', () => {
-            const startRoom = 'Hallway';
-            const endRoom = 'Hallway';
-            const path = scene.findShortestPath(startRoom, endRoom);
-
-            expect(path).toEqual([startRoom, endRoom]);
+        test('should find a direct path between adjacent rooms', () => {
+            const path = scene.findShortestPath(locLivingRoom, locKitchen);
+            expect(path.getRoomNames()).toEqual(['Living Room', 'Kitchen']);
         });
 
-        // Add more tests here once the actual pathfinding algorithm (BFS/A*) is implemented
-        // e.g., test actual paths, paths through multiple rooms, non-existent rooms, etc.
+        test('should find a path through an intermediate room', () => {
+            const path = scene.findShortestPath(locHallway, locKitchen);
+            expect(path.getRoomNames()).toEqual(['Hallway', 'Living Room', 'Kitchen']);
+        });
+
+        test('should return a path with only the start room if start and end are in the same room', () => {
+            const locLivingRoom2 = scene.createLocation("Chair", Position.create(8, 8), livingRoom.getName());
+            const path = scene.findShortestPath(locLivingRoom, locLivingRoom2);
+            expect(path.getRoomNames()).toEqual(['Living Room']);
+        });
+
+        test('should return an empty path if no path exists (unconnected rooms)', () => {
+            const path = scene.findShortestPath(locHallway, locOffice);
+            expect(path).toBeInstanceOf(Path);
+            expect(path.isEmpty()).toBe(true);
+            expect(path.getRoomNames()).toEqual([]);
+        });
+
+        test('should throw error if start location is not in any room', () => {
+            const invalidStartLoc = Location.create("Nowhere", Position.create(100, 100));
+            expect(() => scene.findShortestPath(invalidStartLoc, locKitchen)).toThrow(Error);
+        });
+
+        test('should throw error if end location is not in any room', () => {
+            const invalidEndLoc = Location.create("Void", Position.create(200, 200));
+            expect(() => scene.findShortestPath(locKitchen, invalidEndLoc)).toThrow(Error);
+        });
+
     });
 });

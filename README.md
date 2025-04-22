@@ -133,34 +133,35 @@ export default config;
 This project includes the following classes, grouped by their respective directories:
 
 ### `src/`
-- **`main.js`**: The entry point of the application. It creates and runs the agent using the `AgentFactory`.
+- **`main.js`**: The entry point of the application. It sets up the simulation environment and agent, then runs the simulation loop.
 
 ### `src/utils/`
-- **`TypeUtils`**: Provides utility methods for type checking, such as ensuring a value is an instance of a specific class or a specific type.
+- **`TypeUtils`**: Provides static utility methods for runtime type checking, such as ensuring a value is an instance of a specific class or a primitive type (e.g., `isInstanceOf`, `isNumber`).
 
 ### `src/bdiagent`
-- **`Agent`**: Represents the main agent with beliefs, desires, and intentions. It models the behavior of the NPC.
-- **`AgentFactory`**: A factory class responsible for creating and initializing agents with predefined beliefs, desires, and intentions.
+- **`Agent`**: Represents the core BDI agent. It integrates the `BeliefManager`, `DesireManager`, and `Movement` components. It processes its beliefs, selects the most pressing desire, forms an intention, and executes actions (including movement) in each simulation tick.
+- **`AgentFactory`**: A factory class responsible for creating and initializing `Agent` instances with predefined configurations, including initial beliefs, desires, intentions, and the simulation scene.
 
 ### `src/bdiagent/belief/`
-- **`Belief`**: A base class representing a belief of the agent.
-- **`IntegerPercentageBelief`**: Represents a belief with a value between 0 and 100 (e.g., hunger, fatigue).
-- **`IntegerPercentageBeliefUpdater`**: Updates the value of an `IntegerPercentageBelief` over time.
-- **`BeliefManager`**: Manages the beliefs of the agent, including adding, retrieving, and updating beliefs. It also handles the registration and execution of belief updaters.
+- **`Belief`**: An abstract base class representing a belief held by the agent. Beliefs have a name and a value.
+- **`IntegerPercentageBelief`**: A concrete implementation of `Belief` representing a value between 0 and 100 (e.g., hunger, fatigue, bladder level).
+- **`IntegerPercentageBeliefUpdater`**: A class responsible for updating the value of a specific `IntegerPercentageBelief` over time based on a defined rate.
+- **`BeliefManager`**: Manages the agent's collection of beliefs. It allows adding, retrieving, and updating beliefs. It also handles the registration and execution of `BeliefUpdater` instances during the simulation tick.
 
 ### `src/bdiagent/desire/`
-- **`Desire`**: Represents a desire of the agent, with conditions for activation and a priority level.
-- **`DesireManager`**: Manages the desires of the agent, including adding, retrieving, and evaluating desires based on the agent's beliefs.
+- **`Desire`**: Represents a potential goal or state the agent wants to achieve. Each desire has conditions (based on beliefs) for activation and a priority level.
+- **`DesireManager`**: Manages the agent's desires. It allows adding and retrieving desires. Its primary role is to evaluate active desires based on the current state of the agent's beliefs and select the desire with the highest priority.
 
 ### `src/bdiagent/intention/`
-- **`Intention`**: Represents an intention of the agent, with actions to execute and conditions for activation.
-- **`IntentionFactory`**: A factory class that creates specific intentions, including a "null intention" used when no valid intention is applicable.
+- **`Intention`**: Represents the agent's commitment to achieve a selected desire. It encapsulates the plan or sequence of actions (including target locations for movement) required to fulfill the desire. It has conditions for completion.
+- **`IntentionFactory`**: A factory class used to create specific `Intention` instances based on the activated `Desire`. It includes logic for creating a default "null intention" when no desire is active or achievable.
 
 ### `src/bdiagent/movement/`
-
-- **`Location`**: Represents a 2D location with x and y coordinates.
-- **`LocationFactory`**: A factory class for creating `Location` instances.
-- **`Movement`**: Manages the movement of an agent within the simulation.
-- **`Room`**: Represents a room in the simulation, containing locations and adjacent rooms.
-- **`Scene`**: Represents the scene for an agent within the simulation. A scene consists of a set of rooms.
-- **`SceneFactory`**: A factory for creation of scenes.
+- **`Position`**: Represents an immutable 2D coordinate (x, y) within the simulation environment. Used as the basic unit for defining locations and room boundaries.
+- **`Location`**: Represents a named point of interest within a `Room` (e.g., "Kitchen Sink", "Bed"). Defined by a name and a `Position`. Objects are mutable.
+- **`LocationFactory`**: A utility class providing static methods to create predefined `Location` instances, simplifying scene setup.
+- **`Room`**: Represents a distinct area (e.g., "Kitchen", "Bedroom") defined by a name, position, size, and connections to adjacent rooms. Contains a list of `Location` objects within its boundaries. Objects are mutable.
+- **`Scene`**: Manages the overall simulation environment, containing all `Room` objects and their `Location`s. Provides pathfinding capabilities (`findShortestPath`) using Breadth-First Search (BFS) to determine the sequence of rooms needed to travel between two locations.
+- **`SceneFactory`**: A utility class designed to create pre-configured `Scene` objects, such as a standard house layout with interconnected rooms.
+- **`Path`**: Represents an ordered sequence of room names, defining a route between two locations as calculated by `Scene.findShortestPath`.
+- **`Movement`**: Manages an agent's physical presence and movement within the `Scene`. It tracks the agent's current `Position`, target `Location`, and calculates position updates based on speed and the path required to reach the destination.

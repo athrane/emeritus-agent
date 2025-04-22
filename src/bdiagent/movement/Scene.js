@@ -2,6 +2,7 @@ import { TypeUtils } from '../../internal.js';
 import { Position } from '../../internal.js';
 import { Room } from '../../internal.js';
 import { Location } from '../../internal.js';
+import { Path } from '../../internal.js';
 
 /**
  * Class representing a scene consisting of rooms and locations.
@@ -28,7 +29,7 @@ export class Scene {
      * @param {number} width The width of the room.   
      * @param {number} height The height of the room.
      * @returns {Room} The created Room object.
-     */  
+     */
     createRoom(name, x, y, width, height) {
         TypeUtils.ensureString(name);
         TypeUtils.ensureNumber(x);
@@ -103,15 +104,82 @@ export class Scene {
     }
 
     /**
-     * Finds the shortest path between two rooms using BFS or A*.
+     * Finds the shortest path between two locations using BFS.
      *
-     * @param {string} startRoomName The name of the starting room.
-     * @param {string} endRoomName The name of the ending room.
-     * @returns {Array<string>} An array of room names representing the path.
+     * @param {Location} startLocation The starting location.
+     * @param {Location} endLocation The ending location.
+     * @returns {Path} A Path object representing the shortest path of room names, or an empty Path if no path exists.
      */
-    findShortestPath(startRoomName, endRoomName) {
-        // Implement BFS or A* here
-        // This is a placeholder
-        return [startRoomName, endRoomName];
+    findShortestPath(startLocation, endLocation) {
+        TypeUtils.ensureInstanceOf(startLocation, Location);
+        TypeUtils.ensureInstanceOf(endLocation, Location);
+        const startRoom = this.getRoomForLocation(startLocation);
+        const endRoom = this.getRoomForLocation(endLocation);
+
+        // throw error if start location isn't in a room
+        if (!startRoom) {
+            throw new Error(`Start location ${startLocation.getName()} not found in any room`);
+        }
+
+        // throw error if start location isn't in a room
+        if (!endRoom) {
+            throw new Error(`Start location ${startLocation.getName()} not found in any room`);
+        }
+
+        // return path if start and end room are the same  
+        if (startRoom === endRoom) {
+            return Path.create([startRoom.getName()]); 
+        }
+
+        const queue = [{ room: startRoom, path: [startRoom.getName()] }];
+        const visited = new Set([startRoom.getName()]);
+
+        while (queue.length > 0) {
+            const { room, path } = queue.shift();
+
+            if (room === endRoom) {
+                return Path.create(path);
+            }
+
+            const adjacentRooms = room.adjacentRooms;
+            for (const adjacentRoomName of adjacentRooms) {
+                if (!visited.has(adjacentRoomName)) {
+                    visited.add(adjacentRoomName);
+                    const adjacentRoom = this.getRoom(adjacentRoomName);
+                    queue.push({ room: adjacentRoom, path: [...path, adjacentRoom.getName()] });
+                }
+            }
+        }
+
+        // Return empty Path object        
+        return Path.createEmpty();
     }
+
+    /**
+     * Helper function to get the room a location belongs to.
+     *
+     * @param {Location} location The location.
+     * @returns {Room | undefined} The room containing the location, or undefined if not found.
+     */
+    getRoomForLocation(location) {
+        TypeUtils.ensureInstanceOf(location, Location);
+
+        for (const room of this.rooms.values()) {
+            // Basic bounding box check (can be made more sophisticated)
+            const roomPos = room.getPosition();
+            const roomSize = room.getSize();
+            const locPos = location.getPosition();
+
+            if (
+                locPos.getX() >= roomPos.getX() &&
+                locPos.getX() <= roomPos.getX() + roomSize.getX() &&
+                locPos.getY() >= roomPos.getY() &&
+                locPos.getY() <= roomPos.getY() + roomSize.getY()
+            ) {
+                return room;
+            }
+        }
+        return undefined;
+    }
+
 }
