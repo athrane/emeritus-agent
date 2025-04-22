@@ -140,16 +140,45 @@ export class Agent {
     this.beliefManager.update(this); 
     this.desireManager.update(); 
     this.movement.update(); 
-    this.intentionManager.update(this, this.getCurrentBestDesire()); 
+
+    // if moving the exit 
+    if (this.movement.isMoving()) return;
+
+    // update the current intention 
+    this.intentionManager.update(this, this.getCurrentBestDesire()); //
+    const currentIntention = this.getCurrentIntention(); //
+
+    // if the current intention is null then exit
+    if (currentIntention === null) return;
+
+    // if the current intention is the null intention then exit
+    if (currentIntention == IntentionManager.NULL_INTENTION) return 
+
+    // get current and target location
+    const targetLocation = currentIntention.getLocation(); 
+    const currentLocation = this.movement.getLocation(); 
+    const currentRoom = this.scene.getRoomForLocation(currentLocation); 
+    const targetRoom = this.scene.getRoomForLocation(targetLocation);   
+
+    // if current location and target location are in the same room the execute plan
+    if (currentRoom === targetRoom && this.movement.isWithinReasonbleRange(targetLocation)) { 
+      this.intentionManager.executeCurrentIntention(this); 
+      return;
+    } 
+  
+    // Need to move: Initiate pathfinding and movement
+    this.movement.moveTo(targetLocation); 
+
+    //this.intentionManager.update(this, this.getCurrentBestDesire()); 
 
      // if not within reasonable range of the intention's location, move towards it
-     const currentIntention = this.getCurrentIntention();
-     if(!this.movement.isWithinReasonbleRange(currentIntention.getLocation())) {
-      this.movement.moveTo(currentIntention.location);
-      return;
-     }
+     //const currentIntention = this.getCurrentIntention();
+     //if(!this.movement.isWithinReasonbleRange(currentIntention.getLocation())) {
+      //this.movement.moveTo(currentIntention.location);
+      //return;
+     //}
     
     // execute intention  
-    this.intentionManager.executeCurrentIntention(this); 
+    //this.intentionManager.executeCurrentIntention(this); 
   }
 }
