@@ -60,8 +60,8 @@ export class Room {
    * Creates a new location and adds it to the specified room.
    *
    * @param {string} name The name of the location.
-   * @param {number} x The x-coordinate of the room. Coordinate defined upper left corner.
-   * @param {number} y The y-coordinate of the room. Coordinate defined upper left corner.
+   * @param {number} x The x-coordinate of the location. Coordinate is relative to the room.
+   * @param {number} y The y-coordinate of the location. Coordinate is relative to the room.
    * @returns {Location} The created Location object.
    */
   createLocation(name, x, y) {
@@ -79,9 +79,11 @@ export class Room {
       throw new Error(`Location ${name} already exists in room ${this.name}`);
     }
 
-    // check if the location is within the room bounds
-    if (!this._isWithinBounds(x, y)) {
-        throw new Error(`Location coordinates (${x}, ${y}) are outside the room boundaries for room ${this.name}`);
+    // check if the location is within the room bounds (relative coordinates)
+    if (!this.isWithinBounds(x, y)) {
+      const roomWidth = this.size.getX();
+      const roomHeight = this.size.getY();
+      throw new Error(`Location '${name}' relative coordinates (${x}, ${y}) are outside the room's relative boundaries [(0, 0) to (${roomWidth}, ${roomHeight})] for room ${this.name}`);
     }
 
     // create location        
@@ -93,24 +95,26 @@ export class Room {
     return location;
   }
 
-  // Inside Room.js class
-  
   /**
-   * Checks if the given coordinates are within the room's boundaries.
-   * @param {number} x The x-coordinate to check.
-   * @param {number} y The y-coordinate to check.
+   * Checks if the given relative coordinates are within the room's boundaries (size).
+   * Coordinates are relative to the room's origin (0,0).
+   * @param {number} relativeX The x-coordinate relative to the room's origin.
+   * @param {number} relativeY The y-coordinate relative to the room's origin.
    * @returns {boolean} True if the coordinates are within bounds, false otherwise.
-   * @private
+   * @private // Keep as internal helper
    */
-  _isWithinBounds(x, y) {
-      const roomMinX = this.position.getX();
-      const roomMinY = this.position.getY();
-      const roomMaxX = roomMinX + this.size.getX();
-      const roomMaxY = roomMinY + this.size.getY();
-  
-      return x >= roomMinX && x <= roomMaxX && y >= roomMinY && y <= roomMaxY;
+  isWithinBounds(relativeX, relativeY) {
+    // Coordinates are relative, so the lower bound is always 0
+    const minX = 0;
+    const minY = 0;
+    // The upper bound is the size of the room (inclusive)
+    const maxX = this.size.getX();
+    const maxY = this.size.getY();
+
+    // Ensure the provided relative coordinates fall within the 0 to size range
+    return relativeX >= minX && relativeX <= maxX && relativeY >= minY && relativeY <= maxY;
   }
-  
+
   /**
    * Checks if a location is in the room.
    *
