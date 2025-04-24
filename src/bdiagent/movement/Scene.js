@@ -74,36 +74,6 @@ export class Scene {
     }
 
     /**
-     * Creates a new location and adds it to the specified room.
-     *
-     * @param {string} name The name of the location.
-     * @param {Position} position The poistion of the location.
-     * @param {string} roomName The name of the room to add the location to.
-     * @returns {Location} The created Location object.
-     */
-    createLocation(name, position, roomName) {
-        TypeUtils.ensureString(name);
-        TypeUtils.ensureInstanceOf(position, Position);
-        TypeUtils.ensureString(roomName);
-
-        // throw error if room not found
-        const room = this.getRoom(roomName);
-        if (!room) {
-            throw new Error(`Room ${roomName} not found`);
-        }
-
-        // throw error if location already exists
-        if (room.hasLocation(name)) {
-            throw new Error(`Location ${name} already exists in room ${roomName}`);
-        }
-
-        // add location to room        
-        const location = Location.create(name, position);
-        room.addLocation(location);
-        return location;
-    }
-
-    /**
      * Finds the shortest path between two locations using BFS.
      *
      * @param {Location} startLocation The starting location.

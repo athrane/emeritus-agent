@@ -68,8 +68,11 @@ describe('Movement', () => {
             // but moveTo might still set target if start/end assumed same room.
             // Let's simulate adding the locations to a dummy room for clarity
             const dummyRoom = scene.createRoom("DummyRoom", -100, -100, 200, 200);
-            scene.createLocation(initialLocation.getName(), initialLocation.getPosition(), dummyRoom.getName());
-            scene.createLocation(destination.getName(), destination.getPosition(), dummyRoom.getName());
+            dummyRoom.createLocation("initialLocation.getName(), initialLocation.getPosition());
+            dummyRoom.createLocation(destination.getName(), destination.getPosition());
+
+            //scene.createLocation(initialLocation.getName(), initialLocation.getPosition(), dummyRoom.getName());
+            //scene.createLocation(destination.getName(), destination.getPosition(), dummyRoom.getName());
 
             movement.moveTo(destination);
             expect(movement.getDestination()).toBe(destination);

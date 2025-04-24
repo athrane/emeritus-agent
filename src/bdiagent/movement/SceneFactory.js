@@ -9,7 +9,7 @@ export class SceneFactory {
     /**
      * Create a house with predefined rooms.
      *
-     * @returns {Scene} The created agent.
+     * @returns {Scene} The created scene.
      */  
     static createHouse() {
 
@@ -23,6 +23,18 @@ export class SceneFactory {
         const hall = scene.createRoom("Hall",3,0,1,1);
         const garden = scene.createRoom("Garden",4,0,1,1);
 
+        // create and register locations
+        bedroom.createLocation("Bed", 0.5, 1); 
+        bedroom.createLocation("Wardrobe", 0.25, 1);        
+        kitchen.createLocation("Fridge", 0.25, 1); 
+        kitchen.createLocation("Stove", 0.5, 1);
+        livingRoom.createLocation("Table", 0.25, 1);
+        livingRoom.createLocation("Sofa", 0.5, 1);
+        hall.createLocation("Coat Hanger", 0.5, 1);
+        hall.createLocation("Front Door", 1, 1);
+        garden.createLocation("Flower Bed", 0.5, 1);
+        garden.createLocation("Tree", 1, 1);
+
         // connect rooms
         bedroom.addAdjacentRoom(livingRoom.getName());
         livingRoom.addAdjacentRoom(bedroom.getName());
@@ -31,24 +43,10 @@ export class SceneFactory {
         kitchen.addAdjacentRoom(hall.getName());
         hall.addAdjacentRoom(kitchen.getName());
         hall.addAdjacentRoom(garden.getName());
-
         return scene
     }        
 
-    createOldManLocations() {
-        //this.createLocation("Bedroom", -1.5, -0.5, bedroom.name);
-        //this.createLocation("Kitchen", 0.5, -0.5, kitchen.name);
-        //this.createLocation("Living Room", -0.5, -0.5, livingRoom.name);
-        //this.createLocation("Hall", 1.25, -0.5, hall.name);
-        //this.createLocation("Garden", 1.9, -0.5, garden.name);
-    }
-
     createCatLocations() {
-        //this.createLocation("Bedroom", -1.5, -0.5, bedroom.name);
-        //this.createLocation("Kitchen", 0.5, -0.5, kitchen.name);
-        //this.createLocation("Living Room", -0.5, -0.5, livingRoom.name);
-        //this.createLocation("Hall", 1.25, -0.5, hall.name);
-        //this.createLocation("Garden", 1.9, -0.5, garden.name);
     }
 
 }

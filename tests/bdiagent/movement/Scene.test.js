@@ -72,46 +72,9 @@ describe('Scene', () => {
         });
     });
 
-    describe('createLocation', () => {
-        const roomName = 'Office';
-        let testRoom;
-
-        beforeEach(() => {
-            testRoom = scene.createRoom(roomName, 50, 50, 20, 20);
-        });
-
-        test('should create a new location and add it to the specified room', () => {
-            const locName = 'Desk';
-            const locPosition = Position.create(1, 2);
-            const location = scene.createLocation(locName, locPosition, roomName);
-
-            expect(location).toBeInstanceOf(Location);
-            expect(location.getName()).toBe(locName);
-            expect(location.getPosition()).toBe(locPosition);
-
-            // Check if the location was added to the room
-            expect(testRoom.hasLocation(locName)).toBe(true);
-        });
-
-        test('should throw error if the room does not exist', () => {
-            const locName = 'Chair';
-            const locPosition = Position.create(3, 4);
-            const nonExistentRoomName = 'Basement';
-            expect(() => scene.createLocation(locName, locPosition, nonExistentRoomName)).toThrowError();
-        });
-
-        test('should throw error if the location already exists in the room', () => {
-            const locName = 'Desk';
-            const locPosition = Position.create(1, 2);
-            scene.createLocation(locName, locPosition, roomName); // Create the location first
-            expect(() => scene.createLocation(locName, locPosition, roomName)).toThrowError();
-        });
-    });
-
-
     describe('findShortestPath', () => {
         let hallway, livingRoom, kitchen, office; // Define rooms
-        let locHallway, locLivingRoom, locKitchen, locOffice; // Define locations
+        let locEntrance, locSofa, locStove, locDesk; // Define locations
 
         beforeEach(() => {
 
@@ -123,10 +86,10 @@ describe('Scene', () => {
             office = scene.createRoom('Office', 20, 0, 10, 10); // Unconnected room
 
             // Create locations within rooms (adjust positions as needed)
-            locHallway = scene.createLocation("Hallway Entrance", Position.create(2, 2), hallway.getName());
-            locLivingRoom = scene.createLocation("Sofa", Position.create(7, 7), livingRoom.getName());
-            locKitchen = scene.createLocation("Stove", Position.create(7, 17), kitchen.getName());
-            locOffice = scene.createLocation("Desk", Position.create(22, 5), office.getName());
+            locEntrance = hallway.createLocation("Hallway Entrance", 2, 2);
+            locSofa = livingRoom.createLocation("Sofa", 7, 7);
+            locStove = kitchen.createLocation("Stove", 7, 17);
+            locDesk = office.createLocation("Desk", 22, 5);
 
             // Define adjacency (important for pathfinding)
             hallway.addAdjacentRoom(livingRoom.getName());
@@ -142,28 +105,28 @@ describe('Scene', () => {
         });
 
         test('should return a Path object', () => {
-            const path = scene.findShortestPath(locLivingRoom, locKitchen);
+            const path = scene.findShortestPath(locSofa, locStove);
             expect(path).toBeInstanceOf(Path);
         });
 
         test('should find a direct path between adjacent rooms', () => {
-            const path = scene.findShortestPath(locLivingRoom, locKitchen);
+            const path = scene.findShortestPath(locSofa, locStove);
             expect(path.getRoomNames()).toEqual(['Living Room', 'Kitchen']);
         });
 
         test('should find a path through an intermediate room', () => {
-            const path = scene.findShortestPath(locHallway, locKitchen);
+            const path = scene.findShortestPath(locEntrance, locStove);
             expect(path.getRoomNames()).toEqual(['Hallway', 'Living Room', 'Kitchen']);
         });
 
         test('should return a path with only the start room if start and end are in the same room', () => {
-            const locLivingRoom2 = scene.createLocation("Chair", Position.create(8, 8), livingRoom.getName());
-            const path = scene.findShortestPath(locLivingRoom, locLivingRoom2);
+            const locChair = livingRoom.createLocation("Chair", 8, 8);
+            const path = scene.findShortestPath(locChair, locSofa);
             expect(path.getRoomNames()).toEqual(['Living Room']);
         });
 
         test('should return an empty path if no path exists (unconnected rooms)', () => {
-            const path = scene.findShortestPath(locHallway, locOffice);
+            const path = scene.findShortestPath(locEntrance, locDesk);
             expect(path).toBeInstanceOf(Path);
             expect(path.isEmpty()).toBe(true);
             expect(path.getRoomNames()).toEqual([]);

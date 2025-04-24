@@ -38,7 +38,7 @@ export class Room {
    */
   getPosition() {
     return this.position;
-  } 
+  }
 
   /**
    * Gets the size of the room.
@@ -57,20 +57,35 @@ export class Room {
   }
 
   /**
-   * Adds a location to the room.
+   * Creates a new location and adds it to the specified room.
    *
-   * @param {Location} location The location to add.
+   * @param {string} name The name of the location.
+   * @param {number} x The x-coordinate of the room. Coordinate defined upper left corner.
+   * @param {number} y The y-coordinate of the room. Coordinate defined upper left corner.
+   * @returns {Location} The created Location object.
    */
-  addLocation(location) {
-    TypeUtils.ensureInstanceOf(location, Location);
+  createLocation(name, x, y) {
+    TypeUtils.ensureString(name);
+    TypeUtils.ensureNumber(x);
+    TypeUtils.ensureNumber(y);
 
-    // throw error if location is already in the room
-    if (this.hasLocation(location.name)) {
-      throw new Error(`Location with name ${location.name} already exists in the room.`);
+    // throw error if location name is empty
+    if (name.trim() === '') {
+      throw new Error('Location name cannot be empty');
     }
+
+    // throw error if location already exists
+    if (this.hasLocation(name)) {
+      throw new Error(`Location ${name} already exists in room ${roomName}`);
+    }
+
+    // create location        
+    const position = Position.create(x, y);
+    const location = Location.create(name, position);
 
     // add location to the room
     this.locations.push(location);
+    return location;
   }
 
   /**
