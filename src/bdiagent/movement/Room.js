@@ -76,7 +76,12 @@ export class Room {
 
     // throw error if location already exists
     if (this.hasLocation(name)) {
-      throw new Error(`Location ${name} already exists in room ${roomName}`);
+      throw new Error(`Location ${name} already exists in room ${this.name}`);
+    }
+
+    // check if the location is within the room bounds
+    if (!this._isWithinBounds(x, y)) {
+        throw new Error(`Location coordinates (${x}, ${y}) are outside the room boundaries for room ${this.name}`);
     }
 
     // create location        
@@ -88,6 +93,24 @@ export class Room {
     return location;
   }
 
+  // Inside Room.js class
+  
+  /**
+   * Checks if the given coordinates are within the room's boundaries.
+   * @param {number} x The x-coordinate to check.
+   * @param {number} y The y-coordinate to check.
+   * @returns {boolean} True if the coordinates are within bounds, false otherwise.
+   * @private
+   */
+  _isWithinBounds(x, y) {
+      const roomMinX = this.position.getX();
+      const roomMinY = this.position.getY();
+      const roomMaxX = roomMinX + this.size.getX();
+      const roomMaxY = roomMinY + this.size.getY();
+  
+      return x >= roomMinX && x <= roomMaxX && y >= roomMinY && y <= roomMaxY;
+  }
+  
   /**
    * Checks if a location is in the room.
    *

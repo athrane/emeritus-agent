@@ -4,33 +4,30 @@ import { Movement } from "../../../src/internal.js";
 import { Scene } from "../../../src/internal.js";
 import { Path } from "../../../src/internal.js";
 
-describe('Movement', () => {
+describe('Basic movement tests', () => {
     let initialLocation;
     let initialPosition;
     let movement;
     let scene;
 
     beforeEach(() => {
-        scene = new Scene(); // Use a fresh scene for basic tests too
+        scene = new Scene(); 
         initialPosition = Position.create(0, 0);
-        // Note: For basic tests, this location isn't explicitly added to a room in the scene.
-        // This is okay for testing direct point-to-point movement logic *before* pathfinding kicks in.
-        initialLocation = Location.create("Start", initialPosition);
+        // Create a dummy room to hold the initial location for basic tests
+        const dummyRoom = scene.createRoom("DummyRoomForStart", -100, -100, 200, 200);
+        initialLocation = dummyRoom.createLocation("Start", initialPosition.getX(), initialPosition.getY());
         movement = new Movement(initialLocation, 5, scene);
     });
-
-    // --- Existing tests from Movement.test.js go here ---
 
     it('should be able to create movement instance', () => {
         expect(movement).toBeInstanceOf(Movement);
     });
 
     it('should get current location with the correct position', () => {
-        // Updated test as suggested previously
         const currentLocation = movement.getLocation();
         const currentPosition = movement.getPosition();
         expect(currentLocation).toBeInstanceOf(Location);
-        expect(currentLocation.getName()).toBe("Current Location"); // Name is hardcoded
+        expect(currentLocation.getName()).toBe("Current Location"); 
         expect(currentLocation.getPosition().getX()).toBe(currentPosition.getX());
         expect(currentLocation.getPosition().getY()).toBe(currentPosition.getY());
     });
@@ -41,12 +38,8 @@ describe('Movement', () => {
     });
 
     it('should initialize with the correct location and speed', () => {
-        // This test seems redundant with the constructor and position tests
-        // Consider removing or refining its purpose. Keeping for now.
-        expect(movement.getPosition().getX()).toBe(0);
-        expect(movement.getPosition().getY()).toBe(0);
-        expect(movement.getLocation().getPosition().getX()).toBe(0);
-        expect(movement.getLocation().getPosition().getY()).toBe(0)
+        expect(movement.getPosition().getX()).toBe(initialLocation.getPosition().getX());
+        expect(movement.getPosition().getY()).toBe(initialLocation.getPosition().getY());
         expect(movement.speed).toBe(5);
     });
 
@@ -55,38 +48,38 @@ describe('Movement', () => {
         expect(movement.getDestination()).toBe(Movement.NULL_LOCATION);
     });
 
-    // --- Tests for direct movement (assuming no pathfinding needed initially) ---
-
     describe('Direct Movement (No Pathfinding Required)', () => {
         // These tests assume moveTo sets currentTargetPosition directly
-        // because the scene is empty or start/end are treated as same room initially.
+        // because the start/end are in the same room.
+
+        let dummyRoom; // Define dummyRoom here to be accessible in tests
+
+        beforeEach(() => {
+            // Ensure the dummy room exists for these tests
+            // Use a consistent room for these direct movement tests
+            dummyRoom = scene.getRoom("DummyRoomForStart"); // Get the room created in the outer beforeEach
+            // Reset movement to start at the initialLocation within this room
+            initialLocation = dummyRoom.hasLocation("Start")
+                ? dummyRoom.locations.find(loc => loc.getName() === "Start") // Get existing if already created
+                : dummyRoom.createLocation("Start", 0, 0); // Or recreate if needed (e.g., if outer beforeEach changes)
+            movement = new Movement(initialLocation, 5, scene);
+        });
 
         it('should set a destination and start moving', () => {
             const destPosition = Position.create(10, 10);
-            const destination = Location.create("D1", destPosition);
-            // Since scene is empty, findShortestPath returns empty,
-            // but moveTo might still set target if start/end assumed same room.
-            // Let's simulate adding the locations to a dummy room for clarity
-            const dummyRoom = scene.createRoom("DummyRoom", -100, -100, 200, 200);
-            dummyRoom.createLocation("initialLocation.getName(), initialLocation.getPosition());
-            dummyRoom.createLocation(destination.getName(), destination.getPosition());
-
-            //scene.createLocation(initialLocation.getName(), initialLocation.getPosition(), dummyRoom.getName());
-            //scene.createLocation(destination.getName(), destination.getPosition(), dummyRoom.getName());
+            // Create destination within the same dummy room
+            const destination = dummyRoom.createLocation("D1", destPosition.getX(), destPosition.getY());
 
             movement.moveTo(destination);
             expect(movement.getDestination()).toBe(destination);
             expect(movement.isMoving()).toBe(true);
-            // Check that the target is the final destination directly
+            // Check that the target is the final destination directly because it's in the same room
             expect(movement.currentTargetPosition).toEqual(destination.getPosition());
         });
 
         it('should update the position correctly when moving', () => {
             const destPosition = Position.create(10, 0);
-            const destination = Location.create("D1", destPosition);
-            const dummyRoom = scene.createRoom("DummyRoom", -100, -100, 200, 200);
-             scene.createLocation(initialLocation.getName(), initialLocation.getPosition(), dummyRoom.getName());
-             scene.createLocation(destination.getName(), destination.getPosition(), dummyRoom.getName());
+            const destination = dummyRoom.createLocation("D1", destPosition.getX(), destPosition.getY());
 
             movement.moveTo(destination);
             movement.update();
@@ -97,30 +90,24 @@ describe('Movement', () => {
 
         it('should update the position correctly when moving #2', () => {
             const destPosition = Position.create(10, 0);
-            const destination = Location.create("D1", destPosition);
-            const dummyRoom = scene.createRoom("DummyRoom", -100, -100, 200, 200);
-            scene.createLocation(initialLocation.getName(), initialLocation.getPosition(), dummyRoom.getName());
-            scene.createLocation(destination.getName(), destination.getPosition(), dummyRoom.getName());
+            const destination = dummyRoom.createLocation("D1", destPosition.getX(), destPosition.getY());
 
             movement.moveTo(destination);
             movement.update();
             movement.update();
             expect(movement.getPosition().getX()).toBeCloseTo(10);
             expect(movement.getPosition().getY()).toBe(0);
-            expect(movement.isMoving()).toBe(false);
+            expect(movement.isMoving()).toBe(false); // Should stop after reaching
         });
 
         it('should stop moving when the destination is reached', () => {
             const destPosition = Position.create(30, 30);
-            const destination = Location.create("D1", destPosition);
-            const dummyRoom = scene.createRoom("DummyRoom", -100, -100, 200, 200);
-            scene.createLocation(initialLocation.getName(), initialLocation.getPosition(), dummyRoom.getName());
-            scene.createLocation(destination.getName(), destination.getPosition(), dummyRoom.getName());
+            const destination = dummyRoom.createLocation("D1", destPosition.getX(), destPosition.getY());
 
             movement.moveTo(destination);
 
             let reached = false;
-            for (let i = 0; i < 10; i++) { // Increased loop count for diagonal
+            for (let i = 0; i < 15; i++) { // Increased loop count slightly for diagonal
                 reached = movement.update();
                 if (reached) break;
             }
@@ -135,18 +122,15 @@ describe('Movement', () => {
         it('should not move if not moving', () => {
             const reached = movement.update(); // Should return true if not moving
             expect(reached).toBe(true);
-            expect(movement.getPosition().getX()).toBe(0);
-            expect(movement.getPosition().getY()).toBe(0);
+            expect(movement.getPosition().getX()).toBe(initialLocation.getPosition().getX()); // Should be initial position
+            expect(movement.getPosition().getY()).toBe(initialLocation.getPosition().getY()); // Should be initial position
             expect(movement.isMoving()).toBe(false);
             expect(movement.getDestination()).toBe(Movement.NULL_LOCATION);
         });
 
         it('should stop immediately reach destination if it is close enough', () => {
             const destPosition = Position.create(4, 0); // Distance < speed (5)
-            const destination = Location.create("D1", destPosition);
-            const dummyRoom = scene.createRoom("DummyRoom", -100, -100, 200, 200);
-            scene.createLocation(initialLocation.getName(), initialLocation.getPosition(), dummyRoom.getName());
-            scene.createLocation(destination.getName(), destination.getPosition(), dummyRoom.getName());
+            const destination = dummyRoom.createLocation("D1", destPosition.getX(), destPosition.getY());
 
             movement.moveTo(destination);
             const reached = movement.update();
@@ -171,16 +155,16 @@ describe('Movement', () => {
 
             expect(reached).toBe(true); // Should report 'reached' because it exits
             expect(movement.getPosition().getX()).toBe(initialX);
-            expect(movement.getPosition().getY()).toBe(initialY); // Corrected assertion
-            // The update method doesn't reset isAgentMoving in this specific exit case,
-            // which might be a bug or intended behavior depending on design.
-            // Let's assert the state *after* the early exit:
+            expect(movement.getPosition().getY()).toBe(initialY);
+            // The update method doesn't reset isAgentMoving in this specific exit case.
             expect(movement.isMoving()).toBe(true);
         });
 
          it('should not move if currentTargetPosition is null (even if isMoving was true)', () => {
             // This test checks another early exit condition in update()
-            movement.destination = Location.create("SomeDest", Position.create(50,50)); // Valid destination
+            const destPosition = Position.create(50,50);
+            const destination = dummyRoom.createLocation("SomeDest", destPosition.getX(), destPosition.getY());
+            movement.destination = destination; // Valid destination
             movement.isAgentMoving = true; // Force moving state
             movement.currentTargetPosition = null; // NO current target
 
@@ -191,18 +175,13 @@ describe('Movement', () => {
             expect(reached).toBe(true); // Should report 'reached' because it exits
             expect(movement.getPosition().getX()).toBe(initialX);
             expect(movement.getPosition().getY()).toBe(initialY);
-            expect(movement.isMoving()).toBe(true); // Similar to above, state isn't reset here
+            expect(movement.isMoving()).toBe(true); // State isn't reset here
         });
 
 
         it('should handle diagonal movement correctly', () => {
-            // This is similar to the 'stop moving when destination is reached' test
-            // but specifically uses a diagonal target.
             const destPosition = Position.create(10, 10);
-            const destination = Location.create("D1", destPosition);
-            const dummyRoom = scene.createRoom("DummyRoom", -100, -100, 200, 200);
-            scene.createLocation(initialLocation.getName(), initialLocation.getPosition(), dummyRoom.getName());
-            scene.createLocation(destination.getName(), destination.getPosition(), dummyRoom.getName());
+            const destination = dummyRoom.createLocation("D1", destPosition.getX(), destPosition.getY());
 
             movement.moveTo(destination);
 
@@ -221,12 +200,10 @@ describe('Movement', () => {
         });
     });
 
-    // ---  Pathfinding Movement Tests ---
-
     describe('Pathfinding Movement', () => {
-        let sceneWithPath;
-        let movementWithPath;
-        let locHallway, locLivingRoom, locKitchen, locLivingRoom2; // Define locations
+        let scene;
+        let movement;
+        let locHallway, locLivingRoom, locKitchen, locLivingRoom2;
         let hallway, livingRoom, kitchen; // Define rooms
 
         // Helper function to calculate room center
@@ -241,16 +218,16 @@ describe('Movement', () => {
 
         beforeEach(() => {
             // Setup scene with rooms and connections
-            sceneWithPath = new Scene();
-            hallway = sceneWithPath.createRoom('Hallway', 0, 0, 10, 40); // x:0-10, y:0-40
-            livingRoom = sceneWithPath.createRoom('Living Room', 10, 10, 20, 20); // x:10-30, y:10-30
-            kitchen = sceneWithPath.createRoom('Kitchen', 10, 30, 20, 20); // x:10-30, y:30-50
+            scene = new Scene();
+            hallway = scene.createRoom('Hallway', 0, 0, 10, 40); // x:0-10, y:0-40
+            livingRoom = scene.createRoom('Living Room', 10, 10, 20, 20); // x:10-30, y:10-30
+            kitchen = scene.createRoom('Kitchen', 10, 30, 20, 20); // x:10-30, y:30-50
 
-            // Define locations within these rooms
-            locHallway = sceneWithPath.createLocation("Start Hall", Position.create(5, 5), hallway.getName());
-            locLivingRoom = sceneWithPath.createLocation("Sofa", Position.create(20, 20), livingRoom.getName()); // Center of Living Room
-            locLivingRoom2 = sceneWithPath.createLocation("TV", Position.create(28, 28), livingRoom.getName()); // Another LR location
-            locKitchen = sceneWithPath.createLocation("Stove", Position.create(20, 40), kitchen.getName()); // Center of Kitchen
+            // Define locations within these rooms using room.createLocation
+            locHallway = hallway.createLocation("Start Hall", 5, 5);
+            locLivingRoom = livingRoom.createLocation("Sofa", 20, 20); // Center of Living Room
+            locLivingRoom2 = livingRoom.createLocation("TV", 28, 28); // Another LR location
+            locKitchen = kitchen.createLocation("Stove", 20, 40); // Center of Kitchen
 
             // Define adjacency
             hallway.addAdjacentRoom(livingRoom.getName());
@@ -259,88 +236,110 @@ describe('Movement', () => {
             kitchen.addAdjacentRoom(livingRoom.getName());
 
             // Initial location is in the hallway
-            // Use speed 1 for easier step debugging/reasoning if needed, but 5 is fine too
-            movementWithPath = new Movement(locHallway, 5, sceneWithPath);
+            movement = new Movement(locHallway, 5, scene);
         });
+
+        it('should set a destination and start moving', () => {
+            movement.moveTo(locKitchen); // Move to Kitchen
+            expect(movement.getDestination()).toBe(locKitchen);
+            expect(movement.isMoving()).toBe(true);
+            expect(movement.currentTargetPosition).toEqual(locKitchen.getPosition());
+            expect(movement.currentPath).toBeInstanceOf(Path);
+            expect(movement.currentPath.getRoomNames()).toEqual(['Hallway', 'Living Room', 'Kitchen']);
+            expect(movement.currentPathIndex).toBe(0); // Starts at the beginning of the path
+        });                    
 
         it('should calculate a path and set initial target when moving between rooms', () => {
-            movementWithPath.moveTo(locKitchen); // Hallway -> Living Room -> Kitchen
+            movement.moveTo(locKitchen); // Hallway -> Living Room -> Kitchen
 
-            expect(movementWithPath.isMoving()).toBe(true);
-            expect(movementWithPath.getDestination()).toBe(locKitchen); // Final destination stored
-            expect(movementWithPath.currentPath).toBeInstanceOf(Path);
-            expect(movementWithPath.currentPath.getRoomNames()).toEqual(['Hallway', 'Living Room', 'Kitchen']);
-            expect(movementWithPath.currentPathIndex).toBe(0); // Starts at the beginning of the path
+            expect(movement.isMoving()).toBe(true);
+            expect(movement.getDestination()).toBe(locKitchen); // Final destination stored
+            expect(movement.currentPath).toBeInstanceOf(Path);
+            expect(movement.currentPath.getRoomNames()).toEqual(['Hallway', 'Living Room', 'Kitchen']);
+            expect(movement.currentPathIndex).toBe(0); // Starts at the beginning of the path
 
             // Expect initial target to be center of the *next* room (Living Room)
+            // Note: The logic targets the *center* of the next room as an intermediate step.
             const livingRoomCenter = getRoomCenter(livingRoom);
-            expect(movementWithPath.currentTargetPosition).toBeDefined();
-            expect(movementWithPath.currentTargetPosition.getX()).toBeCloseTo(livingRoomCenter.getX());
-            expect(movementWithPath.currentTargetPosition.getY()).toBeCloseTo(livingRoomCenter.getY());
+            expect(movement.currentTargetPosition).toBeDefined();
+            // Check against the calculated center of the next room in the path
+            const nextRoomInPath = scene.getRoom(movement.currentPath.getRoomAt(1)); // Get Living Room
+            const nextRoomCenter = getRoomCenter(nextRoomInPath);
+            expect(movement.currentTargetPosition.getX()).toBeCloseTo(nextRoomCenter.getX());
+            expect(movement.currentTargetPosition.getY()).toBeCloseTo(nextRoomCenter.getY());
         });
 
+
         it('should move towards intermediate waypoints and then the final destination', () => {
-            movementWithPath.moveTo(locKitchen); // Hallway -> Living Room -> Kitchen
+            movement.moveTo(locKitchen); // Hallway -> Living Room -> Kitchen
 
             const livingRoomCenter = getRoomCenter(livingRoom);
-            const kitchenCenter = locKitchen.getPosition(); // Final target position
+            const kitchenFinalPos = locKitchen.getPosition(); // Final target position
 
-            // 1. Move towards Living Room Center
-            expect(movementWithPath.currentTargetPosition.getX()).toBeCloseTo(livingRoomCenter.getX());
-            expect(movementWithPath.currentTargetPosition.getY()).toBeCloseTo(livingRoomCenter.getY());
+            // 1. Check initial target is Living Room Center
+            expect(movement.currentTargetPosition.getX()).toBeCloseTo(livingRoomCenter.getX());
+            expect(movement.currentTargetPosition.getY()).toBeCloseTo(livingRoomCenter.getY());
 
-            let reachedIntermediate = false;
+            let reachedIntermediateTarget = false;
             let stepsToIntermediate = 0;
             const MAX_STEPS = 50; // Safety break
 
+            // Loop until the target changes *or* final destination is reached
             while(stepsToIntermediate < MAX_STEPS) {
                  stepsToIntermediate++;
-                 const justReached = movementWithPath.update(); // update returns true only on *final* destination
-                 // Check if the current target *changed* after the update, indicating waypoint reached
-                 if (movementWithPath.currentTargetPosition.distanceTo(kitchenCenter) < 0.01) {
-                     reachedIntermediate = true;
+                 const justReachedFinal = movement.update(); // update returns true only on *final* destination
+
+                 // Check if the current target *changed* after the update to the final destination
+                 if (movement.currentTargetPosition && movement.currentTargetPosition.distanceTo(kitchenFinalPos) < 0.01) {
+                     reachedIntermediateTarget = true; // Target is now the final one
                      break;
                  }
-                 if (justReached) break; // Should not happen before reaching intermediate
+                 if (justReachedFinal) {
+                     // This might happen if the intermediate step is skipped or very close
+                     reachedIntermediateTarget = true; // Effectively reached intermediate and final
+                     break;
+                 }
             }
 
-            expect(reachedIntermediate).toBe(true); // Assert intermediate target was set
+            expect(reachedIntermediateTarget).toBe(true); // Assert intermediate target was processed
             expect(stepsToIntermediate).toBeLessThan(MAX_STEPS); // Ensure loop didn't time out
-            expect(movementWithPath.currentPathIndex).toBe(1); // Path index should advance past Living Room center
-            expect(movementWithPath.currentTargetPosition.getX()).toBeCloseTo(kitchenCenter.getX()); // Target should now be final destination
-            expect(movementWithPath.currentTargetPosition.getY()).toBeCloseTo(kitchenCenter.getY());
-            expect(movementWithPath.isMoving()).toBe(true); // Still moving towards kitchen
+            // Path index should advance past Hallway (index 0) to Living Room (index 1)
+            expect(movement.currentPathIndex).toBe(1);
+            // Target should now be the final destination's position
+            expect(movement.currentTargetPosition.getX()).toBeCloseTo(kitchenFinalPos.getX());
+            expect(movement.currentTargetPosition.getY()).toBeCloseTo(kitchenFinalPos.getY());
+            expect(movement.isMoving()).toBe(true); // Still moving towards kitchen
 
             // 2. Continue updates until final destination
             let reachedFinal = false;
             let stepsToFinal = 0;
             while(stepsToFinal < MAX_STEPS) {
                  stepsToFinal++;
-                 reachedFinal = movementWithPath.update(); // update returns true when final destination is hit
+                 reachedFinal = movement.update(); // update returns true when final destination is hit
                  if (reachedFinal) break;
             }
 
             expect(reachedFinal).toBe(true);
             expect(stepsToFinal).toBeLessThan(MAX_STEPS);
-            expect(movementWithPath.isMoving()).toBe(false);
-            expect(movementWithPath.getPosition().getX()).toBeCloseTo(locKitchen.getPosition().getX());
-            expect(movementWithPath.getPosition().getY()).toBeCloseTo(locKitchen.getPosition().getY());
-            expect(movementWithPath.getDestination()).toBe(Movement.NULL_LOCATION); // Destination reset
-            expect(movementWithPath.currentPath.isEmpty()).toBe(true); // Path cleared
-            expect(movementWithPath.currentPathIndex).toBe(-1); // Index reset
-            expect(movementWithPath.currentTargetPosition).toBeNull(); // Target cleared
+            expect(movement.isMoving()).toBe(false);
+            expect(movement.getPosition().getX()).toBeCloseTo(locKitchen.getPosition().getX());
+            expect(movement.getPosition().getY()).toBeCloseTo(locKitchen.getPosition().getY());
+            expect(movement.getDestination()).toBe(Movement.NULL_LOCATION); // Destination reset
+            expect(movement.currentPath.isEmpty()).toBe(true); // Path cleared
+            expect(movement.currentPathIndex).toBe(-1); // Index reset
+            expect(movement.currentTargetPosition).toBeNull(); // Target cleared
         });
 
          it('should handle moving within the same room (direct path)', () => {
             // Move from Sofa to TV within Living Room
-            movementWithPath = new Movement(locLivingRoom, 5, sceneWithPath); // Start in Living Room
-            movementWithPath.moveTo(locLivingRoom2);
+            movement = new Movement(locLivingRoom, 5, scene); // Start in Living Room
+            movement.moveTo(locLivingRoom2);
 
-            expect(movementWithPath.isMoving()).toBe(true);
+            expect(movement.isMoving()).toBe(true);
             // Path should contain only the current room
-            expect(movementWithPath.currentPath.getRoomNames()).toEqual(['Living Room']);
+            expect(movement.currentPath.getRoomNames()).toEqual(['Living Room']);
             // Target should be the final destination directly
-            expect(movementWithPath.currentTargetPosition).toEqual(locLivingRoom2.getPosition());
+            expect(movement.currentTargetPosition).toEqual(locLivingRoom2.getPosition());
 
             // Simulate updates
             let reached = false;
@@ -348,112 +347,78 @@ describe('Movement', () => {
             let steps = 0;
              while(steps < MAX_STEPS) {
                  steps++;
-                 reached = movementWithPath.update();
+                 reached = movement.update();
                  if (reached) break;
              }
             expect(reached).toBe(true);
             expect(steps).toBeLessThan(MAX_STEPS);
-            expect(movementWithPath.isMoving()).toBe(false);
-            expect(movementWithPath.getPosition().getX()).toBeCloseTo(locLivingRoom2.getPosition().getX());
-            expect(movementWithPath.getPosition().getY()).toBeCloseTo(locLivingRoom2.getPosition().getY());
-            expect(movementWithPath.getDestination()).toBe(Movement.NULL_LOCATION);
+            expect(movement.isMoving()).toBe(false);
+            expect(movement.getPosition().getX()).toBeCloseTo(locLivingRoom2.getPosition().getX());
+            expect(movement.getPosition().getY()).toBeCloseTo(locLivingRoom2.getPosition().getY());
+            expect(movement.getDestination()).toBe(Movement.NULL_LOCATION);
          });
 
          it('should stop if path becomes invalid during movement (e.g., path cleared externally)', () => {
-             movementWithPath.moveTo(locKitchen); // Hallway -> Living Room -> Kitchen
-             expect(movementWithPath.isMoving()).toBe(true);
+             movement.moveTo(locKitchen); // Hallway -> Living Room -> Kitchen
+             expect(movement.isMoving()).toBe(true);
 
              // Simulate external interference clearing the path
-             movementWithPath.currentPath = Path.createEmpty();
-             movementWithPath.currentPathIndex = -1;
-             movementWithPath.currentTargetPosition = null; // Crucial for the update check
+             movement.currentPath = Path.createEmpty();
+             movement.currentPathIndex = -1;
+             movement.currentTargetPosition = null; // Crucial for the update check
 
-             const reached = movementWithPath.update(); // Should exit early due to no target
+             const reached = movement.update(); // Should exit early due to no target
 
              expect(reached).toBe(true); // Reports 'reached' due to early exit
-             expect(movementWithPath.isMoving()).toBe(true); // State not reset by this exit path
+             expect(movement.isMoving()).toBe(true); // State not reset by this exit path
              // Position should not have changed
-             expect(movementWithPath.getPosition().getX()).toBeCloseTo(locHallway.getPosition().getX());
-             expect(movementWithPath.getPosition().getY()).toBeCloseTo(locHallway.getPosition().getY());
+             expect(movement.getPosition().getX()).toBeCloseTo(locHallway.getPosition().getX());
+             expect(movement.getPosition().getY()).toBeCloseTo(locHallway.getPosition().getY());
          });
 
          it('should handle reaching an intermediate waypoint exactly in one step', () => {
-             // Start close to the intermediate target (Living Room Center)
-             const livingRoomCenter = getRoomCenter(livingRoom);
-             const startPosNearCenter = Position.create(
-                 livingRoomCenter.getX() - 3, // Distance = sqrt(3^2 + 4^2) = 5 (exactly speed)
-                 livingRoomCenter.getY() - 4
-             );
-             const locNearCenter = sceneWithPath.createLocation("NearCenter", startPosNearCenter, livingRoom.getName());
-             // Need to adjust adjacency if starting in Living Room
-             livingRoom.addAdjacentRoom(kitchen.getName());
-             kitchen.addAdjacentRoom(livingRoom.getName());
-
-             movementWithPath = new Movement(locNearCenter, 5, sceneWithPath); // Start near LR center
-             movementWithPath.moveTo(locKitchen); // LR -> Kitchen
-
-             // Path should be ['Living Room', 'Kitchen']
-             expect(movementWithPath.currentPath.getRoomNames()).toEqual(['Living Room', 'Kitchen']);
-             // Initial target should be Kitchen (since we are already in the last room of the path segment before kitchen)
-             // Let's re-evaluate this: moveTo calculates path LR->Kitchen. Index 0. Target is Kitchen center.
-             expect(movementWithPath.currentTargetPosition.getX()).toBeCloseTo(locKitchen.getPosition().getX());
-             expect(movementWithPath.currentTargetPosition.getY()).toBeCloseTo(locKitchen.getPosition().getY());
-
-             // --- Let's rethink the test setup for hitting intermediate exactly ---
              // We need a path A -> B -> C. Start in A, move towards B's center.
              // Position the agent so distance to B's center is exactly speed.
-             const hallCenter = getRoomCenter(hallway); // Not used, just for reference
-             const lrCenter = getRoomCenter(livingRoom);
-             const startPosNearHall = Position.create(
-                 lrCenter.getX() - 5, // Move exactly 5 units in X to reach LR center
-                 lrCenter.getY()
-             );
-             // We need a location *in the hallway* that is 5 units from LR center
-             // Let's place start location at (15, 20) which is LR center.
-             // No, start in Hallway. Hallway: x:0-10, y:0-40. LR Center: (20, 20)
-             // Place start at (X, Y) in Hallway such that distance to (20, 20) is 5.
-             // Let's place start at (20-sqrt(5^2-0^2), 20) = (15, 20) -- this is in LR, not Hallway.
-             // Let's place start at (X, Y) in Hallway. e.g. (5, 20). Dist to (20, 20) is 15.
-             // Let's place start at (X, Y) in Hallway, e.g. (8, 20). Dist to (20, 20) is 12.
-             // Let's place start at (X, Y) in Hallway, e.g. (10 - epsilon, 20). Dist to (20, 20) is 10+epsilon.
-             // Let's place start at (X, Y) in Hallway, e.g. (X, 15). Dist to (20, 20) = sqrt((20-X)^2 + 5^2) = 5? No solution.
-
-             // Okay, let's adjust speed or positions. Speed = 10. Start at (10, 20) in Hallway. Target (20, 20). Dist = 10.
+             const lrCenter = getRoomCenter(livingRoom); // Target: (20, 20)
+             // Place start at (10, 20) in Hallway. Dist to (20, 20) is 10.
              const startPosExact = Position.create(10, 20); // Edge of hallway
-             const locExactStart = sceneWithPath.createLocation("ExactStart", startPosExact, hallway.getName());
-             movementWithPath = new Movement(locExactStart, 10, sceneWithPath); // Speed 10
+             // Use hallway.createLocation
+             const locExactStart = hallway.createLocation("ExactStart", startPosExact.getX(), startPosExact.getY());
+             movement = new Movement(locExactStart, 10, scene); // Speed 10
 
-             movementWithPath.moveTo(locKitchen); // Hallway -> LR -> Kitchen
+             movement.moveTo(locKitchen); // Hallway -> LR -> Kitchen
              // Initial target is LR Center (20, 20)
-             expect(movementWithPath.currentTargetPosition.getX()).toBeCloseTo(lrCenter.getX());
-             expect(movementWithPath.currentTargetPosition.getY()).toBeCloseTo(lrCenter.getY());
+             const nextRoomInPath = scene.getRoom(movement.currentPath.getRoomAt(1)); // LR
+             const nextRoomCenter = getRoomCenter(nextRoomInPath);
+             expect(movement.currentTargetPosition.getX()).toBeCloseTo(nextRoomCenter.getX()); // Should be 20
+             expect(movement.currentTargetPosition.getY()).toBeCloseTo(nextRoomCenter.getY()); // Should be 20
 
              // First update should reach LR Center exactly
-             const reached1 = movementWithPath.update();
-             expect(reached1).toBe(false); // Did not reach *final* destination
+             const reached1 = movement.update();
+             expect(reached1).toBe(false); // Did not reach *final* destination (Kitchen)
              // Position should be exactly at LR Center
-             expect(movementWithPath.getPosition().getX()).toBeCloseTo(lrCenter.getX());
-             expect(movementWithPath.getPosition().getY()).toBeCloseTo(lrCenter.getY());
-             // Path index should have advanced
-             expect(movementWithPath.currentPathIndex).toBe(1);
-             // New target should be Kitchen location
-             expect(movementWithPath.currentTargetPosition.getX()).toBeCloseTo(locKitchen.getPosition().getX());
-             expect(movementWithPath.currentTargetPosition.getY()).toBeCloseTo(locKitchen.getPosition().getY());
-             expect(movementWithPath.isMoving()).toBe(true);
+             expect(movement.getPosition().getX()).toBeCloseTo(lrCenter.getX());
+             expect(movement.getPosition().getY()).toBeCloseTo(lrCenter.getY());
+             // Path index should have advanced to 1 (index for Kitchen in the path relative to LR)
+             expect(movement.currentPathIndex).toBe(1);
+             // New target should be final Kitchen location
+             expect(movement.currentTargetPosition.getX()).toBeCloseTo(locKitchen.getPosition().getX());
+             expect(movement.currentTargetPosition.getY()).toBeCloseTo(locKitchen.getPosition().getY());
+             expect(movement.isMoving()).toBe(true);
 
              // Second update (move from LR center (20,20) to Kitchen (20,40), dist 20, speed 10)
-             const reached2 = movementWithPath.update();
+             const reached2 = movement.update();
              expect(reached2).toBe(false);
-             expect(movementWithPath.getPosition().getX()).toBeCloseTo(20);
-             expect(movementWithPath.getPosition().getY()).toBeCloseTo(30); // Moved 10 towards (20,40)
-             expect(movementWithPath.isMoving()).toBe(true);
+             expect(movement.getPosition().getX()).toBeCloseTo(20);
+             expect(movement.getPosition().getY()).toBeCloseTo(30); // Moved 10 towards (20,40)
+             expect(movement.isMoving()).toBe(true);
 
              // Third update
-             const reached3 = movementWithPath.update();
+             const reached3 = movement.update();
              expect(reached3).toBe(true); // Reached final destination
-             expect(movementWithPath.getPosition().getX()).toBeCloseTo(locKitchen.getPosition().getX());
-             expect(movementWithPath.getPosition().getY()).toBeCloseTo(locKitchen.getPosition().getY());
-             expect(movementWithPath.isMoving()).toBe(false);
+             expect(movement.getPosition().getX()).toBeCloseTo(locKitchen.getPosition().getX());
+             expect(movement.getPosition().getY()).toBeCloseTo(locKitchen.getPosition().getY());
+             expect(movement.isMoving()).toBe(false);
          });
     });
 

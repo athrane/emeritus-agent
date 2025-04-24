@@ -11,40 +11,6 @@ describe('Room', () => {
     room = new Room('Living Room', position, size);
   });
 
-  test('should add a location to the room', () => {
-    const position = Position.create(1, 2);
-    const location = Location.create('Corner', position);
-    room.addLocation(location);
-    expect(room.locations).toContain(location);
-  });
-
-  test('should check if a location is in the room', () => {
-    const position = Position.create(1, 2);
-    const location = Location.create('Corner', position);
-    room.addLocation(location);
-    const position2 = Position.create(3, 4);
-    const anotherLocation = Location.create('Center', position2);
-    expect(room.hasLocation(location.name)).toBe(true);
-    expect(room.hasLocation(anotherLocation.name)).toBe(false);
-  });
-
-  test('should not add duplicate locations', () => {
-    const position = Position.create(1, 2);
-    const location = Location.create('Corner', position);
-    room.addLocation(location);
-    expect(() => room.addLocation(location)).toThrowError();
-  });
-
-  test('should check if upper and lower isnt identical', () => {
-    const position = Position.create(1, 2);
-    const lowercase = Location.create('Corner', position);
-    room.addLocation(lowercase);
-    const position2 = Position.create(1, 2);
-    const uppercase = Location.create('CORNER', position2);
-    expect(room.hasLocation(lowercase.name)).toBe(true);
-    expect(room.hasLocation(uppercase.name)).toBe(false);
-  });
-
   describe('create', () => {
     it('should create a new room with the given name, position, and size', () => {
       const position = Position.create(1, 2);
@@ -59,7 +25,7 @@ describe('Room', () => {
       expect(newRoom.locations).toEqual([]);
       expect(newRoom.adjacentRooms).toEqual([]);
     });
-    
+
     it('should throw an error if the name is not a string', () => {
       const position = Position.create(1, 2);
       const size = Position.create(3, 4);
@@ -77,7 +43,6 @@ describe('Room', () => {
     });
 
   });
-      
 
   describe('addAdjacentRoom', () => {
 
@@ -99,7 +64,6 @@ describe('Room', () => {
     });
   });
 
-
   describe('createLocation', () => {
     it('should create a new location and add it to the room', () => {
       const location = room.createLocation('Corner', 1, 2);
@@ -111,9 +75,22 @@ describe('Room', () => {
       expect(room.hasLocation('Corner')).toBe(true);
     });
 
+    it('should check if a location is in the room', () => {
+      const location = room.createLocation('Corner', 1, 2);
+      expect(room.hasLocation(location.getName())).toBe(true);
+    });
+
     it('should throw an error if the location already exists', () => {
       room.createLocation('Corner', 1, 2);
       expect(() => room.createLocation('Corner', 3, 4)).toThrowError();
+    });
+
+    it('should accept room names with upper and lower case names as different', () => {
+      room.createLocation('corner', 1, 2);
+      room.createLocation('CORNER', 3, 4);
+      expect(room.hasLocation('corner')).toBe(true);
+      expect(room.hasLocation('CORNER')).toBe(true);
+      expect(room.hasLocation('Corner')).toBe(false);
     });
 
     it('should throw an error if the location name is not a string', () => {
@@ -135,6 +112,35 @@ describe('Room', () => {
 
     it('should throw an error if the location name is undefined', () => {
       expect(() => room.createLocation(undefined, 1, 2)).toThrowError();
+    });
+
+    // Inside describe('createLocation', ...) in Room.test.js
+
+    it('should create a location exactly on the room boundaries', () => {
+      // Room is 0,0 to 10,10
+      expect(() => room.createLocation('TopLeftCorner', 0, 0)).not.toThrow();
+      expect(() => room.createLocation('BottomRightCorner', 10, 10)).not.toThrow();
+      expect(() => room.createLocation('TopRightCorner', 10, 0)).not.toThrow();
+      expect(() => room.createLocation('BottomLeftCorner', 0, 10)).not.toThrow();
+      // Clean up created locations if necessary, or use unique names per test run
+      // For simplicity here, we assume they don't conflict with other tests or use beforeEach
+    });
+
+    it('should throw an error if the location x-coordinate is outside the room boundaries', () => {
+      // Room is 0,0 to 10,10
+      expect(() => room.createLocation('TooLeft', -1, 5)).toThrowError(/outside the room boundaries/);
+      expect(() => room.createLocation('TooRight', 11, 5)).toThrowError(/outside the room boundaries/);
+    });
+
+    it('should throw an error if the location y-coordinate is outside the room boundaries', () => {
+      // Room is 0,0 to 10,10
+      expect(() => room.createLocation('TooHigh', 5, -1)).toThrowError(/outside the room boundaries/);
+      expect(() => room.createLocation('TooLow', 5, 11)).toThrowError(/outside the room boundaries/);
+    });
+
+    it('should throw an error if both location coordinates are outside the room boundaries', () => {
+      // Room is 0,0 to 10,10
+      expect(() => room.createLocation('WayOff', -5, 15)).toThrowError(/outside the room boundaries/);
     });
 
   });
