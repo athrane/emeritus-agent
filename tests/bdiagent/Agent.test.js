@@ -29,7 +29,6 @@ describe('Agent', () => {
             expect(agent.movement.getPosition().getX()).toBe(initialPosition.getX());
             expect(agent.movement.getPosition().getY()).toBe(initialPosition.getY());
             expect(agent.movement.speed).toBe(5);
-            expect(agent.intentions).toEqual([]);
             expect(agent.getCurrentIntention()).toEqual(IntentionManager.NULL_INTENTION);
             expect(agent.beliefManager).toBeDefined();
             expect(agent.desireManager).toBeDefined();

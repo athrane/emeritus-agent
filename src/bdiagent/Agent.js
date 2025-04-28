@@ -31,8 +31,6 @@ export class Agent {
     TypeUtils.ensureNumber(movementSpeed);
     TypeUtils.ensureInstanceOf(scene, Scene);
     this.name = name;
-    this.intentions = [];
-    this.currentIntention = Agent.NULL_INTENTION;
     this.movement = new Movement(initialLocation, movementSpeed, scene); 
     this.beliefManager = new BeliefManager();    
     this.desireManager = new DesireManager();
