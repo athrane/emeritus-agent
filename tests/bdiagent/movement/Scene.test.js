@@ -72,6 +72,37 @@ describe('Scene', () => {
         });
     });
 
+    describe('getLocation', () => {
+        let room;
+        let loc1, loc2;
+        beforeEach(() => {
+            room = scene.createRoom('Living Room', 0, 0, 10, 10);
+            loc1 = room.createLocation('Sofa', 2, 2);
+            loc2 = room.createLocation('Table', 5, 5);
+        });
+        
+        test('should return the correct location if it exists', () => {
+            const location = scene.getLocation('Sofa');
+            expect(location).toBeInstanceOf(Location);
+            expect(location.getName()).toBe('Sofa');
+            expect(location.getPosition().getX()).toBe(2);
+            expect(location.getPosition().getY()).toBe(2);
+        });
+
+        test('should throw error if the location does not exist', () => {
+            expect(() => scene.getLocation('NonExistentLocation')).toThrowError();
+        });
+
+        test('should throw error if name is not a string (assuming TypeUtils throws)', () => {
+            expect(() => scene.getLocation(123)).toThrowError();
+        });
+
+        test('should throw error if location is not in any room', () => {
+            const invalidLocation = Location.create('InvalidLocation', Position.create(100, 100));
+            expect(() => scene.getLocation(invalidLocation.getName())).toThrowError();
+        });
+    });
+    
     describe('findShortestPath', () => {
         let hallway, livingRoom, kitchen, office; // Define rooms
         let locEntrance, locSofa, locStove, locDesk; // Define locations

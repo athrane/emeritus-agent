@@ -146,14 +146,14 @@ describe('Room', () => {
 
   describe('createLocation with non-zero room origin', () => {
     let offsetRoom;
-  
+
     beforeEach(() => {
       // Create a room at absolute position (50, 50) with size (20, 30)
       const position = Position.create(50, 50);
       const size = Position.create(20, 30); // Relative bounds: (0,0) to (20,30)
       offsetRoom = new Room('Offset Room', position, size);
     });
-  
+
     it('should create locations within the relative boundaries (0,0 to 20,30)', () => {
       expect(() => offsetRoom.createLocation('RelTopLeft', 0, 0)).not.toThrow();
       expect(() => offsetRoom.createLocation('RelBottomRight', 20, 30)).not.toThrow();
@@ -161,24 +161,37 @@ describe('Room', () => {
       expect(() => offsetRoom.createLocation('RelEdgeX', 20, 10)).not.toThrow();
       expect(() => offsetRoom.createLocation('RelEdgeY', 5, 30)).not.toThrow();
     });
-  
+
     it('should throw an error for locations outside the relative boundaries (0,0 to 20,30)', () => {
       // Test negative relative coordinates
       expect(() => offsetRoom.createLocation('OutsideNegX', -1, 15)).toThrowError(/outside the room's relative boundaries/);
       expect(() => offsetRoom.createLocation('OutsideNegY', 10, -5)).toThrowError(/outside the room's relative boundaries/);
-  
+
       // Test coordinates exceeding relative size
       expect(() => offsetRoom.createLocation('OutsidePosX', 21, 15)).toThrowError(/outside the room's relative boundaries/); // x > width (20)
       expect(() => offsetRoom.createLocation('OutsidePosY', 10, 31)).toThrowError(/outside the room's relative boundaries/); // y > height (30)
       expect(() => offsetRoom.createLocation('OutsideBoth', 25, 35)).toThrowError(/outside the room's relative boundaries/);
     });
-  
+
     it('should use the correct relative boundaries in the error message', () => {
-         expect(() => offsetRoom.createLocation('FailX', 21, 15))
-           .toThrowError("Location 'FailX' relative coordinates (21, 15) are outside the room's relative boundaries [(0, 0) to (20, 30)] for room Offset Room");
-         expect(() => offsetRoom.createLocation('FailY', 10, 31))
-           .toThrowError("Location 'FailY' relative coordinates (10, 31) are outside the room's relative boundaries [(0, 0) to (20, 30)] for room Offset Room");
+      expect(() => offsetRoom.createLocation('FailX', 21, 15))
+        .toThrowError("Location 'FailX' relative coordinates (21, 15) are outside the room's relative boundaries [(0, 0) to (20, 30)] for room Offset Room");
+      expect(() => offsetRoom.createLocation('FailY', 10, 31))
+        .toThrowError("Location 'FailY' relative coordinates (10, 31) are outside the room's relative boundaries [(0, 0) to (20, 30)] for room Offset Room");
     });
   });
-  
+
+  describe('getAdjacentRooms', () => {
+    it('should return an array of adjacent rooms', () => {
+      room.addAdjacentRoom('Kitchen');
+      room.addAdjacentRoom('Bathroom');
+      expect(room.getAdjacentRooms()).toEqual(['Kitchen', 'Bathroom']);
+    });
+
+    it('should return an empty array if no adjacent rooms exist', () => {
+      expect(room.getAdjacentRooms()).toEqual([]);
+    });
+  });
+
 });
+

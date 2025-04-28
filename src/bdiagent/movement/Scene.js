@@ -21,7 +21,7 @@ export class Scene {
     }
 
     /**
-     * Creates and stores a new room.
+     * Creates and stores a new room in the scene.
      *
      * @param {string} name The name of the room.
      * @param {number} x The x-coordinate of the room. Coordinate defined upper left corner.
@@ -29,6 +29,7 @@ export class Scene {
      * @param {number} width The width of the room.   
      * @param {number} height The height of the room.
      * @returns {Room} The created Room object.
+     * @throws {Error} If creation of the room fails.
      */
     createRoom(name, x, y, width, height) {
         TypeUtils.ensureString(name);
@@ -60,6 +61,7 @@ export class Scene {
      *
      * @param {string} name The name of the room.
      * @returns {Room} The Room object, or undefined if not found.
+     * @throws {Error} If the room is not found.
      */
     getRoom(name) {
         TypeUtils.ensureString(name);
@@ -93,12 +95,12 @@ export class Scene {
 
         // throw error if start location isn't in a room
         if (!endRoom) {
-            throw new Error(`Start location ${startLocation.getName()} not found in any room`);
+            throw new Error(`End location ${startLocation.getName()} not found in any room`);
         }
 
         // return path if start and end room are the same  
         if (startRoom === endRoom) {
-            return Path.create([startRoom.getName()]); 
+            return Path.create([startRoom.getName()]);
         }
 
         const queue = [{ room: startRoom, path: [startRoom.getName()] }];
@@ -111,7 +113,7 @@ export class Scene {
                 return Path.create(path);
             }
 
-            const adjacentRooms = room.adjacentRooms;
+            const adjacentRooms = room.getAdjacentRooms();            
             for (const adjacentRoomName of adjacentRooms) {
                 if (!visited.has(adjacentRoomName)) {
                     visited.add(adjacentRoomName);
@@ -152,4 +154,24 @@ export class Scene {
         return undefined;
     }
 
+    /**
+     * Gets a location by its name from any room in the scene.
+     * @param {string} locationName The name of the location.
+     * @returns {Location} The Location object.
+     * @throws {Error} If the location is not found in any room.
+     */
+    getLocation(locationName) {
+        TypeUtils.ensureString(locationName);
+        for (const room of this.rooms.values()) {
+            
+            // Check if the room has the location
+            if (!room.hasLocation(locationName)) {
+                continue;
+            }
+        
+            // Get the location from the room
+            return room.getLocation(locationName);
+        }
+        throw new Error(`Location ${locationName} not found in scene`);
+    }
 }

@@ -127,6 +127,24 @@ export class Room {
   }
 
   /**
+   * Gets a location by its name. 
+   * 
+   * @param {string} locationName The name of the location to get.
+   * @returns {Location} The Location object, or undefined if not found.
+   * @throws {Error} If the location is not found.
+   */
+  getLocation(locationName) {
+    TypeUtils.ensureString(locationName);
+
+    // throw error if location doesn't exists
+    if (!this.hasLocation(locationName)) {
+      throw new Error(`Location ${locationName} not found in room ${this.name}`);
+    }
+    // return location
+    return this.locations.find(loc => loc.name === locationName);
+  }
+
+  /**
    * Adds an adjacent room to the room.
    *
    * @param {string} roomName The name of the adjacent room.
@@ -148,6 +166,15 @@ export class Room {
     TypeUtils.ensureString(roomName);
     return this.adjacentRooms.includes(roomName);
   }
+
+  /**
+   * Get ajacent rooms.
+   * 
+   * @returns {Array<string>} The list of adjacent room names.
+   */
+  getAdjacentRooms() {
+    return this.adjacentRooms;
+  } 
 
   /**
     * Creates a new Room object.
