@@ -1,6 +1,5 @@
 import { TypeUtils } from "../../internal.js";
 import { Intention } from "../../internal.js";
-import { Intention } from "../../internal.js";
 import { Agent } from "../../internal.js";
 
 /**

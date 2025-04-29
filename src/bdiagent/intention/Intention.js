@@ -36,6 +36,15 @@ export class Intention {
     }
 
     /**
+     * Returns the name of the intention.
+     *
+     * @returns {string} The name of the intention.
+     */
+    getName() {
+        return this.name;
+    }    
+
+    /**
      * Returns the location associated with the intention.
      * 
      * @returns {Location} The location of the intention.
@@ -43,6 +52,24 @@ export class Intention {
     getLocation() {
         return this.location;
     }
+
+    /**
+     * Returns the preconditions of the intention.
+     * 
+     * @returns {Function} The preconditions function.
+     */
+    getPreconditions() {
+        return this.preconditions;
+    }    
+
+    /**
+     * Returns the effects of the intention.
+     * 
+     * @returns {Function} The effects function.
+     */ 
+    getEffects() {
+        return this.effects;
+    }    
 
     /**
      * Return if plan of action can be executed.
@@ -91,7 +118,7 @@ export class Intention {
      */
     static createNullIntention() {
         return new Intention(
-            "Null intention", // Name of the intention
+            "NULL Intention", // Name of the intention
             [
                 (agent) => {
                     //console.log("Doing nothing.");
