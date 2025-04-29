@@ -1,6 +1,6 @@
 import { TypeUtils } from "../../internal.js";
 import { Intention } from "../../internal.js";
-import { IntentionFactory } from "../../internal.js";
+import { Intention } from "../../internal.js";
 import { Agent } from "../../internal.js";
 
 /**
@@ -12,7 +12,7 @@ export class IntentionManager {
     /**
        * A constant representing a null location.
        */
-    static NULL_INTENTION = IntentionFactory.createNullIntention();
+    static NULL_INTENTION = Intention.createNullIntention();
 
     /**
      * Constructor for the IntentionManager class.
@@ -26,6 +26,7 @@ export class IntentionManager {
      * Adds an intention to the agent's list of intentions.
      * 
      * @param {Intention} intention The intention to add to the agent.
+     * @throws {Error} If the intention is not an instance of Intention.
      */
     addIntention(intention) {
         TypeUtils.ensureInstanceOf(intention, Intention);
@@ -46,6 +47,8 @@ export class IntentionManager {
      *
      * @param {Agent} agent The agent whose intentions are being managed.
      * @param {Desire} desire The best desire to consider for intention selection.
+     * @throws {Error} If the agent is not an instance of Agent.
+     * @throws {Error} If the desire is not an instance of Desire.
      */
     update(agent, desire) {
         TypeUtils.ensureInstanceOf(agent, Agent);
@@ -72,6 +75,7 @@ export class IntentionManager {
      *
      * @param {Agent} agent The agent whose intention is being executed.
      * @returns {boolean} True if the intention was executed successfully, false otherwise.
+     * @throws {Error} If the agent is not an instance of Agent.
      */
     executeCurrentIntention(agent) {
         TypeUtils.ensureInstanceOf(agent, Agent);

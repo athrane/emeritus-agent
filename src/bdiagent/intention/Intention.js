@@ -69,4 +69,38 @@ export class Intention {
         }
         return false; // Indicate failure to execute
     }
+
+
+    /**
+     * Creates a new intention instance.
+     *
+     * @param {string} name The name of the intention.
+     * @param {Array<Function>} actions The actions to execute.
+     * @param {Function} preconditions The preconditions function. 
+     * @param {Function} effects The effects function.
+     * @param {Location} location The location associated with the intention.
+     * @returns {Intention} A new Intention instance.
+     */
+    static create(name, actions, preconditions, effects, location) {
+        return new Intention(name, actions, preconditions, effects, location);
+    }
+
+
+    /**
+     * Creates a new null intention instance.
+     */
+    static createNullIntention() {
+        return new Intention(
+            "Null intention", // Name of the intention
+            [
+                (agent) => {
+                    //console.log("Doing nothing.");
+                }
+            ], // Actions to execute
+            (agent) => true, // Preconditions (always true for a null intention)
+            (agent) => {}, // Effects (no effects for a null intention)
+            Location.createNullLocation() // add null location
+        );
+    }
+
 }
