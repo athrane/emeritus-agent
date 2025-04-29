@@ -4,6 +4,7 @@ import { IntegerPercentageBeliefUpdater } from '../internal.js';
 import { DesireFactory } from '../internal.js';
 import { IntentionFactory } from '../internal.js';
 import { LocationFactory } from '../internal.js'; 
+import { Location } from '../internal.js'; 
 import { Scene } from '../internal.js'; 
 
 /**
@@ -20,7 +21,7 @@ export class AgentFactory {
      * @returns {Agent} The created agent.
      */
     static createNullAgent(scene) {
-        const initialLocation = LocationFactory.createNullLocation();
+        const initialLocation = Location.createNullLocation();
         return new Agent("NULL Agent", initialLocation, AgentFactory.MOVEMENT_SPEED, scene)
     }
 

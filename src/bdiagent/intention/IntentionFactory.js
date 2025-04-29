@@ -1,5 +1,6 @@
 import { Intention } from "../../internal.js";
 import { LocationFactory } from "../../internal.js";
+import { Location } from "../../internal.js";
 
 export class IntentionFactory {
     
@@ -16,7 +17,7 @@ export class IntentionFactory {
             ], // Actions to execute
             (agent) => true, // Preconditions (always true for a null intention)
             (agent) => {}, // Effects (no effects for a null intention)
-            LocationFactory.createNullLocation() // add null location
+            Location.createNullLocation() // add null location
         );
     }
 

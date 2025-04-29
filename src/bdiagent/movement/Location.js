@@ -12,6 +12,11 @@ import { Position } from '../../internal.js';
 export class Location {
 
     /**
+     * A constant representing a null location.
+     */
+    static NULL_LOCATION = Location.create("NULL Location (0,0)", Position.create(0, 0));
+
+    /**
      * Constructor for the Location class.
      * 
      * @param {string} name The name of the location.
@@ -49,6 +54,15 @@ export class Location {
      */
     static create(name, position) {
         return new Location(name, position);
+    }
+
+    /**
+     * Creates a null location with coordinates (0,0).
+     * 
+     * @returns {Location} A Location instance representing a null location.
+     */
+    static createNullLocation() {
+        return this.NULL_LOCATION;
     }
 
 }

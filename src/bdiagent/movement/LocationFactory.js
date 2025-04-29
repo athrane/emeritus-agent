@@ -7,16 +7,6 @@ import { Position } from '../../internal.js';
 export class LocationFactory {
 
     /**
-     * Creates a null location at coordinates (0,0).
-     * 
-     * @returns {Location} A Location instance representing a null location.
-     */
-    static createNullLocation() {
-        const position = Position.create(0, 0);
-        return Location.create("NULL Location (0,0)", position);
-    }
-
-    /**
      * Creates a bedroom location.
      * 
      * @returns {Location} A Location instance representing a bedroom.

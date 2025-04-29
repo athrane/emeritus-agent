@@ -1,6 +1,5 @@
 import { TypeUtils } from "../../internal.js";
 import { Location } from "../../internal.js";
-import { LocationFactory } from "../../internal.js";
 import { Scene } from "../../internal.js";
 import { Path } from "../../internal.js";
 import { Position } from "../../internal.js";
@@ -14,7 +13,7 @@ export class Movement {
     /**
      * A constant representing a null location.
      */
-    static NULL_LOCATION = LocationFactory.createNullLocation();
+    static NULL_LOCATION = Location.createNullLocation();
 
     /**
      * Constructor for the Movement class.
