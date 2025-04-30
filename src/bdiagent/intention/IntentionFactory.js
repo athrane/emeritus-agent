@@ -1,5 +1,4 @@
 import { Intention } from "../../internal.js";
-import { LocationFactory } from "../../internal.js";
 import { Scene } from "../../internal.js";
 
 export class IntentionFactory {
