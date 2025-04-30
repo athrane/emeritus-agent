@@ -9,6 +9,15 @@ describe('AgentFactory', () => {
 
     beforeEach(() => {
         scene = new Scene(); 
+        const bedroom = scene.createRoom("Bedroom",0,0,1,1);
+        const kitchen = scene.createRoom("Kitchen",1,0,1,1);
+        const garden = scene.createRoom("Garden",4,0,1,1);
+        const livingRoom = scene.createRoom("Living Room",2,0,1,1);
+        bedroom.createLocation("Bed", 0.5, 1); 
+        kitchen.createLocation("Fridge", 0.25, 1); 
+        garden.createLocation("Flower Bed", 0.5, 1);
+        livingRoom.createLocation("Sofa", 0.5, 1);
+
     });
 
     it('should create null agent', () => {
@@ -58,9 +67,9 @@ describe('AgentFactory', () => {
 
         // Check intentions
         expect(oldMan.intentionManager.intentions.length).toBe(4);
-        expect(oldMan.intentionManager.intentions[0].constructor.name).toBe(IntentionFactory.createSleepIntention().constructor.name);
-        expect(oldMan.intentionManager.intentions[1].constructor.name).toBe(IntentionFactory.createEatIntention().constructor.name);
-        expect(oldMan.intentionManager.intentions[2].constructor.name).toBe(IntentionFactory.createEntertainIntention().constructor.name);
-        expect(oldMan.intentionManager.intentions[3].constructor.name).toBe(IntentionFactory.createSitIdleIntention().constructor.name);
+        expect(oldMan.intentionManager.intentions[0].constructor.name).toBe(IntentionFactory.createSleepIntention(scene).constructor.name);
+        expect(oldMan.intentionManager.intentions[1].constructor.name).toBe(IntentionFactory.createEatIntention(scene).constructor.name);
+        expect(oldMan.intentionManager.intentions[2].constructor.name).toBe(IntentionFactory.createEntertainIntention(scene).constructor.name);
+        expect(oldMan.intentionManager.intentions[3].constructor.name).toBe(IntentionFactory.createSitIdleIntention(scene).constructor.name);
     });
 });

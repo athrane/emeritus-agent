@@ -159,7 +159,6 @@ This project includes the following classes, grouped by their respective directo
 ### `src/bdiagent/movement/`
 - **`Position`**: Represents an immutable 2D coordinate (x, y) within the simulation environment. Used as the basic unit for defining locations and room boundaries.
 - **`Location`**: Represents a named point of interest within a `Room` (e.g., "Kitchen Sink", "Bed"). Defined by a name and a `Position`. Objects are mutable.
-- **`LocationFactory`**: A utility class providing static methods to create predefined `Location` instances, simplifying scene setup.
 - **`Room`**: Represents a distinct area (e.g., "Kitchen", "Bedroom") defined by a name, position, size, and connections to adjacent rooms. Contains a list of `Location` objects within its boundaries. Objects are mutable.
 - **`Scene`**: Manages the overall simulation environment, containing all `Room` objects and their `Location`s. Provides pathfinding capabilities (`findShortestPath`) using Breadth-First Search (BFS) to determine the sequence of rooms needed to travel between two locations.
 - **`SceneFactory`**: A utility class designed to create pre-configured `Scene` objects, such as a standard house layout with interconnected rooms.

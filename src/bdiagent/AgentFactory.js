@@ -3,7 +3,6 @@ import { IntegerPercentageBelief } from '../internal.js';
 import { IntegerPercentageBeliefUpdater } from '../internal.js';
 import { DesireFactory } from '../internal.js';
 import { IntentionFactory } from '../internal.js';
-import { LocationFactory } from '../internal.js'; 
 import { Location } from '../internal.js'; 
 import { Scene } from '../internal.js'; 
 
@@ -34,7 +33,7 @@ export class AgentFactory {
     static createOldManAgent(scene) {
 
         // Create the agent
-        const initialLocation = LocationFactory.createBedroom();
+        const initialLocation = scene.getLocation("Bed");
         const oldMan = new Agent("Acticus", initialLocation, AgentFactory.MOVEMENT_SPEED, scene);
 
         // Add beliefs
@@ -58,10 +57,10 @@ export class AgentFactory {
         oldMan.addDesire(DesireFactory.createNullDesire());
 
         // Add intentions using IntentionFactory
-        oldMan.addIntention(IntentionFactory.createSleepIntention());
-        oldMan.addIntention(IntentionFactory.createEatIntention());
-        oldMan.addIntention(IntentionFactory.createEntertainIntention());
-        oldMan.addIntention(IntentionFactory.createSitIdleIntention());
+        oldMan.addIntention(IntentionFactory.createSleepIntention(scene));
+        oldMan.addIntention(IntentionFactory.createEatIntention(scene));
+        oldMan.addIntention(IntentionFactory.createEntertainIntention(scene));
+        oldMan.addIntention(IntentionFactory.createSitIdleIntention(scene));
 
         return oldMan;
     }

@@ -48,158 +48,6 @@ describe('Basic movement tests', () => {
         expect(movement.getDestination()).toBe(Movement.NULL_LOCATION);
     });
 
-    describe('Direct Movement (No Pathfinding Required)', () => {
-        // These tests assume moveTo sets currentTargetPosition directly
-        // because the start/end are in the same room.
-
-        let dummyRoom; // Define dummyRoom here to be accessible in tests
-
-        beforeEach(() => {
-            // Ensure the dummy room exists for these tests
-            // Use a consistent room for these direct movement tests
-            dummyRoom = scene.getRoom("DummyRoomForStart"); // Get the room created in the outer beforeEach
-            // Reset movement to start at the initialLocation within this room
-            initialLocation = dummyRoom.hasLocation("Start")
-                ? dummyRoom.locations.find(loc => loc.getName() === "Start") // Get existing if already created
-                : dummyRoom.createLocation("Start", 0, 0); // Or recreate if needed (e.g., if outer beforeEach changes)
-            movement = new Movement(initialLocation, 5, scene);
-        });
-
-        it('should set a destination and start moving', () => {
-            const destPosition = Position.create(10, 10);
-            // Create destination within the same dummy room
-            const destination = dummyRoom.createLocation("D1", destPosition.getX(), destPosition.getY());
-
-            movement.moveTo(destination);
-            expect(movement.getDestination()).toBe(destination);
-            expect(movement.isMoving()).toBe(true);
-            // Check that the target is the final destination directly because it's in the same room
-            expect(movement.currentTargetPosition).toEqual(destination.getPosition());
-        });
-
-        it('should update the position correctly when moving', () => {
-            const destPosition = Position.create(10, 0);
-            const destination = dummyRoom.createLocation("D1", destPosition.getX(), destPosition.getY());
-
-            movement.moveTo(destination);
-            movement.update();
-            expect(movement.getPosition().getX()).toBeCloseTo(5);
-            expect(movement.getPosition().getY()).toBe(0);
-            expect(movement.isMoving()).toBe(true);
-        });
-
-        it('should update the position correctly when moving #2', () => {
-            const destPosition = Position.create(10, 0);
-            const destination = dummyRoom.createLocation("D1", destPosition.getX(), destPosition.getY());
-
-            movement.moveTo(destination);
-            movement.update();
-            movement.update();
-            expect(movement.getPosition().getX()).toBeCloseTo(10);
-            expect(movement.getPosition().getY()).toBe(0);
-            expect(movement.isMoving()).toBe(false); // Should stop after reaching
-        });
-
-        it('should stop moving when the destination is reached', () => {
-            const destPosition = Position.create(30, 30);
-            const destination = dummyRoom.createLocation("D1", destPosition.getX(), destPosition.getY());
-
-            movement.moveTo(destination);
-
-            let reached = false;
-            for (let i = 0; i < 15; i++) { // Increased loop count slightly for diagonal
-                reached = movement.update();
-                if (reached) break;
-            }
-
-            expect(reached).toBe(true); // Make sure it actually reported reaching
-            expect(movement.getPosition().getX()).toBeCloseTo(destPosition.getX());
-            expect(movement.getPosition().getY()).toBeCloseTo(destPosition.getY());
-            expect(movement.isMoving()).toBe(false);
-            expect(movement.getDestination()).toBe(Movement.NULL_LOCATION);
-        });
-
-        it('should not move if not moving', () => {
-            const reached = movement.update(); // Should return true if not moving
-            expect(reached).toBe(true);
-            expect(movement.getPosition().getX()).toBe(initialLocation.getPosition().getX()); // Should be initial position
-            expect(movement.getPosition().getY()).toBe(initialLocation.getPosition().getY()); // Should be initial position
-            expect(movement.isMoving()).toBe(false);
-            expect(movement.getDestination()).toBe(Movement.NULL_LOCATION);
-        });
-
-        it('should stop immediately reach destination if it is close enough', () => {
-            const destPosition = Position.create(4, 0); // Distance < speed (5)
-            const destination = dummyRoom.createLocation("D1", destPosition.getX(), destPosition.getY());
-
-            movement.moveTo(destination);
-            const reached = movement.update();
-
-            expect(reached).toBe(true);
-            expect(movement.getPosition().getX()).toBeCloseTo(destPosition.getX()); // Use closeTo
-            expect(movement.getPosition().getY()).toBeCloseTo(destPosition.getY()); // Use closeTo
-            // Check final state
-            expect(movement.isMoving()).toBe(false);
-            expect(movement.getDestination()).toBe(Movement.NULL_LOCATION);
-        });
-
-        it('should not move if destination is NULL_LOCATION (even if isMoving was true)', () => {
-            // This test checks the early exit condition in update()
-            movement.destination = Movement.NULL_LOCATION;
-            movement.isAgentMoving = true; // Force moving state
-            movement.currentTargetPosition = Position.create(10,10); // Give it a target
-
-            const initialX = movement.getPosition().getX();
-            const initialY = movement.getPosition().getY();
-            const reached = movement.update(); // Should exit early
-
-            expect(reached).toBe(true); // Should report 'reached' because it exits
-            expect(movement.getPosition().getX()).toBe(initialX);
-            expect(movement.getPosition().getY()).toBe(initialY);
-            // The update method doesn't reset isAgentMoving in this specific exit case.
-            expect(movement.isMoving()).toBe(true);
-        });
-
-         it('should not move if currentTargetPosition is null (even if isMoving was true)', () => {
-            // This test checks another early exit condition in update()
-            const destPosition = Position.create(50,50);
-            const destination = dummyRoom.createLocation("SomeDest", destPosition.getX(), destPosition.getY());
-            movement.destination = destination; // Valid destination
-            movement.isAgentMoving = true; // Force moving state
-            movement.currentTargetPosition = null; // NO current target
-
-            const initialX = movement.getPosition().getX();
-            const initialY = movement.getPosition().getY();
-            const reached = movement.update(); // Should exit early
-
-            expect(reached).toBe(true); // Should report 'reached' because it exits
-            expect(movement.getPosition().getX()).toBe(initialX);
-            expect(movement.getPosition().getY()).toBe(initialY);
-            expect(movement.isMoving()).toBe(true); // State isn't reset here
-        });
-
-
-        it('should handle diagonal movement correctly', () => {
-            const destPosition = Position.create(10, 10);
-            const destination = dummyRoom.createLocation("D1", destPosition.getX(), destPosition.getY());
-
-            movement.moveTo(destination);
-
-            let reached = false;
-            // Loop enough times to guarantee arrival (sqrt(10^2 + 10^2) approx 14.14 / speed 5 = ~3 steps)
-            for (let i = 0; i < 5; i++) {
-                reached = movement.update();
-                if (reached) break;
-            }
-
-            expect(reached).toBe(true);
-            expect(movement.getPosition().getX()).toBeCloseTo(destPosition.getX());
-            expect(movement.getPosition().getY()).toBeCloseTo(destPosition.getY());
-            expect(movement.isMoving()).toBe(false);
-            expect(movement.getDestination()).toBe(Movement.NULL_LOCATION);
-        });
-    });
-
     describe('Pathfinding Movement', () => {
         let scene;
         let movement;
@@ -421,5 +269,161 @@ describe('Basic movement tests', () => {
              expect(movement.isMoving()).toBe(false);
          });
     });
-
 });
+
+describe('Direct Movement (No Pathfinding Required)', () => {
+    // These tests assume moveTo sets currentTargetPosition directly
+    // because the start/end are in the same room.
+
+    let dummyRoom; // Define dummyRoom here to be accessible in tests
+    let scene;
+    let initialLocation;
+    let initialPosition;
+    let movement;
+
+    beforeEach(() => {
+        scene = new Scene(); 
+        initialPosition = Position.create(0, 0);
+        // Create a dummy room to hold the initial location for basic tests
+        dummyRoom = scene.createRoom("DummyRoomForStart", -100, -100, 200, 200);
+        initialLocation = dummyRoom.hasLocation("Start")
+            ? dummyRoom.locations.find(loc => loc.getName() === "Start") // Get existing if already created
+            : dummyRoom.createLocation("Start", 0, 0); // Or recreate if needed (e.g., if outer beforeEach changes)
+        movement = new Movement(initialLocation, 5, scene);
+    });
+
+    it('should set a destination and start moving', () => {
+        const destPosition = Position.create(10, 10);
+        // Create destination within the same dummy room
+        const destination = dummyRoom.createLocation("D1", destPosition.getX(), destPosition.getY());
+
+        movement.moveTo(destination);
+        expect(movement.getDestination()).toBe(destination);
+        expect(movement.isMoving()).toBe(true);
+        // Check that the target is the final destination directly because it's in the same room
+        expect(movement.currentTargetPosition).toEqual(destination.getPosition());
+    });
+
+    it('should update the position correctly when moving', () => {
+        const destPosition = Position.create(10, 0);
+        const destination = dummyRoom.createLocation("D1", destPosition.getX(), destPosition.getY());
+
+        movement.moveTo(destination);
+        movement.update();
+        expect(movement.getPosition().getX()).toBeCloseTo(5);
+        expect(movement.getPosition().getY()).toBe(0);
+        expect(movement.isMoving()).toBe(true);
+    });
+
+    it('should update the position correctly when moving #2', () => {
+        const destPosition = Position.create(10, 0);
+        const destination = dummyRoom.createLocation("D1", destPosition.getX(), destPosition.getY());
+
+        movement.moveTo(destination);
+        movement.update();
+        movement.update();
+        expect(movement.getPosition().getX()).toBeCloseTo(10);
+        expect(movement.getPosition().getY()).toBe(0);
+        expect(movement.isMoving()).toBe(false); // Should stop after reaching
+    });
+
+    it('should stop moving when the destination is reached', () => {
+        const destPosition = Position.create(30, 30);
+        const destination = dummyRoom.createLocation("D1", destPosition.getX(), destPosition.getY());
+
+        movement.moveTo(destination);
+
+        let reached = false;
+        for (let i = 0; i < 15; i++) { // Increased loop count slightly for diagonal
+            reached = movement.update();
+            if (reached) break;
+        }
+
+        expect(reached).toBe(true); // Make sure it actually reported reaching
+        expect(movement.getPosition().getX()).toBeCloseTo(destPosition.getX());
+        expect(movement.getPosition().getY()).toBeCloseTo(destPosition.getY());
+        expect(movement.isMoving()).toBe(false);
+        expect(movement.getDestination()).toBe(Movement.NULL_LOCATION);
+    });
+
+    it('should not move if not moving', () => {
+        const reached = movement.update(); // Should return true if not moving
+        expect(reached).toBe(true);
+        expect(movement.getPosition().getX()).toBe(initialLocation.getPosition().getX()); // Should be initial position
+        expect(movement.getPosition().getY()).toBe(initialLocation.getPosition().getY()); // Should be initial position
+        expect(movement.isMoving()).toBe(false);
+        expect(movement.getDestination()).toBe(Movement.NULL_LOCATION);
+    });
+
+    it('should stop immediately reach destination if it is close enough', () => {
+        const destPosition = Position.create(4, 0); // Distance < speed (5)
+        const destination = dummyRoom.createLocation("D1", destPosition.getX(), destPosition.getY());
+
+        movement.moveTo(destination);
+        const reached = movement.update();
+
+        expect(reached).toBe(true);
+        expect(movement.getPosition().getX()).toBeCloseTo(destPosition.getX()); // Use closeTo
+        expect(movement.getPosition().getY()).toBeCloseTo(destPosition.getY()); // Use closeTo
+        // Check final state
+        expect(movement.isMoving()).toBe(false);
+        expect(movement.getDestination()).toBe(Movement.NULL_LOCATION);
+    });
+
+    it('should not move if destination is NULL_LOCATION (even if isMoving was true)', () => {
+        // This test checks the early exit condition in update()
+        movement.destination = Movement.NULL_LOCATION;
+        movement.isAgentMoving = true; // Force moving state
+        movement.currentTargetPosition = Position.create(10,10); // Give it a target
+
+        const initialX = movement.getPosition().getX();
+        const initialY = movement.getPosition().getY();
+        const reached = movement.update(); // Should exit early
+
+        expect(reached).toBe(true); // Should report 'reached' because it exits
+        expect(movement.getPosition().getX()).toBe(initialX);
+        expect(movement.getPosition().getY()).toBe(initialY);
+        // The update method doesn't reset isAgentMoving in this specific exit case.
+        expect(movement.isMoving()).toBe(true);
+    });
+
+     it('should not move if currentTargetPosition is null (even if isMoving was true)', () => {
+        // This test checks another early exit condition in update()
+        const destPosition = Position.create(50,50);
+        const destination = dummyRoom.createLocation("SomeDest", destPosition.getX(), destPosition.getY());
+        movement.destination = destination; // Valid destination
+        movement.isAgentMoving = true; // Force moving state
+        movement.currentTargetPosition = null; // NO current target
+
+        const initialX = movement.getPosition().getX();
+        const initialY = movement.getPosition().getY();
+        const reached = movement.update(); // Should exit early
+
+        expect(reached).toBe(true); // Should report 'reached' because it exits
+        expect(movement.getPosition().getX()).toBe(initialX);
+        expect(movement.getPosition().getY()).toBe(initialY);
+        expect(movement.isMoving()).toBe(true); // State isn't reset here
+    });
+
+
+    it('should handle diagonal movement correctly', () => {
+        const destPosition = Position.create(10, 10);
+        const destination = dummyRoom.createLocation("D1", destPosition.getX(), destPosition.getY());
+
+        movement.moveTo(destination);
+
+        let reached = false;
+        // Loop enough times to guarantee arrival (sqrt(10^2 + 10^2) approx 14.14 / speed 5 = ~3 steps)
+        for (let i = 0; i < 5; i++) {
+            reached = movement.update();
+            if (reached) break;
+        }
+
+        expect(reached).toBe(true);
+        expect(movement.getPosition().getX()).toBeCloseTo(destPosition.getX());
+        expect(movement.getPosition().getY()).toBeCloseTo(destPosition.getY());
+        expect(movement.isMoving()).toBe(false);
+        expect(movement.getDestination()).toBe(Movement.NULL_LOCATION);
+    });
+});
+
