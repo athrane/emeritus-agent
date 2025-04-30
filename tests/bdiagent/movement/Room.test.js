@@ -44,6 +44,20 @@ describe('Room', () => {
 
   });
 
+  describe('createNullRoom', () => {
+    it('should create a null room with the name "NULL Room (0,0)" and size (0,0)', () => {
+      const nullRoom = Room.NULL_ROOM;
+      expect(nullRoom).toBeInstanceOf(Room);
+      expect(nullRoom.name).toBe('NULL Room (0,0)');
+      expect(nullRoom.getPosition().getX()).toBe(0);
+      expect(nullRoom.getPosition().getY()).toBe(0);
+      expect(nullRoom.getSize().getX()).toBe(0);
+      expect(nullRoom.getSize().getY()).toBe(0);
+      expect(nullRoom.locations).toEqual([]);
+      expect(nullRoom.adjacentRooms).toEqual([]);
+    });
+  });
+
   describe('addAdjacentRoom', () => {
 
     it('should add an adjacent room', () => {

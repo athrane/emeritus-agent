@@ -14,6 +14,11 @@ import { Position } from '../../internal.js';
 export class Room {
 
   /**
+   * A constant representing a null room.
+   */
+  static NULL_ROOM = Room.create("NULL Room (0,0)", Position.create(0, 0), Position.create(0, 0));
+
+  /**
    * Constructor for the Room class.
    *
    * @param {string} name The name of the room.
@@ -174,7 +179,7 @@ export class Room {
    */
   getAdjacentRooms() {
     return this.adjacentRooms;
-  } 
+  }
 
   /**
     * Creates a new Room object.
@@ -187,5 +192,14 @@ export class Room {
   static create(name, position, size) {
     return new Room(name, position, size);
   }
+
+  /**
+   * Creates a null room with coordinates (0,0) and size (0,0).
+   * 
+   * @returns {Room} A Room instance representing a null room.
+   */
+  static createNullRoom() {
+    return this.NULL_ROOM;
+  }  
 
 }
