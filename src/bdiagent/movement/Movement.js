@@ -34,6 +34,7 @@ export class Movement {
         this.destination = Movement.NULL_LOCATION;
         this.isAgentMoving = false;
         this.scene = scene;
+        this.currentRoom = initialLocation.getRoom(); 
 
         // initalize pathfinding
         this.currentPath = Path.createEmpty(); // Store the Path object 
@@ -45,6 +46,7 @@ export class Movement {
      * Gets the current location of the agent.
      * 
      * @returns {Location} The current location.
+     * @deprecated
      */
     getLocation() {
         return Location.create("Current Location", this.position, Room.createNullRoom());
@@ -124,30 +126,45 @@ export class Movement {
     updateCurrentTargetPosition(finalDestination) {
         TypeUtils.ensureInstanceOf(finalDestination, Location);
 
-        // exit if invalid state or path finished
-        if (this.currentPathIndex < 0 || this.currentPathIndex >= this.currentPath.getLength()) { //
-            // Invalid state or path finished
+        // exit if the path is empty
+        if (this.currentPath.isEmpty()) { 
+            this.currentTargetPosition = null;
+            this.isAgentMoving = false;
+            return;
+        }
+
+        // exit if the path index is out of bounds
+        if (this.currentPathIndex < 0) {
+            this.currentTargetPosition = null;
+            this.isAgentMoving = false;
+            return;            
+        }
+        // exit if the path index is out of bounds
+        if (this.currentPathIndex >= this.currentPath.getLength()) {
             this.currentTargetPosition = null;
             this.isAgentMoving = false;
             return;
         }
 
         // Get the next room name from the path
-        const nextRoomName = this.currentPath.getRoomAt(this.currentPathIndex); //
+        const nextRoomName = this.currentPath.getRoomAt(this.currentPathIndex); 
+        const nextRoom = this.scene.getRoom(nextRoomName); 
+
+        // set the current room - even though the agent is not in the room yet
+        this.currentRoom = nextRoom;
 
         // Check if this is the last room in the path
         if (this.currentPathIndex === this.currentPath.getLength() - 1) {
             // Last step: target is the final destination's position
             this.currentTargetPosition = finalDestination.getPosition();
         } else {
-            // Intermediate step: target the center of the next room (simplistic approach)
-            const nextRoom = this.scene.getRoom(nextRoomName); //
-            const roomPos = nextRoom.getPosition(); // [cite: 90]
-            const roomSize = nextRoom.getSize(); //
+            // Intermediate step: target the center of the next room (simplistic approach) 
+            const roomPos = nextRoom.getPosition(); 
+            const roomSize = nextRoom.getSize();
             // Calculate center position (adjust as needed for better navigation later)
             const centerX = roomPos.getX() + roomSize.getX() / 2;
             const centerY = roomPos.getY() + roomSize.getY() / 2;
-            this.currentTargetPosition = Position.create(centerX, centerY); //
+            this.currentTargetPosition = Position.create(centerX, centerY);
         }
         this.isAgentMoving = this.currentTargetPosition !== null;
     }

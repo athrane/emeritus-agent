@@ -132,6 +132,7 @@ export class Scene {
      *
      * @param {Location} location The location.
      * @returns {Room | undefined} The room containing the location, or undefined if not found.
+     * @deprecated
      */
     getRoomForLocation(location) {
         TypeUtils.ensureInstanceOf(location, Location);
