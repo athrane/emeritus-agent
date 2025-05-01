@@ -1,13 +1,15 @@
 import { Intention } from "../../../src/internal.js";
 import { Location } from "../../../src/internal.js";
 import { Position } from "../../../src/internal.js";
+import { Room } from "../../../src/internal.js";
 
 describe('Create Intention', () => {
     it('should create a Intention object', () => {
         const noActions = [];
         const preconditions = () => true;
         const effects = () => { };
-        const location = Location.create("Kitchen", Position.create(0, 0));
+        const room = Room.create("Room", Position.create(0, 0), Position.create(10, 10));
+        const location = Location.create("Kitchen", Position.create(0, 0), room);
         const intention = Intention.create("Eat", noActions, preconditions, effects, location);
         expect(intention).toBeInstanceOf(Intention);
         expect(intention.getName()).toBe("Eat");

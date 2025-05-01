@@ -8,7 +8,7 @@ describe('Room', () => {
   beforeEach(() => {
     const position = Position.create(0, 0);
     const size = Position.create(10, 10);
-    room = new Room('Living Room', position, size);
+    room = new Room.create('Living Room', position, size);
   });
 
   describe('create', () => {
@@ -46,7 +46,7 @@ describe('Room', () => {
 
   describe('createNullRoom', () => {
     it('should create a null room with the name "NULL Room (0,0)" and size (0,0)', () => {
-      const nullRoom = Room.NULL_ROOM;
+      const nullRoom = Room.createNullRoom();
       expect(nullRoom).toBeInstanceOf(Room);
       expect(nullRoom.name).toBe('NULL Room (0,0)');
       expect(nullRoom.getPosition().getX()).toBe(0);
@@ -165,7 +165,7 @@ describe('Room', () => {
       // Create a room at absolute position (50, 50) with size (20, 30)
       const position = Position.create(50, 50);
       const size = Position.create(20, 30); // Relative bounds: (0,0) to (20,30)
-      offsetRoom = new Room('Offset Room', position, size);
+      offsetRoom = new Room.create('Offset Room', position, size);
     });
 
     it('should create locations within the relative boundaries (0,0 to 20,30)', () => {

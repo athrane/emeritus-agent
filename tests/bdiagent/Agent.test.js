@@ -4,17 +4,20 @@ import { IntentionManager } from "../../src/internal.js";
 import { Location } from "../../src/internal.js";
 import { Scene } from "../../src/internal.js";
 import { Position } from "../../src/internal.js";
+import { Room } from "../../src/internal.js";
 
 describe('Agent', () => {
     let scene;   
     let initialLocation;
     let initialPosition
+    let initialRoom;
     let agent;
 
     beforeEach(() => {
         scene = new Scene();
+        initialRoom = scene.createRoom("Room1", 0, 0, 10, 10);
         initialPosition = Position.create(0, 0);
-        initialLocation = Location.create("L1", initialPosition);
+        initialLocation = Location.create("L1", initialPosition, initialRoom);
         agent = new Agent('TestAgent', initialLocation, 5, scene);
     });
 

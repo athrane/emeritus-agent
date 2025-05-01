@@ -1,4 +1,4 @@
-import { TypeUtils } from "../../internal.js";
+import { Room, TypeUtils } from "../../internal.js";
 import { Location } from "../../internal.js";
 import { Scene } from "../../internal.js";
 import { Path } from "../../internal.js";
@@ -47,7 +47,7 @@ export class Movement {
      * @returns {Location} The current location.
      */
     getLocation() {
-        return Location.create("Current Location", this.position);
+        return Location.create("Current Location", this.position, Room.createNullRoom());
     }
 
     /**

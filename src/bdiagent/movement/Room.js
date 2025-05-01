@@ -14,11 +14,6 @@ import { Position } from '../../internal.js';
 export class Room {
 
   /**
-   * A constant representing a null room.
-   */
-  static NULL_ROOM = Room.create("NULL Room (0,0)", Position.create(0, 0), Position.create(0, 0));
-
-  /**
    * Constructor for the Room class.
    *
    * @param {string} name The name of the room.
@@ -93,7 +88,7 @@ export class Room {
 
     // create location        
     const position = Position.create(x, y);
-    const location = Location.create(name, position);
+    const location = Location.create(name, position, this);
 
     // add location to the room
     this.locations.push(location);
@@ -199,7 +194,7 @@ export class Room {
    * @returns {Room} A Room instance representing a null room.
    */
   static createNullRoom() {
-    return this.NULL_ROOM;
+    return Room.create("NULL Room (0,0)", Position.create(0, 0), Position.create(0, 0));
   }  
 
 }

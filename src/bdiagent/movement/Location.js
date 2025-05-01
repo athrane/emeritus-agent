@@ -1,4 +1,5 @@
 import { TypeUtils } from '../../internal.js';
+import { Room } from '../../internal.js';
 import { Position } from '../../internal.js';
 
 /**
@@ -12,21 +13,19 @@ import { Position } from '../../internal.js';
 export class Location {
 
     /**
-     * A constant representing a null location.
-     */
-    static NULL_LOCATION = Location.create("NULL Location (0,0)", Position.create(0, 0));
-
-    /**
      * Constructor for the Location class.
      * 
      * @param {string} name The name of the location.
      * @param {Position} position The Position object representing the coordinates of the location. The location is relative to the room. 
+     * @param {Room} room The room in which the location is located.
      */
-    constructor(name, position) {
+    constructor(name, position, room) {
         TypeUtils.ensureString(name);
         TypeUtils.ensureInstanceOf(position, Position);
+        TypeUtils.ensureInstanceOf(room, Room);
         this.name = name;
         this.position = position;
+        this.room = room; 
     }
 
     /**
@@ -46,14 +45,23 @@ export class Location {
     }
 
     /**
+     * Get the room in which the location is located.
+     * @returns {Room} The room in which the location is located.
+     */
+    getRoom() {
+        return this.room;
+    }
+
+    /**
      * Creates a new Location object from a name and a Position object.
      *
      * @param {string} name The name of the location.
      * @param {Position} position The Position object representing the coordinates of the location. The location is relative to the room. The location takes a copy of the position.
+     * @param {Room} room The room in which the location is located. 
      * @returns {Location} A new Location object with the specified name and coordinates.
      */
-    static create(name, position) {
-        return new Location(name, position);
+    static create(name, position, room) {
+        return new Location(name, position, room);
     }
 
     /**
@@ -62,7 +70,7 @@ export class Location {
      * @returns {Location} A Location instance representing a null location.
      */
     static createNullLocation() {
-        return this.NULL_LOCATION;
+        return Location.create("NULL Location (0,0)", Position.create(0, 0), Room.createNullRoom());;
     }
 
 }
