@@ -212,5 +212,37 @@ describe('Room', () => {
     });
   });
 
+  describe('isWithinRoom', () => {
+
+    it('should return true if the position is within the room', () => {
+      const position = Position.create(5, 5);
+      expect(room.isWithinRoom(position)).toBe(true);
+    });
+
+    it('should return true if the position is within the room, room with negative coordinates', () => {
+      const roomPosition = Position.create(-5, -5);
+      const roomSize = Position.create(2, 2);
+      const roomWithNegativeCoords = new Room.create('Room with negative coords.', roomPosition, roomSize);
+      const testPosition = Position.create(-5, -5);
+      expect(roomWithNegativeCoords.isWithinRoom(testPosition)).toBe(true);
+    });
+
+
+    it('should return false if the position is outside the room', () => {
+      const position = Position.create(15, 15);
+      expect(room.isWithinRoom(position)).toBe(false);
+    });
+
+    it('should return true if the position is on the edge of the room', () => {
+      const roomPosition = Position.create(-5, -5);
+      const roomSize = Position.create(2, 2);
+      const roomForEdgeTest = new Room.create('Room with negative coords.', roomPosition, roomSize);
+      const testPosition = Position.create(-5+2, -5+2);
+      expect(roomForEdgeTest.isWithinRoom(roomPosition)).toBe(true);
+      expect(roomForEdgeTest.isWithinRoom(testPosition)).toBe(true);
+
+    });
+  });
+
 });
 

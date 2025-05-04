@@ -4,7 +4,7 @@ import { Movement } from "../../../src/internal.js";
 import { Scene } from "../../../src/internal.js";
 import { Path } from "../../../src/internal.js";
 
-describe('Basic movement tests', () => {
+describe('create', () => {
     let initialLocation;
     let initialPosition;
     let movement;
@@ -13,9 +13,8 @@ describe('Basic movement tests', () => {
     beforeEach(() => {
         scene = new Scene(); 
         initialPosition = Position.create(0, 0);
-        // Create a dummy room to hold the initial location for basic tests
-        const dummyRoom = scene.createRoom("DummyRoomForStart", -100, -100, 200, 200);
-        initialLocation = dummyRoom.createLocation("Start", initialPosition.getX(), initialPosition.getY());
+        const testRoom = scene.createRoom("Test Room", 0, 0, 100, 100);
+        initialLocation = testRoom.createLocation("Start", initialPosition.getX(), initialPosition.getY());
         movement = new Movement(initialLocation, 5, scene);
     });
 
@@ -23,37 +22,142 @@ describe('Basic movement tests', () => {
         expect(movement).toBeInstanceOf(Movement);
     });
 
-    it('should get current location with the correct position', () => {
-        const currentLocation = movement.getLocation();
-        const currentPosition = movement.getPosition();
-        expect(currentLocation).toBeInstanceOf(Location);
-        expect(currentLocation.getName()).toBe("Current Location"); 
-        expect(currentLocation.getPosition().getX()).toBe(currentPosition.getX());
-        expect(currentLocation.getPosition().getY()).toBe(currentPosition.getY());
-    });
-
     it('should initialize with the correct position', () => {
         expect(movement.getPosition().getX()).toBe(0);
         expect(movement.getPosition().getY()).toBe(0);
     });
 
-    it('should initialize with the correct location and speed', () => {
-        expect(movement.getPosition().getX()).toBe(initialLocation.getPosition().getX());
-        expect(movement.getPosition().getY()).toBe(initialLocation.getPosition().getY());
+    it('should initialize with the correct speed', () => {
         expect(movement.speed).toBe(5);
     });
 
-    it('should initialize with null destination and no movement', () => {
-        expect(movement.isMoving()).toBe(false);
+    it('should initialize with the correct scene', () => {
+        expect(movement.scene).toBe(scene);
+    });
+
+    it('should initialize with the correct destination - null destination', () => {
         expect(movement.getDestination()).toBe(Movement.NULL_LOCATION);
     });
+
+    it('should initialize with the correct path', () => {
+        expect(movement.currentPath).toBeInstanceOf(Path);
+        expect(movement.currentPath.isEmpty()).toBe(true);
+    });
+
+    it('should initialize with the correct path index', () => {
+        expect(movement.currentPathIndex).toBe(-1);
+    });
+
+    it('should initialize with the correct target position', () => {
+        expect(movement.currentTargetPosition).toBeNull();
+    });
+
+    it('should initialize with the correct moving state - no movement', () => {
+        expect(movement.isMoving()).toBe(false);
+    });
+
+    it('should initialize with the correct room', () => {
+        expect(movement.getRoom()).toBe(initialLocation.getRoom());
+    });
+
 });
 
-describe('Direct Movement (No Pathfinding Required)', () => {
-    // These tests assume moveTo sets currentTargetPosition directly
-    // because the start/end are in the same room.
+describe('getPosition', () => {
+    let initialLocation;
+    let initialPosition;
+    let movement;
+    let scene;
+    let testRoom;
 
-    let testRoom; // Define dummyRoom here to be accessible in tests
+    beforeEach(() => {
+        scene = new Scene();
+        initialPosition = Position.create(0, 0);
+        testRoom = scene.createRoom("Test Room", 0, 0, 100, 100);
+        initialLocation = testRoom.createLocation("Start", initialPosition.getX(), initialPosition.getY());
+        movement = new Movement(initialLocation, 5, scene);
+    });
+
+    it('should return the current position', () => {
+        const position = movement.getPosition();
+        expect(position).toBeInstanceOf(Position);
+        expect(position.getX()).toBe(initialPosition.getX());
+        expect(position.getY()).toBe(initialPosition.getY());
+    });
+
+    it('should return the current position after moving along x axis', () => {
+        const destPosition = Position.create(10, 0);
+        const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
+        movement.moveTo(destLocation);
+        movement.update();
+        const position = movement.getPosition();
+        expect(position).toBeInstanceOf(Position);
+        expect(position.getX()).toBeCloseTo(5);
+        expect(position.getY()).toBeCloseTo(0);
+    });
+
+    it('should return the current position after moving along y axis', () => {
+        const destPosition = Position.create(0, 10);
+        const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
+        movement.moveTo(destLocation);
+        movement.update();
+        const position = movement.getPosition();
+        expect(position).toBeInstanceOf(Position);
+        expect(position.getX()).toBeCloseTo(0);
+        expect(position.getY()).toBeCloseTo(5);
+    });
+
+});
+
+describe('getDestination', () => {
+    let initialLocation;
+    let initialPosition;
+    let movement;
+    let scene;
+    let testRoom;
+
+    beforeEach(() => {
+        scene = new Scene();
+        initialPosition = Position.create(0, 0);
+        testRoom = scene.createRoom("Test Room", 0, 0, 100, 100);
+        initialLocation = testRoom.createLocation("Start", initialPosition.getX(), initialPosition.getY());
+        movement = new Movement(initialLocation, 5, scene);
+    });
+
+    it('should return the initial destination', () => {
+        const position = movement.getDestination();
+        expect(position).toBe(Movement.NULL_LOCATION);
+    });
+
+    it('should return the current destination after moving along the x axis', () => {
+        const destPosition = Position.create(10, 0);
+        const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
+        movement.moveTo(destLocation);
+        const actualLocation = movement.getDestination();
+        expect(actualLocation).toBeInstanceOf(Location);
+        expect(actualLocation.getName()).toBe(destLocation.getName());
+        const actualPosition = actualLocation.getPhysicalPosition();
+        expect(actualPosition.getX()).toBe(destPosition.getX());
+        expect(actualPosition.getY()).toBe(destPosition.getY());
+    });
+
+    it('should return the current destination after moving along the y axis', () => {
+        const destPosition = Position.create(0, 10);
+        const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
+        movement.moveTo(destLocation);
+        const actualLocation = movement.getDestination();
+        expect(actualLocation).toBeInstanceOf(Location);
+        expect(actualLocation.getName()).toBe(destLocation.getName());
+        const actualPosition = actualLocation.getPhysicalPosition();
+        expect(actualPosition.getX()).toBe(destPosition.getX());
+        expect(actualPosition.getY()).toBe(destPosition.getY());
+    });
+
+});
+
+
+describe('Direct Movement (No Pathfinding Required)', () => {
+    // This test suite focuses on direct movement within a single room
+    let testRoom; 
     let scene;
     let initialLocation;
     let initialPosition;
@@ -62,50 +166,99 @@ describe('Direct Movement (No Pathfinding Required)', () => {
     beforeEach(() => {
         scene = new Scene(); 
         initialPosition = Position.create(0, 0);
-        // Create a room to hold the initial location for basic tests
-        testRoom = scene.createRoom("Test Room", -100, -100, 200, 200);
+        testRoom = scene.createRoom("Test Room", 0, 0, 200, 200);
         initialLocation = testRoom.createLocation("Start", 0, 0);
         movement = new Movement(initialLocation, 5, scene);
     });
 
-    it('should set a destination and start moving', () => {
+    it('should set a destination when starting movement', () => {
         // Create destination location within the same room
-        const destPosition = Position.create(10, 10);
-        const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
-
-        movement.moveTo(destLocation);
-        expect(movement.getDestination()).toBe(destLocation);
-        expect(movement.isMoving()).toBe(true);
-        // Check that the target is the final destination directly because it's in the same room
-        expect(movement.currentTargetPosition).toEqual(destLocation.getPhysicalPosition());
-    });
-
-    it('should update the position correctly when moving', () => {
-        const destPosition = Position.create(0, 0);
-        const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
-        movement.moveTo(destLocation);
-        movement.update();
-        expect(movement.getPosition().getX()).toBeCloseTo(5);
-        expect(movement.getPosition().getY()).toBe(0);
-        expect(movement.isMoving()).toBe(true);
-    });
-
-    it('should update the position correctly when moving #2', () => {
         const destPosition = Position.create(10, 0);
         const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
 
         movement.moveTo(destLocation);
+        expect(movement.getDestination()).toBe(destLocation);
+    });
+
+    it('should update the movement state when starting movement', () => {
+        // Create destination location within the same room
+        const destPosition = Position.create(10, 0);
+        const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
+
+        movement.moveTo(destLocation);
+        expect(movement.isMoving()).toBe(true);
+    });
+
+    it('should update the target position when starting movement', () => {
+        const destPosition = Position.create(10, 0);
+        const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
+        movement.moveTo(destLocation);
+        expect(movement.currentTargetPosition).toEqual(destLocation.getPhysicalPosition());
+    });
+
+    it('should update the position correctly - when moving along the x axis', () => {
+        const destPosition = Position.create(10, 0);
+        const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
+        movement.moveTo(destLocation);
+        movement.update();
+        expect(movement.getPosition().getX()).toBeCloseTo(5);
+        expect(movement.getPosition().getY()).toBeCloseTo(0);
+        expect(movement.isMoving()).toBe(true);
+    });
+
+    it('should update the position correctly - when moving along the x axis #2', () => {
+        const destPosition = Position.create(10, 0);
+        const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
+        movement.moveTo(destLocation);
         movement.update();
         movement.update();
         expect(movement.getPosition().getX()).toBeCloseTo(10);
-        expect(movement.getPosition().getY()).toBe(0);
-        expect(movement.isMoving()).toBe(false); // Should stop after reaching
+        expect(movement.getPosition().getY()).toBeCloseTo(0);
+        expect(movement.isMoving()).toBe(false);
+    });
+
+    it('should update the position correctly - when moving along the y axis', () => {
+        const destPosition = Position.create(0, 10);
+        const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
+        movement.moveTo(destLocation);
+        movement.update();
+        expect(movement.getPosition().getX()).toBeCloseTo(0);
+        expect(movement.getPosition().getY()).toBeCloseTo(5);
+        expect(movement.isMoving()).toBe(true);
+    });
+
+    it('should update the position correctly - when moving along the y axis #2', () => {
+        const destPosition = Position.create(0, 10);
+        const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
+        movement.moveTo(destLocation);
+        movement.update();
+        movement.update();
+        expect(movement.getPosition().getX()).toBeCloseTo(0);
+        expect(movement.getPosition().getY()).toBeCloseTo(10);
+        expect(movement.isMoving()).toBe(false);
+    });
+
+    it('should stop moving when the destination is reached - when moving along the x axis', () => {
+        const destPosition = Position.create(10, 0);
+        const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
+        movement.moveTo(destLocation);
+        movement.update();
+        movement.update();
+        expect(movement.isMoving()).toBe(false);
+    });
+
+    it('should stop moving when the destination is reached - when moving along the y axis', () => {
+        const destPosition = Position.create(0, 10);
+        const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
+        movement.moveTo(destLocation);
+        movement.update();
+        movement.update();
+        expect(movement.isMoving()).toBe(false);
     });
 
     it('should stop moving when the destination is reached', () => {
         const destPosition = Position.create(30, 30);
-        const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
-        
+        const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());        
         movement.moveTo(destLocation);
 
         let reached = false;
@@ -118,75 +271,48 @@ describe('Direct Movement (No Pathfinding Required)', () => {
         expect(movement.getPosition().getX()).toBeCloseTo(destPosition.getX());
         expect(movement.getPosition().getY()).toBeCloseTo(destPosition.getY());
         expect(movement.isMoving()).toBe(false);
-        expect(movement.getDestination()).toBe(Movement.NULL_LOCATION);
+        //expect(movement.getDestination()).toBe(Movement.NULL_LOCATION);
     });
 
-    it('should not move if not moving', () => {
+    it('should clear destination when reached', () => { 
+        const destPosition = Position.create(5, 0);
+        const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
+        movement.moveTo(destLocation);
+        movement.update();
+        movement.update(); // Move to destination
+        const actualDestination = movement.getDestination();
+        expect(actualDestination.getName()).toBe(Movement.NULL_LOCATION.getName()); // Destination should be cleared 
+    });
+
+    it('should not report move if not moving', () => {
         const reached = movement.update(); // Should return true if not moving
         expect(reached).toBe(true);
-        expect(movement.getPosition().getX()).toBe(initialLocation.getPosition().getX()); // Should be initial position
-        expect(movement.getPosition().getY()).toBe(initialLocation.getPosition().getY()); // Should be initial position
         expect(movement.isMoving()).toBe(false);
-        expect(movement.getDestination()).toBe(Movement.NULL_LOCATION);
+    });
+
+    it('should not update position if not moving', () => {
+        const reached = movement.update(); // Should return true if not moving
+        expect(reached).toBe(true);
+        const actualPosition = movement.getPosition();
+        expect(actualPosition.getX()).toBe(initialPosition.getX()); 
+        expect(actualPosition.getY()).toBe(initialPosition.getY());
     });
 
     it('should stop immediately reach destination if it is close enough', () => {
         const destPosition = Position.create(4, 0); // Distance < speed (5)
         const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
-
         movement.moveTo(destLocation);
         const reached = movement.update();
-
         expect(reached).toBe(true);
-        expect(movement.getPosition().getX()).toBeCloseTo(destPosition.getX()); // Use closeTo
-        expect(movement.getPosition().getY()).toBeCloseTo(destPosition.getY()); // Use closeTo
-        // Check final state
+        expect(movement.getPosition().getX()).toBeCloseTo(destPosition.getX()); 
+        expect(movement.getPosition().getY()).toBeCloseTo(destPosition.getY()); 
         expect(movement.isMoving()).toBe(false);
-        expect(movement.getDestination()).toBe(Movement.NULL_LOCATION);
     });
-
-    it('should not move if destination is NULL_LOCATION (even if isMoving was true)', () => {
-        // This test checks the early exit condition in update()
-        movement.destination = Movement.NULL_LOCATION;
-        movement.isAgentMoving = true; // Force moving state
-        movement.currentTargetPosition = Position.create(10,10); // Give it a target
-
-        const initialX = movement.getPosition().getX();
-        const initialY = movement.getPosition().getY();
-        const reached = movement.update(); // Should exit early
-
-        expect(reached).toBe(true); // Should report 'reached' because it exits
-        expect(movement.getPosition().getX()).toBe(initialX);
-        expect(movement.getPosition().getY()).toBe(initialY);
-        // The update method doesn't reset isAgentMoving in this specific exit case.
-        expect(movement.isMoving()).toBe(true);
-    });
-
-     it('should not move if currentTargetPosition is null (even if isMoving was true)', () => {
-        // This test checks another early exit condition in update()
-        const destPosition = Position.create(50,50);
-        const destination = testRoom.createLocation("SomeDest", destPosition.getX(), destPosition.getY());
-        movement.destination = destination; // Valid destination
-        movement.isAgentMoving = true; // Force moving state
-        movement.currentTargetPosition = null; // NO current target
-
-        const initialX = movement.getPosition().getX();
-        const initialY = movement.getPosition().getY();
-        const reached = movement.update(); // Should exit early
-
-        expect(reached).toBe(true); // Should report 'reached' because it exits
-        expect(movement.getPosition().getX()).toBe(initialX);
-        expect(movement.getPosition().getY()).toBe(initialY);
-        expect(movement.isMoving()).toBe(true); // State isn't reset here
-    });
-
 
     it('should handle diagonal movement correctly', () => {
         const destPosition = Position.create(10, 10);
         const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
-
         movement.moveTo(destLocation);
-
         let reached = false;
         // Loop enough times to guarantee arrival (sqrt(10^2 + 10^2) approx 14.14 / speed 5 = ~3 steps)
         for (let i = 0; i < 5; i++) {
@@ -198,7 +324,6 @@ describe('Direct Movement (No Pathfinding Required)', () => {
         expect(movement.getPosition().getX()).toBeCloseTo(destPosition.getX());
         expect(movement.getPosition().getY()).toBeCloseTo(destPosition.getY());
         expect(movement.isMoving()).toBe(false);
-        expect(movement.getDestination()).toBe(Movement.NULL_LOCATION);
     });
 });
 

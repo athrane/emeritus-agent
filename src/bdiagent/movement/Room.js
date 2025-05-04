@@ -116,6 +116,25 @@ export class Room {
   }
 
   /**
+   * Checks if the given absolute coordinates in position are within the room's boundaries.
+   * Coordinates are absolute, so they are compared to the room's position.
+   * 
+   * @param {Position} position The absolute position to check.
+   * @returns {boolean} True if the poistion is within the room.
+   */
+  isWithinRoom(position) {
+    TypeUtils.ensureInstanceOf(position, Position);
+
+    // get coordinates of the position
+    const x = position.getX();
+    const y = position.getY();
+
+    // Check if the coordinates are within the position and size of the room
+    return x >= this.position.getX() && x <= this.position.getX() + this.size.getX() &&
+           y >= this.position.getY() && y <= this.position.getY() + this.size.getY();
+  }
+
+  /**
    * Checks if a location is in the room.
    *
    * @param {locationName} location The location name to check.

@@ -62,13 +62,32 @@ export class Movement {
     }
 
     /**
-     * Gets the current destination of the agent.
+     * Gets the current destination location of the agent.
      * 
-     * @returns {Location | null} The destination location, or null if not moving.
+     * @returns {Location} The destination location, or the null destination if not moving.
      */
     getDestination() {
         return this.destination;
     }
+
+    /**
+     * Gets the current room that the agent is moving towards or is in.
+     * 
+     * @returns {Room} The current that the agent is moving towards or is in.
+     */ 
+    getRoom() {
+        return this.currentRoom;
+    }
+
+    /**
+     * Checks if the agent is within the current room.
+     * 
+     * @returns {boolean} True if the agent is within the current room, false otherwise.
+     */
+    isWithinRoom() {
+        // check if the agent position is within absolute coordinates of the room
+        return this.currentRoom.isWithinRoom(this.position);
+    }    
 
     /**
        * Checks if the agent is currently moving.
@@ -95,6 +114,7 @@ export class Movement {
 
         //  if the path is empty then exit
         if (this.currentPath.isEmpty()) {
+            //console.log("moveTo: Path is empty, cannot move.");
             this.isAgentMoving = false;
             this.currentTargetPosition = null;
             this.destination = Movement.NULL_LOCATION; 
@@ -103,6 +123,7 @@ export class Movement {
 
         // if start and end rooms are the same, but position and end location positions differ set target position
         if(this.currentRoom.getName() === destination.getRoom().getName()) {
+            //console.log("moveTo: Same room, but different positions.");
             this.currentTargetPosition = destination.getPhysicalPosition();
             this.isAgentMoving = true;
             this.destination = destination;
@@ -110,7 +131,7 @@ export class Movement {
         }
 
         // Determine the first intermediate target position
-        this.updateCurrentTargetPosition(destination);
+        this.updateTargetPositionForNextPathSegment(destination);
         this.isAgentMoving = true;
 
         // The final destination field might become redundant or represent the *final* goal
@@ -124,7 +145,7 @@ export class Movement {
      *  
      * @param {Location} finalDestination The final destination location.
      */
-    updateCurrentTargetPosition(finalDestination) {
+    updateTargetPositionForNextPathSegment(finalDestination) {
         TypeUtils.ensureInstanceOf(finalDestination, Location);
 
         // exit if the path is empty
@@ -225,7 +246,7 @@ export class Movement {
 
             // Reached an intermediate waypoint, advance path
             this.currentPathIndex++;
-            this.updateCurrentTargetPosition(this.destination); 
+            this.updateTargetPositionForNextPathSegment(this.destination); 
 
             // Continue moving in the same tick if a new target is set
             return this.update(); 
