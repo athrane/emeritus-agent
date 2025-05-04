@@ -134,7 +134,7 @@ describe('Scene', () => {
 
     });
 
-    describe('findShortestPath2', () => {
+    describe('findShortestPath', () => {
         let hallway, livingRoom, kitchen, unconnectedRoom; // Define rooms
         let locEntrance, locSofa, locStove, locDesk; // Define locations
 
@@ -162,39 +162,39 @@ describe('Scene', () => {
         });
 
         test('should return a Path object', () => {
-            const path = scene.findShortestPath2(hallway, livingRoom);
+            const path = scene.findShortestPath(hallway, livingRoom);
             expect(path).toBeInstanceOf(Path);
         });
 
         test('should find a direct path between adjacent rooms', () => {
-            const path = scene.findShortestPath2(livingRoom, kitchen);
+            const path = scene.findShortestPath(livingRoom, kitchen);
             expect(path.getRoomNames()).toEqual(['Living Room', 'Kitchen']);
         });
 
         test('should find a path through an intermediate room', () => {
-            const path = scene.findShortestPath2(hallway, kitchen);
+            const path = scene.findShortestPath(hallway, kitchen);
             expect(path.getRoomNames()).toEqual(['Hallway', 'Living Room', 'Kitchen']);
         });
 
         test('should return a path with only the start room if start and end are in the same room', () => {
-            const path = scene.findShortestPath2(hallway, hallway);
+            const path = scene.findShortestPath(hallway, hallway);
             expect(path.getRoomNames()).toEqual(['Hallway']);
         });
 
         test('should return an empty path if no path exists (unconnected rooms)', () => {
-            const path = scene.findShortestPath2(hallway, unconnectedRoom);
+            const path = scene.findShortestPath(hallway, unconnectedRoom);
             expect(path).toBeInstanceOf(Path);
             expect(path.isEmpty()).toBe(true);
             expect(path.getRoomNames()).toEqual([]);
         });
 
         test('should throw error if start or end is not a Room object', () => {
-            expect(() => scene.findShortestPath2(hallway, 'NotARoom')).toThrowError();
-            expect(() => scene.findShortestPath2('NotARoom', kitchen)).toThrowError();
+            expect(() => scene.findShortestPath(hallway, 'NotARoom')).toThrowError();
+            expect(() => scene.findShortestPath('NotARoom', kitchen)).toThrowError();
         });
 
         test('should throw error if start and end are the same room', () => {
-            expect(() => scene.findShortestPath2(hallway, hallway)).not.toThrowError();
+            expect(() => scene.findShortestPath(hallway, hallway)).not.toThrowError();
         });
 
     });

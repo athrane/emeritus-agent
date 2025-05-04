@@ -90,7 +90,7 @@ export class Movement {
 
         // calculate path
         const destinationRoom = destination.getRoom();
-        this.currentPath = this.scene.findShortestPath2(this.currentRoom, destinationRoom);
+        this.currentPath = this.scene.findShortestPath(this.currentRoom, destinationRoom);
         this.currentPathIndex = 0; // reset path index
 
         //  if the path is empty then exit
