@@ -5,7 +5,7 @@ import { TypeUtils } from '../../internal.js';
  */
 export class Path {
     /** @type {string[]} */
-    #roomNames; // Private field to hold the room names
+    roomNames; // Private field to hold the room names
 
     /**
      * Creates a new Path instance.
@@ -14,7 +14,7 @@ export class Path {
     constructor(roomNames) {
         TypeUtils.ensureArray(roomNames);
         roomNames.forEach(name => TypeUtils.ensureString(name));
-        this.#roomNames = [...roomNames]; // Store a copy
+        this.roomNames = [...roomNames]; // Store a copy
     }
 
     /**
@@ -22,7 +22,7 @@ export class Path {
      * @returns {string[]} A copy of the room names array.
      */
     getRoomNames() {
-        return [...this.#roomNames]; // Return a copy to maintain immutability
+        return [...this.roomNames]; // Return a copy to maintain immutability
     }
 
     /**
@@ -30,7 +30,7 @@ export class Path {
      * @returns {boolean} True if the path is empty, false otherwise.
      */
     isEmpty() {
-        return this.#roomNames.length === 0;
+        return this.roomNames.length === 0;
     }
 
     /**
@@ -38,7 +38,7 @@ export class Path {
      * @returns {number} The length of the path.
      */
     getLength() {
-        return this.#roomNames.length;
+        return this.roomNames.length;
     }
 
     /**
@@ -49,10 +49,10 @@ export class Path {
      */
     getRoomAt(index) {
         TypeUtils.ensureNumber(index);
-        if (index < 0 || index >= this.#roomNames.length) {
+        if (index < 0 || index >= this.roomNames.length) {
             throw new RangeError(`Index ${index} is out of bounds`);
         }
-        return this.#roomNames[index];
+        return this.roomNames[index];
     }
 
     getStartRoom() {
@@ -66,11 +66,17 @@ export class Path {
         if (this.isEmpty()) {
             throw new Error("Path is empty");
         }
-        return this.getRoomAt(this.#roomNames.length - 1);
+        return this.getRoomAt(this.roomNames.length - 1);
     }
 
     // Add more methods later as needed (e.g., getStartRoomName, getEndRoomName)
 
+    /**
+     * 
+     * Creates a new Path instance from an array of room names.
+     * @param {string[]} roomNames - An array of room names.
+     * @returns {Path} A new Path object.
+     */
     static create(roomNames) {
         return new Path(roomNames);
     }
