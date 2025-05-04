@@ -38,7 +38,6 @@ export class Movement {
 
         // initalize pathfinding
         this.currentPath = Path.createEmpty(); // Store the Path object 
-        this.currentPathIndex = -1; // Index of the next room/waypoint in the path
         this.currentTargetPosition = null; // The specific Position the agent is moving towards in the current step
     }
 
@@ -108,9 +107,8 @@ export class Movement {
         TypeUtils.ensureInstanceOf(destination, Location);
 
         // calculate path
-        const destinationRoom = destination.getRoom();
-        this.currentPath = this.scene.findShortestPath(this.currentRoom, destinationRoom);
-        this.currentPathIndex = 0; // reset path index
+        this.currentPath = this.scene.findShortestPath(this.currentRoom, destination.getRoom());
+        this.currentPath.setCurrentIndex(0); // reset path index
 
         //  if the path is empty then exit
         if (this.currentPath.isEmpty()) {
@@ -156,27 +154,27 @@ export class Movement {
         }
 
         // exit if the path index is out of bounds
-        if (this.currentPathIndex < 0) {
+        if (this.currentPath.getCurrentIndex() < 0) {
             this.currentTargetPosition = null;
             this.isAgentMoving = false;
             return;            
         }
         // exit if the path index is out of bounds
-        if (this.currentPathIndex >= this.currentPath.getLength()) {
+        if (this.currentPath.getCurrentIndex() >= this.currentPath.getLength()) {
             this.currentTargetPosition = null;
             this.isAgentMoving = false;
             return;
         }
 
         // Get the next room name from the path
-        const nextRoomName = this.currentPath.getRoomAt(this.currentPathIndex); 
+        const nextRoomName = this.currentPath.getRoomAt(this.currentPath.getCurrentIndex()); 
         const nextRoom = this.scene.getRoom(nextRoomName); 
 
         // set the current room - even though the agent is not in the room yet
         this.currentRoom = nextRoom;
 
         // Check if this is the last room in the path
-        if (this.currentPathIndex === this.currentPath.getLength() - 1) {
+        if (this.currentPath.getCurrentIndex() === this.currentPath.getLength() - 1) {
             // Last step: target is the final destination's position
             this.currentTargetPosition = finalDestination.getPhysicalPosition();
         } else {
@@ -238,14 +236,14 @@ export class Movement {
             if (this.currentTargetPosition === this.destination.getPhysicalPosition()) {
                 this.isAgentMoving = false;
                 this.currentPath = Path.createEmpty();
-                this.currentPathIndex = -1;
+                this.currentPath.resetIndex();
                 this.currentTargetPosition = null;
                 this.destination = Movement.NULL_LOCATION;
                 return true;
             }
 
             // Reached an intermediate waypoint, advance path
-            this.currentPathIndex++;
+            this.currentPath.advanceIndex();
             this.updateTargetPositionForNextPathSegment(this.destination); 
 
             // Continue moving in the same tick if a new target is set
