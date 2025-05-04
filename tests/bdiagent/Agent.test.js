@@ -4,24 +4,26 @@ import { IntentionManager } from "../../src/internal.js";
 import { Location } from "../../src/internal.js";
 import { Scene } from "../../src/internal.js";
 import { Position } from "../../src/internal.js";
-import { Room } from "../../src/internal.js";
+import { SceneFactory } from "../../src/internal.js";
+import { AgentFactory } from "../../src/internal.js";
 
 describe('Agent', () => {
-    let scene;   
-    let initialLocation;
-    let initialPosition
-    let initialRoom;
-    let agent;
 
-    beforeEach(() => {
-        scene = new Scene();
-        initialRoom = scene.createRoom("Room1", 0, 0, 10, 10);
-        initialPosition = Position.create(0, 0);
-        initialLocation = Location.create("L1", initialPosition, initialRoom);
-        agent = new Agent('TestAgent', initialLocation, 5, scene);
-    });
+    describe('create', () => {
+        let scene;
+        let initialLocation;
+        let initialPosition
+        let initialRoom;
+        let agent;
 
-    describe('run', () => {
+        beforeEach(() => {
+            scene = new Scene();
+            initialRoom = scene.createRoom("Room1", 0, 0, 10, 10);
+            initialPosition = Position.create(0, 0);
+            initialLocation = Location.create("L1", initialPosition, initialRoom);
+            agent = new Agent('TestAgent', initialLocation, 5, scene);
+        });
+
         it('should create be able to create agent', () => {
             expect(agent).toBeDefined();
             expect(agent.name).toBe('TestAgent');
@@ -56,7 +58,46 @@ describe('Agent', () => {
             expect(agent.beliefManager.beliefs.length).toBe(1);
             expect(agent.getBelief('testBelief')).toEqual(belief);
         });
+    });
 
+    describe('run ', () => {
+        let scene;
+        let agent;
+
+        beforeEach(() => {
+            scene = new Scene();
+            const room = scene.createRoom("Room1", 0, 0, 10, 10);
+            const position = Position.create(0, 0);
+            const location = Location.create("L1", position, room);
+            agent = new Agent('TestAgent', location, 5, scene);
+        });
+        
+        it('should create be able to run agent one turn', () => {
+            agent.run();
+        });    
+    });
+
+    describe('run old man agent with house scene', () => {
+        let scene;
+        let agent;
+
+        beforeEach(() => {
+            scene = SceneFactory.createHouse();
+            agent = AgentFactory.createOldManAgent(scene);
+        });
+
+        it('should create be able to run agent one turn', () => {
+            agent.run();
+        });
+
+        it('should create be able to run agent two turns', () => {
+            agent.run();
+            agent.run();
+        });
 
     });
+
+    
+    
+
 });
