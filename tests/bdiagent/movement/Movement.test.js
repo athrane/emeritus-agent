@@ -45,7 +45,7 @@ describe('create', () => {
     });
 
     it('should initialize with the correct path index', () => {
-        expect(movement.currentPathIndex).toBe(-1);
+        expect(movement.currentPath.getCurrentIndex()).toBe(-1);
     });
 
     it('should initialize with the correct target position', () => {
