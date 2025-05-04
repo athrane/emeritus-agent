@@ -37,13 +37,22 @@ export class Location {
     }
 
     /**
-     * Get the position of the location.
-     * @returns {Position} The position of the location.
+     * Get the relative position of the location within the room.
+     * @returns {Position} relative position of the location within the room.
      */
-    getPosition() {
+    getRelativePosition() {
         return this.position;
     }
 
+    /**
+     * Get the physical position of the location in the room.
+     * The physical position is the sum of the room's position and the location's position.
+     * @returns {Position} The physical position of the location in the room.
+     */
+    getPhysicalPosition() {
+        return this.room.getPosition().add(this.position);
+    }
+    
     /**
      * Get the room in which the location is located.
      * @returns {Room} The room in which the location is located.

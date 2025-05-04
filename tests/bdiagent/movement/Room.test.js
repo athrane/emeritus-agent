@@ -84,8 +84,13 @@ describe('Room', () => {
 
       expect(location).toBeInstanceOf(Location);
       expect(location.getName()).toBe('Corner');
-      expect(location.getPosition().getX()).toBe(1);
-      expect(location.getPosition().getY()).toBe(2);
+      expect(location.getRelativePosition().getX()).toBe(1);
+      expect(location.getRelativePosition().getY()).toBe(2);
+      expect(location.getPhysicalPosition().getX()).toBe(1);
+      expect(location.getPhysicalPosition().getY()).toBe(2);
+      expect(location.getRoom()).toBe(room);
+      expect(room.locations).toContain(location);
+      expect(room.locations.length).toBe(1);      
       expect(room.hasLocation('Corner')).toBe(true);
     });
 

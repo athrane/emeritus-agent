@@ -81,6 +81,8 @@ export class Scene {
      * @param {Location} startLocation The starting location.
      * @param {Location} endLocation The ending location.
      * @returns {Path} A Path object representing the shortest path of room names, or an empty Path if no path exists.
+     * 
+     * @deprecated
      */
     findShortestPath(startLocation, endLocation) {
         TypeUtils.ensureInstanceOf(startLocation, Location);
@@ -128,6 +130,46 @@ export class Scene {
     }
 
     /**
+     * Finds the shortest path between two rooms using BFS.
+     *
+     * @param {Room} start The starting room.
+     * @param {Room} end The destination room.
+     * @returns {Path} A Path object representing the shortest path of room names, or an empty Path if no path exists.
+     */
+    findShortestPath2(start, end) {
+        TypeUtils.ensureInstanceOf(start, Room);
+        TypeUtils.ensureInstanceOf(end, Room);
+
+        // return path if start and end room are the same  
+        if (start === end) {
+            return Path.create([start.getName()]);
+        }
+
+        const queue = [{ room: start, path: [start.getName()] }];
+        const visited = new Set([start.getName()]);
+
+        while (queue.length > 0) {
+            const { room, path } = queue.shift();
+
+            if (room === end) {
+                return Path.create(path);
+            }
+
+            const adjacentRooms = room.getAdjacentRooms();            
+            for (const adjacentRoomName of adjacentRooms) {
+                if (!visited.has(adjacentRoomName)) {
+                    visited.add(adjacentRoomName);
+                    const adjacentRoom = this.getRoom(adjacentRoomName);
+                    queue.push({ room: adjacentRoom, path: [...path, adjacentRoom.getName()] });
+                }
+            }
+        }
+
+        // Return empty Path object        
+        return Path.createEmpty();
+    }
+
+    /**
      * Helper function to get the room a location belongs to.
      *
      * @param {Location} location The location.
@@ -141,7 +183,7 @@ export class Scene {
             // Basic bounding box check (can be made more sophisticated)
             const roomPos = room.getPosition();
             const roomSize = room.getSize();
-            const locPos = location.getPosition();
+            const locPos = location.getPhysicalPosition();
 
             if (
                 locPos.getX() >= roomPos.getX() &&

@@ -140,7 +140,6 @@ describe('Position', () => {
 
     });
 
-
     describe('copy', () => {
         test('should create a new Position instance with the same coordinates', () => {
             const originalPos = Position.create(15, 25);
@@ -212,4 +211,58 @@ describe('Position', () => {
              expect(() => pos1.distanceTo("not-a-number")).toThrow(TypeError);
         });
     });
+
+    describe('add', () => {
+
+        test('add two positions', () => {
+            const pos1 = Position.create(1, 2);
+            const pos2 = Position.create(3, 4);
+            const result = pos1.add(pos2);
+            expect(result).toBeInstanceOf(Position);
+            expect(result.getX()).toBe(4);
+            expect(result.getY()).toBe(6);
+        });
+
+        test('add position to itself', () => {
+            const pos1 = Position.create(1, 2);
+            const result = pos1.add(pos1);
+            expect(result).toBeInstanceOf(Position);
+            expect(result.getX()).toBe(2);
+            expect(result.getY()).toBe(4);
+        });
+
+        test('add position with negative coordinates', () => {
+            const pos1 = Position.create(1, 2);
+            const pos2 = Position.create(-1, -2);
+            const result = pos1.add(pos2);
+            expect(result).toBeInstanceOf(Position);
+            expect(result.getX()).toBe(0);
+            expect(result.getY()).toBe(0);
+        });
+
+        test('add position with zero coordinates', () => {
+            const pos1 = Position.create(1, 2);
+            const pos2 = Position.create(0, 0);
+            const result = pos1.add(pos2);
+            expect(result).toBeInstanceOf(Position);
+            expect(result.getX()).toBe(1);
+            expect(result.getY()).toBe(2);
+        });
+
+        test('add does not modify original position', () => {
+            const pos1 = Position.create(1, 2);
+            const pos2 = Position.create(3, 4);
+            const result = pos1.add(pos2);
+            expect(pos1.getX()).toBe(1);
+            expect(pos1.getY()).toBe(2);
+            expect(pos2.getX()).toBe(3);
+            expect(pos2.getY()).toBe(4);
+        });
+
+        test('add should throw error if otherPosition is not a Position instance', () => {
+            const pos1 = Position.create(1, 2);
+            expect(() => pos1.add("not-a-position")).toThrow(TypeError);
+        });
+    });
+
 });

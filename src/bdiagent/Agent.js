@@ -149,13 +149,15 @@ export class Agent {
     if (currentIntention === null) return;
 
     // if the current intention is the null intention then exit
-    if (currentIntention == IntentionManager.NULL_INTENTION) return 
+    if (currentIntention == IntentionManager.NULL_INTENTION) return; 
 
     // get current and target location
     const targetLocation = currentIntention.getLocation(); 
-    const currentLocation = this.movement.getLocation(); 
-    const currentRoom = this.scene.getRoomForLocation(currentLocation); 
-    const targetRoom = this.scene.getRoomForLocation(targetLocation);   
+    const targetRoom = targetLocation.getRoom(); 
+        
+    //const currentLocation = this.movement.getLocation(); 
+    const currentRoom = this.movement.
+    this.scene.getRoomForLocation(currentLocation); 
 
     // if current location and target location are in the same room the execute plan
     if (currentRoom === targetRoom && this.movement.isWithinReasonbleRange(targetLocation)) { 
@@ -166,16 +168,5 @@ export class Agent {
     // Need to move: Initiate pathfinding and movement
     this.movement.moveTo(targetLocation); 
 
-    //this.intentionManager.update(this, this.getCurrentBestDesire()); 
-
-     // if not within reasonable range of the intention's location, move towards it
-     //const currentIntention = this.getCurrentIntention();
-     //if(!this.movement.isWithinReasonbleRange(currentIntention.getLocation())) {
-      //this.movement.moveTo(currentIntention.location);
-      //return;
-     //}
-    
-    // execute intention  
-    //this.intentionManager.executeCurrentIntention(this); 
   }
 }

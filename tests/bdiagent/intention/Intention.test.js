@@ -17,9 +17,13 @@ describe('Create Intention', () => {
         expect(intention.getEffects()).toBeInstanceOf(Function);
         expect(intention.getLocation()).toBeInstanceOf(Location);
         expect(intention.getLocation().getName()).toBe("Kitchen");
-        expect(intention.getLocation().getPosition()).toBeInstanceOf(Position);
-        expect(intention.getLocation().getPosition().getX()).toBe(0);
-        expect(intention.getLocation().getPosition().getY()).toBe(0);
+		expect(location.getPhysicalPosition()).toBeInstanceOf(Position);
+		expect(location.getPhysicalPosition().getX()).toBe(0);
+		expect(location.getPhysicalPosition().getY()).toBe(0);
+		expect(location.getRelativePosition()).toBeInstanceOf(Position);
+		expect(location.getRelativePosition().getX()).toBe(0);
+		expect(location.getRelativePosition().getY()).toBe(0);
+
     });
 
 });
@@ -33,9 +37,12 @@ describe('Create null Intention', () => {
         expect(intention.getEffects()).toBeInstanceOf(Function);
         expect(intention.getLocation()).toBeInstanceOf(Location);
         expect(intention.getLocation().getName()).toBe("NULL Location (0,0)");
-        expect(intention.getLocation().getPosition()).toBeInstanceOf(Position);
-        expect(intention.getLocation().getPosition().getX()).toBe(0);
-        expect(intention.getLocation().getPosition().getY()).toBe(0);
+		expect(intention.getLocation().getPhysicalPosition()).toBeInstanceOf(Position);
+		expect(intention.getLocation().getPhysicalPosition().getX()).toBe(0);
+		expect(intention.getLocation().getPhysicalPosition().getY()).toBe(0);
+		expect(intention.getLocation().getRelativePosition()).toBeInstanceOf(Position);
+		expect(intention.getLocation().getRelativePosition().getX()).toBe(0);
+		expect(intention.getLocation().getRelativePosition().getY()).toBe(0);
     });
 
 });

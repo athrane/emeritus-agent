@@ -107,6 +107,18 @@ export class Position {
     }
 
     /**
+     * Adds another Position to the current position.
+     * Does not modify the current position, as it is immutable.
+     * 
+     * @param {Position} position The position to add.
+     * @returns {Position} A new Position object with the updated coordinates.
+     */
+    add(position) {
+        TypeUtils.ensureInstanceOf(position, Position);
+        return new Position(this.x + position.getX(), this.y + position.getY());
+    }
+
+    /**
      * Creates a new Position object from x and y coordinates.
      *
      * @param {number} x The x-coordinate of the position.
