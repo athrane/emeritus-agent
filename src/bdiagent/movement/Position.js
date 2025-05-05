@@ -75,16 +75,6 @@ export class Position {
     }
 
     /**
-     * Sets the position to a new Position object.
-     * @param {Position} position The new position.
-     * @returns {Position} A new Position object with the updated coordinates.
-     */
-    set2(position) {
-        TypeUtils.ensureInstanceOf(position, Position);
-        return new Position(position.getX(), position.getY());
-    }
-
-    /**
      * Sets the x-coordinate of the position.
      * 
      * @param {number} x The new x-coordinate.
@@ -119,6 +109,17 @@ export class Position {
     }
 
     /**
+     * Compares this position with another position.
+     * 
+     * @param {Position} position The position to compare with.
+     * @returns {boolean} True if the positions are equal, equality is based on coordinates.
+     */ 
+    isEqual(position) {
+        TypeUtils.ensureInstanceOf(position, Position);
+        return this.x === position.getX() && this.y === position.getY();
+    }    
+
+    /**
      * Creates a new Position object from x and y coordinates.
      *
      * @param {number} x The x-coordinate of the position.
@@ -129,4 +130,14 @@ export class Position {
         return new Position(x, y);
     }
 
+    /**
+     * Creates a new Position object from another Position object.
+     * 
+     * @param {Position} position The position to copy.
+     */
+    static create2(position) {
+        TypeUtils.ensureInstanceOf(position, Position);
+        return new Position(position.getX(), position.getY());
+    }
+   
 }

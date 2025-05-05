@@ -117,25 +117,36 @@ describe('Position', () => {
         
     });
 
-    describe('set2', () => {
-        test('should set the coordinates correctly', () => {
-            const pos = Position.create(0, 0);
-            const pos2 = Position.create(100, 200);
-            const newPos = pos.set2(pos2);
-            expect(newPos.getX()).toBe(100);
-            expect(newPos.getY()).toBe(200);
+    describe('create2', () => {
+
+        test('should create a Position instance with given x and y coordinates', () => {
+            const x = 10;
+            const y = 20;
+            const pos = Position.create(x, y);
+            const pos2 = Position.create2(pos);
+            expect(pos2).toBeInstanceOf(Position);
+            expect(pos2.x).toBe(x);
+            expect(pos2.y).toBe(y);
         });
 
-        test('should get new position object setting x and y', () => {
+        test('should handle zero coordinates', () => {
             const pos = Position.create(0, 0);
-            const pos2 = Position.create(100, 200);
-            const newPos = pos.set2(pos2);
-            expect(newPos).not.toBe(pos); 
+            const pos2 = Position.create2(pos);
+            expect(pos2.x).toBe(0);
+            expect(pos2.y).toBe(0);
         });
 
-        test('should throw error if x is not a number (assuming TypeUtils throws)', () => {
-            const pos = Position.create(0, 0);
-            expect(() => pos.set2("not-a-number")).toThrow(TypeError);
+        test('should handle negative coordinates', () => {
+            const x = -5;
+            const y = -15;
+            const pos = Position.create(x, y);
+            const pos2 = Position.create2(pos);
+            expect(pos2.x).toBe(x);
+            expect(pos2.y).toBe(y);
+        });
+
+        test('should throw error if parameter isnt Position', () => {
+            expect(() => Position.create2("not-a-position")).toThrow(TypeError);
         });
 
     });
@@ -264,5 +275,32 @@ describe('Position', () => {
             expect(() => pos1.add("not-a-position")).toThrow(TypeError);
         });
     });
+
+    describe('isEqual', () => {
+        test('should return true for equal positions', () => {
+            const pos1 = Position.create(1, 2);
+            const pos2 = Position.create(1, 2);
+            expect(pos1.isEqual(pos2)).toBe(true);
+        });
+
+        test('should return false for different positions', () => {
+            const pos1 = Position.create(1, 2);
+            const pos2 = Position.create(3, 4);
+            expect(pos1.isEqual(pos2)).toBe(false);
+        });
+
+        test('should return false for positions with different x coordinates', () => {
+            const pos1 = Position.create(1, 2);
+            const pos2 = Position.create(3, 2);
+            expect(pos1.isEqual(pos2)).toBe(false);
+        });
+
+        test('should return false for positions with different y coordinates', () => {
+            const pos1 = Position.create(1, 2);
+            const pos2 = Position.create(1, 3);
+            expect(pos1.isEqual(pos2)).toBe(false);
+        });
+
+    });        
 
 });

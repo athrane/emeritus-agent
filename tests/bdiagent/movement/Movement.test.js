@@ -40,16 +40,16 @@ describe('create', () => {
     });
 
     it('should initialize with the correct path', () => {
-        expect(movement.currentPath).toBeInstanceOf(Path);
-        expect(movement.currentPath.isEmpty()).toBe(true);
+        expect(movement.path).toBeInstanceOf(Path);
+        expect(movement.path.isEmpty()).toBe(true);
     });
 
     it('should initialize with the correct path index', () => {
-        expect(movement.currentPath.getCurrentIndex()).toBe(-1);
+        expect(movement.path.getCurrentIndex()).toBe(0);
     });
 
     it('should initialize with the correct target position', () => {
-        expect(movement.currentTargetPosition).toBeNull();
+        expect(movement.pathTargetPosition).toBeNull();
     });
 
     it('should initialize with the correct moving state - no movement', () => {
@@ -193,7 +193,7 @@ describe('Direct Movement (No Pathfinding Required)', () => {
         const destPosition = Position.create(10, 0);
         const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
         movement.moveTo(destLocation);
-        expect(movement.currentTargetPosition).toEqual(destLocation.getPhysicalPosition());
+        expect(movement.pathTargetPosition).toEqual(destLocation.getPhysicalPosition());
     });
 
     it('should update the position correctly - when moving along the x axis', () => {

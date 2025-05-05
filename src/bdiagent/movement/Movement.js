@@ -34,10 +34,10 @@ export class Movement {
         this.destination = Movement.NULL_LOCATION;
         this.isAgentMoving = false;
         this.scene = scene;
-        this.currentRoom = initialLocation.getRoom(); 
+        this.currentRoom = initialLocation.getRoom();
 
         // initalize pathfinding
-        this.path = Path.createEmpty(); 
+        this.path = Path.createEmpty();
         this.pathTargetPosition = null; // The specific Position the agent is moving towards in the current step
     }
 
@@ -73,7 +73,7 @@ export class Movement {
      * Gets the current room that the agent is moving towards or is in.
      * 
      * @returns {Room} The current that the agent is moving towards or is in.
-     */ 
+     */
     getRoom() {
         return this.currentRoom;
     }
@@ -86,7 +86,7 @@ export class Movement {
     isWithinRoom() {
         // check if the agent position is within absolute coordinates of the room
         return this.currentRoom.isWithinRoom(this.position);
-    }    
+    }
 
     /**
        * Checks if the agent is currently moving.
@@ -95,6 +95,35 @@ export class Movement {
        */
     isMoving() {
         return this.isAgentMoving;
+    }
+
+    /**
+     * Checks if the agent has a target position defined as part of its path finding / movement.
+     *
+     * @returns {boolean} True if the agent has a target position defined as part of its path finding / movement. 
+     * Returns false is the value is null or undefined. 
+     */
+    isTargetPositionDefined() {
+        return this.pathTargetPosition != null;
+    }
+
+    /**
+     * Checks if the agent can reach the target position in the current step.
+     * 
+     * @returns {boolean} True if the agent can reach the target position in the current step, false otherwise.
+     */
+    canReachTargetPosition() {
+        const dist = this.position.distanceTo(this.pathTargetPosition);
+        return dist <= this.speed;
+    }
+
+    /**
+     * Checks if the agent has reached its final destination.
+     * 
+     * @returns {boolean} True if the agent has reached its final destination, false otherwise.
+     */
+    hasReachedFinalDestination() {
+        return this.pathTargetPosition.isEqual(this.destination.getPhysicalPosition());
     }
 
     /** 
@@ -111,64 +140,52 @@ export class Movement {
 
         //  if the path is empty then exit
         if (this.path.isEmpty()) {
-            //console.log("moveTo: Path is empty, cannot move.");
-            this.isAgentMoving = false;
-            this.pathTargetPosition = null;
-            this.destination = Movement.NULL_LOCATION; 
+            this.setStateForStopping();
             return;
         }
 
         // if start and end rooms are the same, but position and end location positions differ set target position
-        if(this.currentRoom.getName() === destination.getRoom().getName()) {
-            //console.log("moveTo: Same room, but different positions.");
-            this.pathTargetPosition = destination.getPhysicalPosition();
-            this.isAgentMoving = true;
-            this.destination = destination;
+        if (this.currentRoom.getName() === destination.getRoom().getName()) {
+            this.setStateForMovementWithinSingleRoom(destination);
             return;
         }
 
         // Determine the first intermediate target position
-        this.updateTargetPositionForNextPathSegment(destination);
+        this.calculateTargetPositionForPathSegment(destination);
         this.isAgentMoving = true;
+        this.destination = destination; // TOOD: Can the be removed?
+    }
 
-        // The final destination field might become redundant or represent the *final* goal
-        // For now, let's keep it but prioritize currentTargetPosition
+    /**
+     * Sets the state for movement within a single room.
+     */ 
+    setStateForMovementWithinSingleRoom(destination) {
+        this.isAgentMoving = true;
+        this.pathTargetPosition = destination.getPhysicalPosition();
         this.destination = destination;
     }
 
     /**
-     * Updates the current target position and room based on the path index and final destination.
+     * Sets the state for stopping the agent's movement.
+     */
+    setStateForStopping() {
+        this.isAgentMoving = false;
+        this.pathTargetPosition = null;
+        this.destination = Movement.NULL_LOCATION;
+    }
+
+    /**
+     * Set target position and room based on the current path segment (index and final destination).
      * Will update the current room - when movement towards it starts as part of path navigation.
      *  
      * @param {Location} finalDestination The final destination location.
      */
-    updateTargetPositionForNextPathSegment(finalDestination) {
+    calculateTargetPositionForPathSegment(finalDestination) {
         TypeUtils.ensureInstanceOf(finalDestination, Location);
 
-        // exit if the path is empty
-        if (this.path.isEmpty()) { 
-            this.pathTargetPosition = null;
-            this.isAgentMoving = false;
-            return;
-        }
-
-        // exit if the path index is out of bounds
-        if (this.path.getCurrentIndex() < 0) {
-            this.pathTargetPosition = null;
-            this.isAgentMoving = false;
-            return;            
-        }
-
-        // exit if the path index is out of bounds
-        if (this.path.getCurrentIndex() >= this.path.getLength()) {
-            this.pathTargetPosition = null;
-            this.isAgentMoving = false;
-            return;
-        }
-
         // Get the next room name from the path
-        const nextRoomName = this.path.getRoomAt(this.path.getCurrentIndex()); 
-        const nextRoom = this.scene.getRoom(nextRoomName); 
+        const nextRoomName = this.path.getRoomAt(this.path.getCurrentIndex());
+        const nextRoom = this.scene.getRoom(nextRoomName);
 
         // set the current room - even though the agent is not in the room yet
         this.currentRoom = nextRoom;
@@ -179,14 +196,15 @@ export class Movement {
             this.pathTargetPosition = finalDestination.getPhysicalPosition();
         } else {
             // Intermediate step: target the center of the next room (simplistic approach) 
-            const roomPos = nextRoom.getPosition(); 
+            const roomPos = nextRoom.getPosition();
             const roomSize = nextRoom.getSize();
             // Calculate center position (adjust as needed for better navigation later)
             const centerX = roomPos.getX() + roomSize.getX() / 2;
             const centerY = roomPos.getY() + roomSize.getY() / 2;
             this.pathTargetPosition = Position.create(centerX, centerY);
         }
-        this.isAgentMoving = this.pathTargetPosition !== null;
+
+        //this.isAgentMoving = this.pathTargetPosition !== null; // TODO: Can this be removed
     }
 
     /**
@@ -207,14 +225,14 @@ export class Movement {
      * @returns {boolean} True if the agent has reached its destination, false otherwise.
      */
     update() {
-        
+
         // exit if the agent is not moving
-        if (!this.isAgentMoving) {
+        if (!this.isMoving()) {
             return true;
         }
 
         // exit if the target position isn't defined 
-        if (!this.pathTargetPosition) {
+        if (!this.isTargetPositionDefined()) {
             return true;
         }
 
@@ -223,30 +241,24 @@ export class Movement {
             return true;
         }
 
-        // Calculate the distance to the destination
-        //const dist = this.position.distanceTo(this.destination.getPosition());
-        const dist = this.position.distanceTo(this.pathTargetPosition);
+        // Check if agent reaches target position in this step
+        if (this.canReachTargetPosition()) {
+            // agent reaches the target position - move exactly to target
+            this.position = Position.create2(this.pathTargetPosition);
 
-        // handle case where the agent is already at the destination
-        if (dist <= this.speed) {
-            //this.position = this.position.set2(this.destination.getPosition());
-            this.position = this.position.set2(this.pathTargetPosition);
-
-            // Check if this was the final destination
-            if (this.pathTargetPosition === this.destination.getPhysicalPosition()) {
-                this.isAgentMoving = false;
+            // if final destination is reached, stop moving
+            if (this.hasReachedFinalDestination()) {
+                this.setStateForStopping();
                 this.path = Path.createEmpty();
-                this.pathTargetPosition = null;
-                this.destination = Movement.NULL_LOCATION;
                 return true;
             }
 
             // Reached an intermediate waypoint, advance path
             this.path.advanceIndex();
-            this.updateTargetPositionForNextPathSegment(this.destination); 
+            this.calculateTargetPositionForPathSegment(this.destination);
 
             // Continue moving in the same tick if a new target is set
-            return this.update(); 
+            //return this.update(); // TODO: update with distance move this update
         }
 
         // Move towards currentTargetPosition (existing logic)
@@ -257,13 +269,5 @@ export class Movement {
         const y = this.position.getY() + this.speed * Math.sin(angle);
         this.position = this.position.set(x, y); //
         return false; // Still moving towards current target        
-
-        // Still moving
-        //const dx = this.destination.getPosition().getX() - this.position.getX();
-        //const dy = this.destination.getPosition().getY() - this.position.getY();
-        //const angle = Math.atan2(dy, dx);
-        //const x = this.position.getX() + this.speed * Math.cos(angle);
-        //const y = this.position.getY() + this.speed * Math.sin(angle);
-        //this.position = this.position.set(x, y);
     }
 }
