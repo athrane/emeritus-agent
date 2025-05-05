@@ -1,8 +1,5 @@
 import { TypeUtils } from '../../internal.js';
 
-
-const NOT_STARTED = -1; // Path finingg not started.
-
 /**
  * Represents a sequence of rooms forming a path between two locations.
  */
@@ -22,17 +19,19 @@ export class Path {
 
     /**
      * Creates a new Path instance.
+     * 
      * @param {string[]} roomNames - An array of room names representing the path.
      */
     constructor(roomNames) {
         TypeUtils.ensureArray(roomNames);
         roomNames.forEach(name => TypeUtils.ensureString(name));
         this.roomNames = [...roomNames]; // Store a copy
-        this.currentIndex = NOT_STARTED; // Default to -1 (not started)
+        this.currentIndex = 0; // Default to 0 (start at the beginning)
     }
 
     /**
      * Gets the sequence of room names in the path.
+     * 
      * @returns {string[]} A copy of the room names array.
      */
     getRoomNames() {
@@ -41,6 +40,7 @@ export class Path {
 
     /**
      * Checks if the path is empty (contains no rooms).
+     * 
      * @returns {boolean} True if the path is empty, false otherwise.
      */
     isEmpty() {
@@ -49,6 +49,7 @@ export class Path {
 
     /**
      * Gets the number of rooms (steps) in the path.
+     * 
      * @returns {number} The length of the path.
      */
     getLength() {
@@ -71,6 +72,7 @@ export class Path {
 
     /**
      * Gets the name of the first room in the path.
+     * 
      * @returns {string} The name of the first room.
      * @throws {Error} If the path is empty.
      */ 
@@ -83,6 +85,7 @@ export class Path {
 
     /**
      * Gets the name of the last room in the path.
+     * 
      * @returns {string} The name of the last room.
      * @throws {Error} If the path is empty.
      */
@@ -95,6 +98,7 @@ export class Path {
 
     /**
      * Gets the current index in the path.
+     * 
      * @returns {number}
      */
     getCurrentIndex() {
@@ -102,34 +106,24 @@ export class Path {
     }
 
     /**
-     * Sets the current index in the path.
-     * @param {number} idx
-     */
-    setCurrentIndex(idx) {
-        TypeUtils.ensureNumber(idx);
-        this.currentIndex = idx;
-    }
-
-    /**
      * Advances the current index by 1.
+     * If the current index is already at or past the end of the path, it does nothing.
      */
     advanceIndex() {
-        this.currentIndex++;
-    }
-
-    /**
-     * Resets the current index to -1.
-     */
-    resetIndex() {
-        this.currentIndex = -1;
+        if (this.currentIndex < this.roomNames.length - 1) {
+            this.currentIndex++;
+        }
     }
 
     /**
      * Checks if the current index is at or past the end of the path.
+     * if the path is empty, function will return true.
+     * 
      * @returns {boolean}
      */
     isAtEnd() {
-        return this.currentIndex >= this.roomNames.length;
+        if(this.isEmpty()) return true;         
+        return this.currentIndex == (this.roomNames.length - 1);
     }
 
     /**

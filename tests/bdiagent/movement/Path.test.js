@@ -132,4 +132,56 @@ describe('Path', () => {
         });
     });    
 
+    describe('Path index management', () => {
+        it('should initialize currentIndex to 0 for empty path', () => {
+            const path = Path.create([]);
+            expect(path.getCurrentIndex()).toBe(0);
+        });
+
+        it('should initialize currentIndex to 0', () => {
+            const path = Path.create(['A', 'B', 'C']);
+            expect(path.getCurrentIndex()).toBe(0);
+        });
+
+        it('should advance index but not go out of bounds', () => {
+            const path = Path.create(['A', 'B']);
+            expect(path.getCurrentIndex()).toBe(0);
+            path.advanceIndex();
+            expect(path.getCurrentIndex()).toBe(1);
+            // Should not advance past last index
+            path.advanceIndex();
+            expect(path.getCurrentIndex()).toBe(1);
+        });
+
+        it('should not advance index for empty path', () => {
+            const path = Path.create([]);
+            expect(path.getCurrentIndex()).toBe(0);
+            path.advanceIndex();
+            expect(path.getCurrentIndex()).toBe(0);
+        });
+
+        it('isAtEnd should return true initially for empty path', () => {
+            const path = Path.create([]);
+            expect(path.isAtEnd()).toBe(true);
+        });
+
+        it('isAtEnd should return true initially for path of length 1', () => {
+            const path = Path.create(['A']);
+            expect(path.isAtEnd()).toBe(true);
+        });
+
+        it('isAtEnd should return true when index is at the end', () => {
+            const path = Path.create(['A', 'B']);
+            expect(path.isAtEnd()).toBe(false);
+            expect(path.getCurrentIndex()).toBe(0);
+            path.advanceIndex(); 
+            expect(path.isAtEnd()).toBe(true);
+            expect(path.getCurrentIndex()).toBe(1);
+            path.advanceIndex(); // should stay at 1
+            expect(path.isAtEnd()).toBe(true);
+            expect(path.getCurrentIndex()).toBe(1);
+        });
+
+    });
+
 });
