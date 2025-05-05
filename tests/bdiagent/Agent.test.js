@@ -28,7 +28,6 @@ describe('Agent', () => {
             expect(agent).toBeDefined();
             expect(agent.name).toBe('TestAgent');
             expect(agent.movement).toBeDefined();
-            expect(agent.movement.getLocation()).toBeDefined();
             expect(agent.movement.getPosition()).toBeDefined();
             expect(agent.movement.getPosition()).toBeInstanceOf(Position);
             expect(agent.movement.getPosition().getX()).toBe(initialPosition.getX());

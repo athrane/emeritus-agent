@@ -40,17 +40,7 @@ export class Movement {
         this.path = Path.createEmpty();
         this.pathTargetPosition = null; // The specific Position the agent is moving towards in the current step
     }
-
-    /**
-     * Gets the current location of the agent.
-     * 
-     * @returns {Location} The current location.
-     * @deprecated
-     */
-    getLocation() {
-        return Location.create("Current Location", this.position, Room.createNullRoom());
-    }
-
+    
     /**
      * Gets the current position of the agent.
      * 

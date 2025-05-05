@@ -104,15 +104,6 @@ export class Agent {
   }
 
   /**
-   * Retrieves the agent's current location.
-   *
-   * @returns {Location} The current location of the agent.
-   */
-  getCurrentLocation() {
-    return this.movement.getLocation();
-  }
-
-  /**
      * Checks if the agent is currently moving.
      *
      * @returns {boolean} True if the agent is moving, false otherwise.
