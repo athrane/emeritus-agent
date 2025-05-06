@@ -30,17 +30,19 @@ export class Movement {
         TypeUtils.ensureNumber(speed);
         TypeUtils.ensureInstanceOf(scene, Scene);
         this.speed = speed;
+        this.scene = scene;
+        this.isAgentMoving = false;
+
+        // set the initial positioning
         this.position = initialLocation.getPhysicalPosition();
         this.destination = Movement.NULL_LOCATION;
-        this.isAgentMoving = false;
-        this.scene = scene;
         this.currentRoom = initialLocation.getRoom();
 
         // initalize pathfinding
         this.path = Path.createEmpty();
         this.pathTargetPosition = null; // The specific Position the agent is moving towards in the current step
     }
-    
+
     /**
      * Gets the current position of the agent.
      * 
@@ -108,6 +110,15 @@ export class Movement {
     }
 
     /**
+     * Get agent target position defined as part of its path finding / movement.
+     *
+     * @returns {Position} The path target position. Can be null if the agent is not moving.
+     */
+    getTargetPosition() {
+        return this.pathTargetPosition;
+    }
+
+    /**
      * Checks if the agent has reached its final destination.
      * 
      * @returns {boolean} True if the agent has reached its final destination, false otherwise.
@@ -148,7 +159,7 @@ export class Movement {
 
     /**
      * Sets the state for movement within a single room.
-     */ 
+     */
     setStateForMovementWithinSingleRoom(destination) {
         this.isAgentMoving = true;
         this.pathTargetPosition = destination.getPhysicalPosition();
@@ -165,7 +176,7 @@ export class Movement {
     }
 
     /**
-     * Set target position and room based on the current path segment (index and final destination).
+     * Calculate target position and room based on the current path segment (index and final destination).
      * Will update the current room - when movement towards it starts as part of path navigation.
      *  
      * @param {Location} finalDestination The final destination location.
@@ -173,28 +184,25 @@ export class Movement {
     calculateTargetPositionForPathSegment(finalDestination) {
         TypeUtils.ensureInstanceOf(finalDestination, Location);
 
-        // Get the next room name from the path
-        const nextRoomName = this.path.getRoomAt(this.path.getCurrentIndex());
-        const nextRoom = this.scene.getRoom(nextRoomName);
+        // Get the current room from the path
+        const nextRoomName = this.path.getRoom();
+        this.currentRoom = this.scene.getRoom(nextRoomName);
 
-        // set the current room - even though the agent is not in the room yet
-        this.currentRoom = nextRoom;
-
-        // Check if this is the last room in the path
-        if (this.path.getCurrentIndex() === this.path.getLength() - 1) {
-            // Last step: target is the final destination's position
+        // if last room in the path, set the final destination
+        if (this.path.getRoom() === this.path.getEndRoom()) {
             this.pathTargetPosition = finalDestination.getPhysicalPosition();
-        } else {
-            // Intermediate step: target the center of the next room (simplistic approach) 
-            const roomPos = nextRoom.getPosition();
-            const roomSize = nextRoom.getSize();
-            // Calculate center position (adjust as needed for better navigation later)
-            const centerX = roomPos.getX() + roomSize.getX() / 2;
-            const centerY = roomPos.getY() + roomSize.getY() / 2;
-            this.pathTargetPosition = Position.create(centerX, centerY);
+            return;
         }
 
-        //this.isAgentMoving = this.pathTargetPosition !== null; // TODO: Can this be removed
+        // Intermediate step: target the center of the next room (simplistic approach) 
+        const roomPos = this.currentRoom.getPosition();
+        const roomSize = this.currentRoom.getSize();
+
+        // Calculate center position (adjust as needed for better navigation later)
+        const centerX = roomPos.getX() + roomSize.getX() / 2;
+        const centerY = roomPos.getY() + roomSize.getY() / 2;
+        this.pathTargetPosition = Position.create(centerX, centerY);
+
     }
 
     /**

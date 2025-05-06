@@ -96,6 +96,23 @@ describe('Path', () => {
         });
     });
 
+    describe('getRoom', () => {
+        it('should return the current room name', () => {
+            const path = Path.create(['Room1', 'Room2']);
+            expect(path.getRoom()).toBe('Room1');
+        });
+        it('should throw an error for an empty path', () => {
+            const path = Path.create([]);
+            expect(() => path.getRoom()).toThrow(Error);
+        });
+        it('should return the correct room name after advancing the index', () => {
+            const path = Path.create(['Room1', 'Room2']);
+            expect(path.getRoom()).toBe('Room1');
+            path.advanceIndex();
+            expect(path.getRoom()).toBe('Room2');
+        });
+    });
+
     describe('getStartRoom', () => {
         it('should return the start room name', () => {
             const path = Path.create(['Room1', 'Room2']);

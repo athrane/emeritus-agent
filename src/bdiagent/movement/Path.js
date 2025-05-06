@@ -71,6 +71,19 @@ export class Path {
     }
 
     /**
+     * Gets the name of the current room in the path.
+     * 
+     * @returns {string} The name of the current room.
+     * @throws {Error} If the path is empty.
+     */
+    getRoom() {
+        if (this.isEmpty()) {
+            throw new Error("Path is empty");
+        }
+        return this.getRoomAt(this.currentIndex);
+    }
+
+    /**
      * Gets the name of the first room in the path.
      * 
      * @returns {string} The name of the first room.
