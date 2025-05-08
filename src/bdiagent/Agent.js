@@ -15,7 +15,7 @@ import { Scene } from '../internal.js';
  * An agent has beliefs and can update them using BeliefUpdaters.
  */
 export class Agent {
-  
+
   /**
      * Constructor for the Agent class.
      * 
@@ -31,8 +31,8 @@ export class Agent {
     TypeUtils.ensureNumber(movementSpeed);
     TypeUtils.ensureInstanceOf(scene, Scene);
     this.name = name;
-    this.movement = new Movement(initialLocation, movementSpeed, scene); 
-    this.beliefManager = new BeliefManager();    
+    this.movement = new Movement(initialLocation, movementSpeed, scene);
+    this.beliefManager = new BeliefManager();
     this.desireManager = new DesireManager();
     this.intentionManager = new IntentionManager();
     this.scene = scene;
@@ -104,30 +104,21 @@ export class Agent {
   }
 
   /**
-     * Checks if the agent is currently moving.
-     *
-     * @returns {boolean} True if the agent is moving, false otherwise.
-     */
-  isMoving() {
-    return this.movement.isMoving();
-  }
-
-  /**
-   * Retrieves the agent's current destination.
-   *
-   * @returns {Location | null} The destination location the agent is moving to, or null if not moving.
-   */
-  getDestination() {
-    return this.movement.getDestination();
+   * Retrieves the agent's movement system.
+   * 
+   * @returns {Movement} The movement system of the agent.
+   */ 
+  getMovement() {
+    return this.movement;
   }
 
   /**
    * Runs the agent for a single iteration of the simulation.
    */
   run() {
-    this.beliefManager.update(this); 
-    this.desireManager.update(this); 
-    this.movement.update(); 
+    this.beliefManager.update(this);
+    this.desireManager.update(this);
+    this.movement.update();
 
     // if moving the exit 
     if (this.movement.isMoving()) return;
@@ -140,29 +131,29 @@ export class Agent {
     if (currentIntention === null) return;
 
     // if the current intention is the null intention then exit
-    if (currentIntention == IntentionManager.NULL_INTENTION) return; 
+    if (currentIntention == IntentionManager.NULL_INTENTION) return;
 
     // state: we have a new intention and we are not moving
     // if agent is in same intention room and within "reasonable" distance of location for intention the execute the intention
     // get new target room for intention
-    const intentionLocation = currentIntention.getLocation(); 
-    const intentionRoom = intentionLocation.getRoom(); 
+    const intentionLocation = currentIntention.getLocation();
+    const intentionRoom = intentionLocation.getRoom();
 
     // get current room where agent resides
     const currentLocation = this.movement.getDestination();
     const currentRoom = currentLocation.getRoom();
 
     // if the current room is the same as the intention room then check if the agent is within reasonable range of the target location
-    if(currentRoom === intentionRoom) {
+    if (currentRoom === intentionRoom) {
       // check if the agent is within reasonable range of the target location
       if (this.movement.isWithinReasonbleRange(intentionLocation)) {
-        this.intentionManager.executeCurrentIntention(this); 
+        this.intentionManager.executeCurrentIntention(this);
         return;
       }
     }
-      
+
     // Need to move: Initiate pathfinding and movement
-    this.movement.moveTo(intentionLocation); 
+    this.movement.moveTo(intentionLocation);
 
   }
 }
