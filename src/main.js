@@ -8,7 +8,7 @@ const scene = SceneFactory.createHouse();
 const oldMan = AgentFactory.createOldManAgent(scene);
 
 // Run the agent
-for (let i = 0; i < 50; i++) {
+for (let i = 0; i < 20; i++) {
     oldMan.run();
     console.log(`--- Generation: ${i + 1} ---`);
     let boredom = oldMan.getBelief("boredom").getValue();
@@ -32,7 +32,6 @@ for (let i = 0; i < 50; i++) {
     console.log(`Agent's target room: ${room.getName()} (${roomPosition.getX()}, ${roomPosition.getY()})`);
     console.log(`Agent is witin room: ${movement.isWithinRoom()}`);
 
-
     let position = movement.getPosition();
     console.log(`Current Position: (${position.getX()}, ${position.getY()})`);
 
@@ -52,6 +51,15 @@ for (let i = 0; i < 50; i++) {
     }
     let isMoving = movement.isMoving();
     console.log(`Agent is moving: ${isMoving}`);
+
+    let path = movement.path;
+    if (path) {
+        console.log(`Path length: ${path.getLength()}`);
+        console.log(`Path: ${path.getRoomNames()}`);
+        console.log(`Current index: ${path.currentIndex}`);
+    } else {
+        console.log("No path.");
+    }
 
 }
 
