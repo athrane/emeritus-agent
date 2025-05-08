@@ -29,10 +29,10 @@ for (let i = 0; i < 50; i++) {
     let movement = oldMan.getMovement();
     let room = movement.getRoom();
     let roomPosition = room.getPosition(); 
-    console.log(`Agent is in room: ${room.getName()} (${roomPosition.getX()}, ${roomPosition.getY()})`);
+    console.log(`Agent's target room: ${room.getName()} (${roomPosition.getX()}, ${roomPosition.getY()})`);
     console.log(`Agent is witin room: ${movement.isWithinRoom()}`);
 
-    
+
     let position = movement.getPosition();
     console.log(`Current Position: (${position.getX()}, ${position.getY()})`);
 
