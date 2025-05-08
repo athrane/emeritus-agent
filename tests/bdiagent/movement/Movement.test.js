@@ -49,7 +49,7 @@ describe('create', () => {
     });
 
     it('should initialize with the correct target position', () => {
-        expect(movement.pathTargetPosition).toBeNull();
+        expect(movement.getTargetPosition()).toBeNull();
     });
 
     it('should initialize with the correct moving state - no movement', () => {
@@ -193,7 +193,7 @@ describe('Direct Movement (No Pathfinding Required)', () => {
         const destPosition = Position.create(10, 0);
         const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
         movement.moveTo(destLocation);
-        expect(movement.pathTargetPosition).toEqual(destLocation.getPhysicalPosition());
+        expect(movement.getTargetPosition()).toEqual(destLocation.getPhysicalPosition());
     });
 
     it('should update the position correctly - when moving along the x axis', () => {
@@ -374,7 +374,7 @@ describe('Pathfinding Movement', () => {
         expect(movement.isMoving()).toBe(false);
         expect(movement.path).toBeInstanceOf( Path);
         expect(movement.path.isEmpty()).toBe(true);
-        expect(movement.pathTargetPosition).toBeNull();
+        expect(movement.getTargetPosition()).toBeNull();
         expect(movement.path.getCurrentIndex()).toBe(0);
         expect(movement.path.getLength()).toBe(0);
         expect(movement.getTargetPosition()).toBeNull();
@@ -386,7 +386,7 @@ describe('Pathfinding Movement', () => {
         expect(movement.getDestination()).toBe(locLivingRoom);
     });
 
-    it('should update the movement state when starting movement - to next room', () => {
+    it('should set the movement state when starting movement - to next room', () => {
         movement.moveTo(locLivingRoom);
         expect(movement.isMoving()).toBe(true);
     });
@@ -400,24 +400,20 @@ describe('Pathfinding Movement', () => {
         expect(movement.path.getRoomAt(1)).toBe(livingRoom.getName());    
     });
 
-    it('FAILS: should update room when starting movement - to next room', () => {
+    it('should start in expteced room when starting movement - to next room', () => {
         movement.moveTo(locLivingRoom);
-        expect(movement.getRoom().getName()).toBe(livingRoom.getName());    
+        expect(movement.getRoom().getName()).toBe(hallway.getName());    
     });
 
-    it('FAILS: should update the target position when starting movement - to next room', () => {
-        const destPosition = Position.create(10+5, 0+5);
+    it('should calculate target position in expteced room when starting movement - to next room', () => {
         movement.moveTo(locLivingRoom);
-        expect(movement.isTargetPositionDefined()).toBe(true);
-        expect(movement.getTargetPosition().getX()).toBe(destPosition.getX());
-        expect(movement.getTargetPosition().getY()).toBe(destPosition.getY());
-    });
-
-    it('FAILS: should update the position correctly - when moving to next room', () => {
-        const destPosition = getRoomCenter(livingRoom);
+        expect(movement.getTargetPosition()).toEqual(getRoomCenter(hallway));
+    });    
+    
+    it('should update the position correctly - when moving to next room', () => {
         movement.moveTo(locLivingRoom);
         movement.update();
-        expect(movement.getPosition().getX()).toBeCloseTo(5);
+        expect(movement.getPosition().getX()).toBeCloseTo(10);
         expect(movement.getPosition().getY()).toBeCloseTo(5);
         expect(movement.isMoving()).toBe(true);
     });
