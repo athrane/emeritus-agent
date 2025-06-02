@@ -136,15 +136,11 @@ export class Movement {
     moveTo(destination) {
         TypeUtils.ensureInstanceOf(destination, Location);
 
-        console.debug("moveTo-CP0: Start ");
-
         // calculate path
         this.path = this.scene.findShortestPath(this.currentRoom, destination.getRoom());
-        console.debug("moveTo-CP1: Path calculated...");
 
         //  if the path is empty then stop movement and exit
         if (this.path.isEmpty()) {
-            console.debug("moveTo-CP2: Path is empty, stopping movement...");
             this.isAgentMoving = false;
             this.targetPosition = null;
             this.destination = Movement.NULL_LOCATION;
@@ -213,28 +209,23 @@ export class Movement {
      * @returns {boolean} True if the agent has reached its destination, false otherwise.
      */
     update() {
-        console.debug("update-CP0: Start ");
         // exit if the agent is not moving
         if (!this.isMoving()) {
             return true;
         }
-        console.debug("update-CP1: Agent is moving...");
 
         // exit if the target position isn't defined 
         if (!this.isTargetPositionDefined()) {
             return true;
         }
-        console.debug("update-CP2: Target position is defined...");
 
         // exit if destination is null location
         if (this.destination == Movement.NULL_LOCATION) {
             return true;
         }
-        console.debug("update-CP3: Destination is not null location...");
 
         // Check if agent can reach target position in this step
         if (this.canReachTargetPosition()) {
-            console.debug("update-CP4a: Agent can reach target position...");
 
             // move to target position
             this.position = Position.create2(this.targetPosition);
@@ -248,19 +239,14 @@ export class Movement {
                 this.path = Path.createEmpty();
                 return true; 
             }
-            console.debug("update-CP5b: Agent has not reached final destination, just an intermediate waypoint...");
 
             // Reached an intermediate waypoint, advance path
             this.path.advanceIndex();
             this.targetPosition = this.calculateTargetPosition(this.destination);
 
-            console.debug("update-CP6: Agent has advanced path index...");
-
             // Continue moving in the same tick if a new target is set
             //return this.update(); // TODO: update with distance move this update
         }
-
-        console.debug("update-CP7: Moves towards target position...");
 
         // Move towards target position
         const dx = this.targetPosition.getX() - this.position.getX();

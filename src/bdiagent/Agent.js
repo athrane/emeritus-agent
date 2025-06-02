@@ -116,7 +116,6 @@ export class Agent {
    * Runs the agent for a single iteration of the simulation.
    */
   run() {
-    console.debug(`run-CP0: Start.`);
     this.beliefManager.update(this);
     this.desireManager.update(this);
     this.movement.update();
@@ -124,13 +123,9 @@ export class Agent {
     // if moving then exit 
     if (this.movement.isMoving()) return;
 
-    console.debug(`run-CP1: Agent is not moving.`);
-
     // update the current intention 
     this.intentionManager.update(this, this.getCurrentBestDesire()); 
     const currentIntention = this.getCurrentIntention(); 
-
-    console.debug(`run-CP2: Current Intention: ${currentIntention.getName()}`);
 
     // if the current intention is null or the null intention then exit
     if (currentIntention === null) return;
@@ -142,22 +137,15 @@ export class Agent {
     const intentionLocation = currentIntention.getLocation();
     const intentionRoom = intentionLocation.getRoom();
 
-    console.debug(`run-CP3: Intention Location: ${intentionLocation.getName()}`);
-
     // get current room where agent resides
     const currentLocation = this.movement.getDestination();
     const currentRoom = this.movement.getRoom();
     
     // if the current room is the same as the intention room then check if the agent is within reasonable range of the target location
-    console.debug(`run-CP4a: Current Room: ${currentRoom.getName()}`);
-    console.debug(`run-CP4b: Intention Room: ${intentionRoom.getName()}`);
     if (currentRoom === intentionRoom) {
-      console.debug(`run-CP4: Agent is in the same room as the intention's room.`);
 
       // check if the agent is within reasonable range of the target location
       if (this.movement.isWithinReasonbleRange(intentionLocation)) {
-        console.debug(`run-CP5: Agent is within reasonable range of the intention's location.`);
-        console.debug(`run-CP6: Agent is executing the intention.`);
         this.intentionManager.executeCurrentIntention(this);
         return;
       }
