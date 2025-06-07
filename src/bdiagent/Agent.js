@@ -113,6 +113,14 @@ export class Agent {
   }
 
   /**
+   * Retrieves the agent's desire manager.
+   * @return {DesireManager} The desire manager of the agent.
+   */
+  getDesireManager() {
+    return this.desireManager;
+  }
+
+  /**
    * Runs the agent for a single iteration of the simulation.
    */
   run() {
