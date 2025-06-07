@@ -131,7 +131,7 @@ export class Agent {
     // if moving then exit 
     if (this.movement.isMoving()) return;
 
-    // update the current intention 
+    // update the current intention
     this.intentionManager.update(this, this.getCurrentBestDesire()); 
     const currentIntention = this.getCurrentIntention(); 
 

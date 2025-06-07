@@ -1,16 +1,18 @@
-import { SceneFactory } from './internal.js';
-import { AgentFactory } from './internal.js';
-import { Agent } from './internal.js';
-import { Movement } from './internal.js';
+import { Simulation  } from './internal.js';
 
-// Create the agent using the factory
-const scene = SceneFactory.createHouse();
-const oldMan = AgentFactory.createOldManAgent(scene);
+// Create a new simulation instance
+const simulation = new Simulation();
+
+// Get the scene and agent from the simulation
+const scene = simulation.getSimulationScene();
+const oldMan = simulation.getSimulationAgent();
 
 // Run the agent
 for (let i = 0; i < 30; i++) {
-    oldMan.run();
-    console.log(`--- Generation: ${i + 1} ---`);
+    simulation.run();
+
+    console.log(`--- Generation: ${simulation.getGeneration() + 1} ---`);
+
     let boredom = oldMan.getBelief("boredom").getValue();
     let hunger = oldMan.getBelief("hunger").getValue();
     let fatigue = oldMan.getBelief("fatigue").getValue();;

@@ -27,6 +27,7 @@ export { IntentionManager } from './bdiagent/intention/IntentionManager.js';
 
 export { Agent } from './bdiagent/Agent.js';
 export { AgentFactory } from './bdiagent/AgentFactory.js';
+export { Simulation } from './Simulation.js';
 
 
 
