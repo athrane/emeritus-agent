@@ -75,10 +75,13 @@ export class DesireManager {
         TypeUtils.ensureInstanceOf(agent, Agent);
 
         // get active desires 
-        const activeDesires = this.desires.filter(desire => desire.isActive(agent));
+        this.activeDesires = this.desires.filter(desire => desire.isActive(agent));
 
         // exit if no active desires
-        if (activeDesires.length === 0) {
+        if (this.activeDesires.length === 0) {
+
+            // reset the best desire if there are no active desires
+            this.bestDesire = null;
             return;
         }
 
@@ -86,7 +89,7 @@ export class DesireManager {
         this.activeDesires.sort((a, b) => b.priority - a.priority);
         
         // select the best desire
-        this.bestDesire = activeDesires[0];
+        this.bestDesire = this.activeDesires[0];
     }
 
 }
