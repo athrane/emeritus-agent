@@ -17,9 +17,14 @@ export class DesireManager {
      * Adds a desire to the agent's list of desires.
      * 
      * @param {Desire} desire The desire to add to the agent.
+     * @throws {TypeError} If the desire is not an instance of Desire.
+     * @throws {Error} If a desire with the same name already exists.
      */
     addDesire(desire) {
         TypeUtils.ensureInstanceOf(desire, Desire);
+        if (this.hasDesire(desire.name)) {
+            throw new Error(`Desire with name '${desire.name}' already exists.`);
+        }
         this.desires.push(desire);
     }
 
@@ -30,6 +35,7 @@ export class DesireManager {
      */
     hasDesire(name) {
         TypeUtils.ensureString(name);
+        if (name.length === 0) return false; 
         name = name.toLowerCase(); 
         return this.desires.some(desire => desire.name === name);
     }
@@ -43,6 +49,15 @@ export class DesireManager {
         return this.desires;
     }
     
+    /**
+     * Retrieves the agent's active desires.
+     *
+     * @returns {Desire[]} An array of active desires that are currently satisfied.
+     */
+    getActiveDesires() {
+        return this.activeDesires;
+    }   
+
     /**
      * Retrieves the agent's current best desire.
      *
@@ -60,7 +75,7 @@ export class DesireManager {
         TypeUtils.ensureInstanceOf(agent, Agent);
 
         // get active desires 
-        const activeDesires = this.desires.filter(desire => desire.isSatisfied(agent));
+        const activeDesires = this.desires.filter(desire => desire.isActive(agent));
 
         // exit if no active desires
         if (activeDesires.length === 0) {
