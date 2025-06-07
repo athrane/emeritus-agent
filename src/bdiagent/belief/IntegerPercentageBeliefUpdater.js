@@ -11,7 +11,7 @@ export class IntegerPercentageBeliefUpdater extends BeliefUpdater {
     /**
  * Updates a belief in the agent.
  * @param {IntegerPercentageBelief} belief The belief to update.
- * @param {any} value The new value for the belief.
+ * @param {any} value The initial value for the belief.
  */
     constructor(belief, value) {
         super();

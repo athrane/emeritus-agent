@@ -8,7 +8,7 @@ const scene = SceneFactory.createHouse();
 const oldMan = AgentFactory.createOldManAgent(scene);
 
 // Run the agent
-for (let i = 0; i < 20; i++) {
+for (let i = 0; i < 30; i++) {
     oldMan.run();
     console.log(`--- Generation: ${i + 1} ---`);
     let boredom = oldMan.getBelief("boredom").getValue();
