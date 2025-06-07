@@ -36,7 +36,7 @@ export class Desire {
      * @param {Agent} agent - The agent to check the desire against.
      * @returns {boolean} - True if the desire is active.
      */
-    isSatisfied(agent) {
+    isActive(agent) {
         TypeUtils.ensureInstanceOf(agent, Agent);
         return this.condition(agent);
     }
