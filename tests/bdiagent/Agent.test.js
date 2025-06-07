@@ -96,7 +96,22 @@ describe('Agent', () => {
 
     });
 
-    
-    
+    describe('getDesireManager', () => {
+        let scene;
+        let agent;
+
+        beforeEach(() => {
+            scene = new Scene();
+            const room = scene.createRoom("Room1", 0, 0, 10, 10);
+            const position = Position.create(0, 0);
+            const location = Location.create("L1", position, room);
+            agent = new Agent('TestAgent', location, 5, scene);
+        });
+        
+        it('should create be able to get desire manager', () => {
+            expect(agent.desireManager).toBeDefined();
+            expect(agent.desireManager.getDesires()).toEqual([]);
+        });
+    });
 
 });
