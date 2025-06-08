@@ -116,12 +116,13 @@ describe('hasDesire', () => {
     expect(desireManager.hasDesire('anyDesire')).toBe(false);
   });
 
-  test('is case-insensitive when checking for desires', () => {
+  test('is case-sensitive when checking for desires', () => {
     const desire1 = new MockDesire('Desire1', jest.fn(), 1);
     desireManager.addDesire(desire1);
-    expect(desireManager.hasDesire('desire1')).toBe(true);
-    expect(desireManager.hasDesire('DESIRE1')).toBe(true);
-    expect(desireManager.hasDesire('DeSiRe1')).toBe(true);
+    expect(desireManager.hasDesire('Desire1')).toBe(true);
+    expect(desireManager.hasDesire('desire1')).toBe(false);
+    expect(desireManager.hasDesire('DESIRE1')).toBe(false);
+    expect(desireManager.hasDesire('DeSiRe1')).toBe(false);
   }
   );
   test('should return false when looking up with an empty string', () => {

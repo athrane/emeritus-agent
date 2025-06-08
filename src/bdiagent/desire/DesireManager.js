@@ -36,7 +36,6 @@ export class DesireManager {
     hasDesire(name) {
         TypeUtils.ensureString(name);
         if (name.length === 0) return false; 
-        name = name.toLowerCase(); 
         return this.desires.some(desire => desire.name === name);
     }
 

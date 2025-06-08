@@ -15,7 +15,7 @@ import { Agent } from "../../internal.js";
  * Desires are evaluated based on the agent's beliefs and can change over time as the agent's state changes.
  *
  * The name is used to identify the desire, and it should be unique among the agent's desires.
- * The name is stored in lowercase to ensure consistency and avoid case sensitivity issues.
+ * The name is stored case sensitive.
  * 
  * The condition function is used to determine if the desire is currently active based on the agent's beliefs.
  * An active desire is one that the agent wants to fulfill at the current time.
@@ -25,9 +25,36 @@ export class Desire {
         TypeUtils.ensureString(name);
         TypeUtils.ensureFunction(condition);
         TypeUtils.ensureNumber(priority);
-        this.name = name.toLowerCase();
+        this.name = name;
         this.condition = condition; // Function that returns true if the desire is active
         this.priority = priority;
+    }
+
+    /**
+     * Gets the name of the desire.
+     * 
+     * @returns {string} - The name of the desire.
+     */
+    getName() {
+        return this.name;
+    }
+
+    /**
+     * Gets the condition function of the desire.
+     * 
+     * @returns {Function} - The condition function that checks if the desire is active.
+     */
+    getCondition() {
+        return this.condition;
+    }
+
+    /**
+     * Gets the priority of the desire.
+     * 
+     * @returns {number} - The priority of the desire.
+     */
+    getPriority() {
+        return this.priority;
     }
 
     /**
