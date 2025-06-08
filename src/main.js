@@ -9,13 +9,12 @@ const oldMan = simulation.getSimulationAgent();
 
 // Run the agent
 for (let i = 0; i < 30; i++) {
+    console.log(`--- Generation: ${simulation.getGeneration()} ---`);
     simulation.run();
 
-    console.log(`--- Generation: ${simulation.getGeneration() + 1} ---`);
-
-    let boredom = oldMan.getBelief("boredom").getValue();
-    let hunger = oldMan.getBelief("hunger").getValue();
-    let fatigue = oldMan.getBelief("fatigue").getValue();;
+    let boredom = oldMan.getBelief("Boredom").getValue();
+    let hunger = oldMan.getBelief("Hunger").getValue();
+    let fatigue = oldMan.getBelief("Fatigue").getValue();;
     console.log(`Boredom: ${boredom}`);
     console.log(`Hunger: ${hunger}`);
     console.log(`Fatigue: ${fatigue}`);
