@@ -153,7 +153,7 @@ export class Movement {
 
         // if start and end rooms are the same, set target position
         if( this.path.getLength() === 1) {
-            console.debug("moveTo-CP3: Path length is 1, setting target position...");
+            //console.debug("moveTo-CP3: Path length is 1, setting target position...");
             this.targetPosition = destination.getPhysicalPosition();
             return;
         }
@@ -232,7 +232,7 @@ export class Movement {
 
             // if final destination is reached, stop moving
             if (this.hasReachedFinalDestination()) {
-                console.debug("update-CP5a: Agent has reached FINAL DESTINATION...");
+                //console.debug("update-CP5a: Agent has reached FINAL DESTINATION...");
                 this.isAgentMoving = false;
                 this.targetPosition = null;
                 this.destination = Movement.NULL_LOCATION;
