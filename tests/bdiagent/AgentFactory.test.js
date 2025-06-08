@@ -33,17 +33,17 @@ describe('AgentFactory', () => {
         expect(oldMan).toBeDefined();
         expect(oldMan.name).toBe("Acticus");
 
-        expect(oldMan.getBelief("hunger")).toBeDefined();
-        expect(oldMan.getBelief("fatigue")).toBeDefined();
-        expect(oldMan.getBelief("boredom")).toBeDefined();
+        expect(oldMan.getBelief("Hunger")).toBeDefined();
+        expect(oldMan.getBelief("Fatigue")).toBeDefined();
+        expect(oldMan.getBelief("Boredom")).toBeDefined();
 
-        expect(oldMan.getBelief("hunger")).toBeInstanceOf(IntegerPercentageBelief);
-        expect(oldMan.getBelief("fatigue")).toBeInstanceOf(IntegerPercentageBelief);
-        expect(oldMan.getBelief("boredom")).toBeInstanceOf(IntegerPercentageBelief);
+        expect(oldMan.getBelief("Hunger")).toBeInstanceOf(IntegerPercentageBelief);
+        expect(oldMan.getBelief("Fatigue")).toBeInstanceOf(IntegerPercentageBelief);
+        expect(oldMan.getBelief("Boredom")).toBeInstanceOf(IntegerPercentageBelief);
 
-        expect(oldMan.getBelief("hunger").getValue()).toBe(0);
-        expect(oldMan.getBelief("fatigue").getValue()).toBe(0);
-        expect(oldMan.getBelief("boredom").getValue()).toBe(50);        
+        expect(oldMan.getBelief("Hunger").getValue()).toBe(0);
+        expect(oldMan.getBelief("Fatigue").getValue()).toBe(0);
+        expect(oldMan.getBelief("Boredom").getValue()).toBe(50);        
     });
 
     it('should create an old man agent with correct desires', () => {
