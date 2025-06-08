@@ -20,12 +20,11 @@ for (let i = 0; i < 30; i++) {
     console.log(`Hunger: ${hunger}`);
     console.log(`Fatigue: ${fatigue}`);
 
-    let currentBestDesire = oldMan.getCurrentBestDesire();
-    if(currentBestDesire) { 
-        console.log(`Current Desire: ${currentBestDesire.name}`);
-    }
-
     let desireManager = oldMan.getDesireManager();
+    let currentBestDesire = desireManager.getCurrentBestDesire();
+    if(currentBestDesire) console.log(`Current Desire: ${currentBestDesire.getName()}`);
+    else console.log("No current desire.");
+
     let activeDesires = desireManager.getActiveDesires();
     if (activeDesires.length > 0) {
         let logString = "Active Desires:";
