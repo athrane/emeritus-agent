@@ -43,7 +43,8 @@ export class SceneFactory {
         kitchen.addAdjacentRoom(hall.getName());
         hall.addAdjacentRoom(kitchen.getName());
         hall.addAdjacentRoom(garden.getName());
-        return scene
+        garden.addAdjacentRoom(hall.getName());
+        return scene;
     }        
 
     createCatLocations() {

@@ -1,7 +1,7 @@
 import { Room } from "../../../src/internal.js";
 import { Location } from "../../../src/internal.js";
 import { Scene } from "../../../src/internal.js";
-import { Position } from "../../../src/internal.js";
+import { SceneFactory } from "../../../src/internal.js";
 import { Path } from "../../../src/internal.js";
 
 
@@ -195,6 +195,32 @@ describe('Scene', () => {
 
         test('should throw error if start and end are the same room', () => {
             expect(() => scene.findShortestPath(hallway, hallway)).not.toThrowError();
+        });
+    });
+
+    describe('findShortestPath for house scene', () => {
+        let scene;
+
+        beforeEach(() => {
+            scene = SceneFactory.createHouse();
+        });
+
+        test('should find a path from Garden to Living Room', () => {
+            const garden = scene.getRoom('Garden');
+            const livingRoom = scene.getRoom('Living Room');
+            const path = scene.findShortestPath(garden, livingRoom);
+            expect(path).toBeInstanceOf(Path);
+            expect(path.getLength()).toBe(4);
+            expect(path.getRoomNames()).toEqual(['Garden', 'Hall', 'Kitchen', 'Living Room']);
+        });
+
+        test('should find a path from Living Room to Garden', () => {
+            const livingRoom = scene.getRoom('Living Room');
+            const garden = scene.getRoom('Garden');
+            const path = scene.findShortestPath(livingRoom, garden);
+            expect(path).toBeInstanceOf(Path);
+            expect(path.getLength()).toBe(4);
+            expect(path.getRoomNames()).toEqual(['Living Room', 'Kitchen', 'Hall', 'Garden']);
         });
 
     });
