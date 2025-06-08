@@ -136,11 +136,16 @@ export class Movement {
     moveTo(destination) {
         TypeUtils.ensureInstanceOf(destination, Location);
 
+        //console.log(`moveTo-CP1: Agent is moving from current room ${this.currentRoom.name} to destination location: ${destination.name}`);
+
         // calculate path
         this.path = this.scene.findShortestPath(this.currentRoom, destination.getRoom());
+        //console.log(`moveTo-CP2: Path length: ${this.path.getLength()}`);
+        //console.log(`moveTo-CP2: Calculated path: ${this.path.getRoomNames()}`);
 
         //  if the path is empty then stop movement and exit
         if (this.path.isEmpty()) {
+            //console.log("moveTo-CP3: Path is empty, stopping movement.");
             this.isAgentMoving = false;
             this.targetPosition = null;
             this.destination = Movement.NULL_LOCATION;
@@ -153,7 +158,7 @@ export class Movement {
 
         // if start and end rooms are the same, set target position
         if( this.path.getLength() === 1) {
-            //console.debug("moveTo-CP3: Path length is 1, setting target position...");
+            //console.log("moveTo-CP4: Path length is 1, setting target position.");
             this.targetPosition = destination.getPhysicalPosition();
             return;
         }
