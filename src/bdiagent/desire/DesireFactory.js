@@ -12,7 +12,7 @@ export class DesireFactory {
     static createSleepDesire() {
         return new Desire(
             "Sleep",
-            (agent) => agent.getBelief("fatigue").getValue() > 70, // Condition for activation
+            (agent) => agent.getBelief("Fatigue").getValue() > 70, // Condition for activation
             8 // Priority
         );
     }
@@ -24,7 +24,7 @@ export class DesireFactory {
     static createEatDesire() {
         return new Desire(
             "Eat",
-            (agent) => agent.getBelief("hunger").getValue() > 60, // Condition for activation
+            (agent) => agent.getBelief("Hunger").getValue() > 60, // Condition for activation
             7 // Priority
         );
     }
@@ -36,7 +36,7 @@ export class DesireFactory {
     static createEntertainDesire() {
         return new Desire(
             "Entertain",
-            (agent) => agent.getBelief("boredom").getValue() > 50, // Condition for activation
+            (agent) => agent.getBelief("Boredom").getValue() > 50, // Condition for activation
             5 // Priority
         );
     }
@@ -47,7 +47,7 @@ export class DesireFactory {
      */
     static createSitIdleDesire() {
         return new Desire(
-            "SitIdle",
+            "Sit Idle",
             (agent) => true,  // Condition is always true, so it will always activate
             3 // Priority
         );

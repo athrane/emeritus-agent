@@ -14,11 +14,11 @@ export class IntentionFactory {
             [
                 (agent) => {
                     //console.log("Agent is going to sleep.");
-                    agent.getBelief("fatigue").decrease(50);
-                    agent.getBelief("hunger").increase(10); // Sleeping might increase hunger a bit
+                    agent.getBelief("Fatigue").decrease(50);
+                    agent.getBelief("Hunger").increase(10); // Sleeping might increase hunger a bit
                 }
             ],
-            (agent) => agent.getBelief("fatigue").getValue() > 70, // Preconditions
+            (agent) => agent.getBelief("Fatigue").getValue() > 70, // Preconditions
             (agent) => {
                 //console.log("Agent woke up and feels rested.");
             }, // Effects
@@ -37,11 +37,11 @@ export class IntentionFactory {
             [
                 (agent) => {
                     //console.log("Agent is eating.");
-                    agent.getBelief("hunger").decrease(40);
-                    agent.getBelief("fatigue").increase(5); // Eating might cause a bit of fatigue
+                    agent.getBelief("Hunger").decrease(40);
+                    agent.getBelief("Fatigue").increase(5); // Eating might cause a bit of fatigue
                 }
             ],
-            (agent) => agent.getBelief("hunger").getValue() > 60, // Preconditions
+            (agent) => agent.getBelief("Hunger").getValue() > 60, // Preconditions
             (agent) => {
                 //console.log("Agent finished eating.");
             }, // Effects
@@ -60,10 +60,10 @@ export class IntentionFactory {
             [
                 (agent) => {
                     //console.log("Agent is reading.");
-                    agent.getBelief("boredom").decrease(25);
+                    agent.getBelief("Boredom").decrease(25);
                 }
             ],
-            (agent) => agent.getBelief("boredom").getValue() > 50, // Preconditions
+            (agent) => agent.getBelief("Boredom").getValue() > 50, // Preconditions
             (agent) => {
                 //console.log("Agent is done reading.");
             }, // Effects
@@ -78,11 +78,11 @@ export class IntentionFactory {
      */
     static createSitIdleIntention(scene) {
         return new Intention(
-            "SitIdle",
+            "Sit Idle",
             [
                 (agent) => {
                     //console.log("Agent is sitting idle.");
-                    agent.getBelief("boredom").increase(2); // is boring to sit idle
+                    agent.getBelief("Boredom").increase(5); // is boring to sit idle
                 }
             ],
             (agent) => true,  // Condition is always true, so it will always activate

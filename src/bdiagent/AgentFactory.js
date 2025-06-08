@@ -37,9 +37,9 @@ export class AgentFactory {
         const oldMan = new Agent("Acticus", initialLocation, AgentFactory.MOVEMENT_SPEED, scene);
 
         // Add beliefs
-        const hungerBelief = new IntegerPercentageBelief("hunger", 0);
-        const fatigueBelief = new IntegerPercentageBelief("fatigue", 0);
-        const boredomBelief = new IntegerPercentageBelief("boredom", 50);
+        const hungerBelief = new IntegerPercentageBelief("Hunger", 0);
+        const fatigueBelief = new IntegerPercentageBelief("Fatigue", 0);
+        const boredomBelief = new IntegerPercentageBelief("Boredom", 50);
         oldMan.addBelief(hungerBelief);
         oldMan.addBelief(fatigueBelief);
         oldMan.addBelief(boredomBelief);
