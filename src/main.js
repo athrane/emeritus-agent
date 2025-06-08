@@ -24,7 +24,27 @@ for (let i = 0; i < 30; i++) {
     if(currentBestDesire) { 
         console.log(`Current Desire: ${currentBestDesire.name}`);
     }
-     
+
+    let desireManager = oldMan.getDesireManager();
+    let activeDesires = desireManager.getActiveDesires();
+    if (activeDesires.length > 0) {
+        let logString = "Active Desires:";
+        activeDesires.forEach(desire => {
+            logString += ` ${desire.name}`;
+            if (desire.isActive(oldMan)) {
+                logString += "/satisfied";
+            } else {
+                logString += "/not satisfied";
+            }
+            logString += `/${desire.priority}`;
+
+        });
+        console.log(logString);
+    }
+    else {
+        console.log("No active desires.");
+    }
+
     let currentIntention = oldMan.getCurrentIntention();
     console.log(`Current Intention: ${currentIntention.name}`);
 
