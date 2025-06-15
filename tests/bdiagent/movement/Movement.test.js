@@ -28,7 +28,7 @@ describe('create', () => {
     });
 
     it('should initialize with the correct speed', () => {
-        expect(movement.speed).toBe(5);
+        expect(movement.getSpeed()).toBe(5);
     });
 
     it('should initialize with the correct scene', () => {
@@ -40,12 +40,12 @@ describe('create', () => {
     });
 
     it('should initialize with the correct path', () => {
-        expect(movement.path).toBeInstanceOf(Path);
-        expect(movement.path.isEmpty()).toBe(true);
+        expect(movement.getPath()).toBeInstanceOf(Path);
+        expect(movement.getPath().isEmpty()).toBe(true);
     });
 
     it('should initialize with the correct path index', () => {
-        expect(movement.path.getCurrentIndex()).toBe(0);
+        expect(movement.getPath().getCurrentIndex()).toBe(0);
     });
 
     it('should initialize with the correct target position', () => {
@@ -445,6 +445,12 @@ describe('Pathfinding Movement', () => {
         expect(movement.isMoving()).toBe(false);
     });         
 
+    it('should return the current path with getPath', () => {
+        expect(movement.getPath()).toBe(movement.path);
+    });
 
+    it('should return the current speed with getSpeed', () => {
+        expect(movement.getSpeed()).toBe(5);
+    });
 
 });
