@@ -18,9 +18,9 @@ export class Simulation {
      * Creates a new Simulation instance with a house scene and an old man agent.
      */
     constructor() {
+        this.step = 0;
         this.scene = SceneFactory.createHouse();
         this.agent = AgentFactory.createOldManAgent(this.scene);
-        this.step = 0;
         this.timeManager = new TimeManager(Simulation.SIMULATION_STEP_MINUTES);
     }
 
