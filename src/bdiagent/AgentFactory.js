@@ -11,7 +11,8 @@ import { Scene } from '../internal.js';
  */
 export class AgentFactory {
 
-    static MOVEMENT_SPEED = 1; // Speed of the agent
+
+    static MOVEMENT_SPEED_OLDMAN = 0.2; // Speed of the old man agent
 
     /**
      * Creates a new null Agent.
@@ -21,7 +22,7 @@ export class AgentFactory {
      */
     static createNullAgent(scene) {
         const initialLocation = Location.createNullLocation();
-        return new Agent("NULL Agent", initialLocation, AgentFactory.MOVEMENT_SPEED, scene)
+        return new Agent("NULL Agent", initialLocation, AgentFactory.MOVEMENT_SPEED_OLDMAN, scene)
     }
 
     /**
@@ -34,7 +35,7 @@ export class AgentFactory {
 
         // Create the agent
         const initialLocation = scene.getLocation("Bed");
-        const oldMan = new Agent("Acticus", initialLocation, AgentFactory.MOVEMENT_SPEED, scene);
+        const oldMan = new Agent("Acticus", initialLocation, AgentFactory.MOVEMENT_SPEED_OLDMAN, scene);
 
         // Add beliefs
         const hungerBelief = new IntegerPercentageBelief("Hunger", 0);
