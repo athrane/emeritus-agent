@@ -39,6 +39,14 @@ export class Agent {
   }
 
   /**
+   * Retrieves the name of the agent.
+   * @returns {string} The name of the agent.
+   */
+  getName() {
+    return this.name;
+  }
+
+  /**
    * Adds a belief to the agent's list of beliefs.
    * @param {Belief} belief The belief to add.
    * @throws {Error} If the provided belief is not an instance of the Belief class.

@@ -26,7 +26,7 @@ describe('Agent', () => {
 
         it('should create be able to create agent', () => {
             expect(agent).toBeDefined();
-            expect(agent.name).toBe('TestAgent');
+            expect(agent.getName()).toBe('TestAgent');
             expect(agent.movement).toBeDefined();
             expect(agent.movement.getPosition()).toBeDefined();
             expect(agent.movement.getPosition()).toBeInstanceOf(Position);
@@ -111,6 +111,23 @@ describe('Agent', () => {
         it('should create be able to get desire manager', () => {
             expect(agent.desireManager).toBeDefined();
             expect(agent.desireManager.getDesires()).toEqual([]);
+        });
+    });
+
+    describe('getName', () => {
+        let scene;
+        let agent;
+
+        beforeEach(() => {
+            scene = new Scene();
+            const room = scene.createRoom("Room1", 0, 0, 10, 10);
+            const position = Position.create(0, 0);
+            const location = Location.create("L1", position, room);
+            agent = new Agent('TestAgent', location, 5, scene);
+        });
+
+        it('should return the name of the agent', () => {
+            expect(agent.getName()).toBe('TestAgent');
         });
     });
 
