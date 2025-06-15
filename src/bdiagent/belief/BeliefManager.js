@@ -38,6 +38,14 @@ export class BeliefManager {
     getBelief(name) {
         TypeUtils.ensureString(name);
         return this.beliefs.find(belief => belief.name === name);
+   }
+
+    /**
+     * Returns all registered beliefs.
+     * @returns {Belief[]} Array of all beliefs.
+     */
+    getBeliefs() {
+        return this.beliefs;
     }
 
     /**

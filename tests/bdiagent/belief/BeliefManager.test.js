@@ -78,4 +78,15 @@ describe('BeliefManager', () => {
         expect(beliefManager.getBelief("sameName")).toBe(belief1);
     });
 
+    it('should return all registered beliefs with getBeliefs', () => {
+        const belief1 = new Belief("beliefA", 1);
+        const belief2 = new Belief("beliefB", 2);
+        beliefManager.addBelief(belief1);
+        beliefManager.addBelief(belief2);
+        const beliefs = beliefManager.getBeliefs();
+        expect(beliefs).toContain(belief1);
+        expect(beliefs).toContain(belief2);
+        expect(beliefs.length).toBe(2);
+    });
+
 });
