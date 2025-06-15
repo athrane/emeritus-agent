@@ -3,7 +3,7 @@ import { TimeOfDay } from "../../src/internal.js";
 
 describe('TimeManager', () => {
     test('initializes with default values', () => {
-        const tm = new TimeManager();
+        const tm = new TimeManager(10);
         const tod = tm.getTimeOfDay();
         expect(tod).toBeInstanceOf(TimeOfDay);
         expect(tod.getHours()).toBe(0);
@@ -47,7 +47,7 @@ describe('TimeManager', () => {
     });
 
     test('getTimeOfDay returns correct hours and minutes', () => {
-        const tm = new TimeManager();
+        const tm = new TimeManager(10);
         tm.timeOfDayMinutes = 125;
         const tod = tm.getTimeOfDay();
         expect(tod.getHours()).toBe(2);
@@ -55,7 +55,7 @@ describe('TimeManager', () => {
     });
 
     test('getTimeOfDayString returns formatted time string', () => {
-        const tm = new TimeManager();
+        const tm = new TimeManager(10);
         tm.timeOfDayMinutes = 65;
         expect(tm.getTimeOfDayString()).toBe('01:05');
         tm.timeOfDayMinutes = 0;
@@ -65,7 +65,7 @@ describe('TimeManager', () => {
     });
 
     test('getDay returns the current day', () => {
-        const tm = new TimeManager();
+        const tm = new TimeManager(10);
         expect(tm.getDay()).toBe(1);
         tm.day = 5;
         expect(tm.getDay()).toBe(5);

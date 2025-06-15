@@ -15,7 +15,7 @@ export class TimeManager {
      * Constructor for TimeManager.
      * @param {number} stepMinutes - Number of minutes per simulation step.
      */
-    constructor(stepMinutes = 10) {
+    constructor(stepMinutes) {
         this.stepMinutes = stepMinutes; // Minutes per simulation step
         this.timeOfDayMinutes = 0;      // Minutes since midnight (0-1439)
         this.day = 1;                   // Simulation day counter

@@ -9,11 +9,19 @@ import { TimeManager } from './internal.js';
  */ 
 export class Simulation {
 
+    /**
+     * Defines the number of minutes per simulation step.
+     */
+    static SIMULATION_STEP_MINUTES = 10;
+
+    /**
+     * Creates a new Simulation instance with a house scene and an old man agent.
+     */
     constructor() {
         this.scene = SceneFactory.createHouse();
         this.agent = AgentFactory.createOldManAgent(this.scene);
         this.step = 0;
-        this.timeManager = new TimeManager();
+        this.timeManager = new TimeManager(Simulation.SIMULATION_STEP_MINUTES);
     }
 
     /**
