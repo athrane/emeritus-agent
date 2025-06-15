@@ -44,6 +44,15 @@ export class Movement {
     }
 
     /**
+     * The speed of the agent.
+     * 
+     * @returns {number} The speed of the agent.
+     */
+    getSpeed() {
+        return this.speed;
+    }
+
+    /**
      * Gets the current position of the agent.
      * 
      * @returns {Position} The current position.
@@ -125,6 +134,14 @@ export class Movement {
      */
     hasReachedFinalDestination() {
         return this.targetPosition.isEqual(this.destination.getPhysicalPosition());
+    }
+
+    /**
+     * Get the path that the agent is currently following.
+     * @returns {Path} The path object representing the agent's current path.
+     */
+    getPath() {
+        return this.path;
     }
 
     /** 
