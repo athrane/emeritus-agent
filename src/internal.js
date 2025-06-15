@@ -29,5 +29,5 @@ export { Agent } from './bdiagent/Agent.js';
 export { AgentFactory } from './bdiagent/AgentFactory.js';
 export { Simulation } from './Simulation.js';
 
-
-
+export { TimeManager } from './time/TimeManager.js';
+export { TimeOfDay } from './time/TimeOfDay.js';

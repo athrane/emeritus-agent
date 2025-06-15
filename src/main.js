@@ -7,6 +7,14 @@ const simulation = new Simulation();
 const scene = simulation.getSimulationScene();
 const oldMan = simulation.getSimulationAgent();
 
+// list rooms
+const rooms2 = Array.from(scene.rooms.values());
+console.log("Rooms in the scene:");
+rooms2.forEach(room => {
+    console.log(`- ${room.getName()} at (${room.getPosition().getX()}, ${room.getPosition().getY()}) with size (${room.getSize().getX()}, ${room.getSize().getY()})`);
+});
+
+
 // Run the agent
 for (let i = 0; i < 30; i++) {
     console.log(`--- Generation: ${simulation.getGeneration()} ---`);

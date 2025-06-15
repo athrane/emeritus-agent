@@ -1,6 +1,7 @@
 import { SceneFactory } from './internal.js';
 import { AgentFactory } from './internal.js';
 import { Agent } from './internal.js';
+import { TimeManager } from './internal.js';
 
 /**
  * Represents a simulation that contains a scene and an agent.
@@ -12,6 +13,7 @@ export class Simulation {
         this.scene = SceneFactory.createHouse();
         this.agent = AgentFactory.createOldManAgent(this.scene);
         this.step = 0;
+        this.timeManager = new TimeManager();
     }
 
     /**
@@ -37,9 +39,20 @@ export class Simulation {
     getGeneration() {
         return this.step;
     }
-     
 
+    /**
+     * Get the simulation time manager.
+     * @return {TimeManager} The time manager of the simulation.
+     */
+    getTimeManager() {
+        return this.timeManager;
+    }
+     
+    /**
+     * Run the simulation for one step.
+     */
     run() {
+        this.timeManager.advanceStep();
         this.agent.run();
         this.step++;
     }
