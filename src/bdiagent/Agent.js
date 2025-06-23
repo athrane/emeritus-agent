@@ -113,6 +113,14 @@ export class Agent {
   }
 
   /**
+   * Retrieves the agent's belief manager.
+   * @return {BeliefManager} The belief manager of the agent.
+   */ 
+  getBeliefManager() {
+    return this.beliefManager;
+  }
+  
+  /**
    * Retrieves the scene where the agent resides. 
    * @return {Scene} The scene of the agent.
    */ 

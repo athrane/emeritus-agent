@@ -148,4 +148,21 @@ describe('Agent', () => {
         });
     });
 
+    describe('getBeliefManager', () => {
+        let scene;
+        let agent;
+
+        beforeEach(() => {
+            scene = new Scene();
+            const room = scene.createRoom("Room1", 0, 0, 10, 10);
+            const position = Position.create(0, 0);
+            const location = Location.create("L1", position, room);
+            agent = new Agent('TestAgent', location, 5, scene);
+        });
+
+        it('should return the belief manager associated with the agent', () => {
+            expect(agent.getBeliefManager()).toBe(agent.beliefManager);
+        });
+    });
+
 });
