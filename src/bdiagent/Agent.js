@@ -113,6 +113,14 @@ export class Agent {
   }
 
   /**
+   * Retrieves the scene where the agent resides. 
+   * @return {Scene} The scene of the agent.
+   */ 
+  getScene() {
+    return this.scene;
+  }
+
+  /**
    * Runs the agent for a single iteration of the simulation.
    */
   run() {
