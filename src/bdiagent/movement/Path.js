@@ -138,7 +138,7 @@ export class Path {
         if(this.isEmpty()) return true;         
         return this.currentIndex == (this.roomNames.length - 1);
     }
-
+    
     /**
      * Creates a new Path instance from an array of room names.
      * @param {string[]} roomNames - An array of room names.

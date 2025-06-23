@@ -196,6 +196,17 @@ export class Room {
   }
 
   /**
+   * Gets the center coordinates of the room as a Position object.
+   * @returns {Position} The center position of the room.
+   */
+  getCenter() {
+    return Position.create(
+      this.position.getX() + this.size.getX() / 2,
+      this.position.getY() + this.size.getY() / 2
+    );
+  }
+
+  /**
     * Creates a new Room object.
     *
     * @param {string} name The name of the room.

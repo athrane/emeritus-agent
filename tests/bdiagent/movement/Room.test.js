@@ -244,5 +244,35 @@ describe('Room', () => {
     });
   });
 
+  describe('getCenter', () => {
+    it('should return the center position for a room at (0,0) with size (10,10)', () => {
+      const position = Position.create(0, 0);
+      const size = Position.create(10, 10);
+      const room = Room.create('TestRoom', position, size);
+      const center = room.getCenter();
+      expect(center).toBeInstanceOf(Position);
+      expect(center.getX()).toBe(5);
+      expect(center.getY()).toBe(5);
+    });
+
+    it('should return the correct center for a room at (2,3) with size (8,6)', () => {
+      const position = Position.create(2, 3);
+      const size = Position.create(8, 6);
+      const room = Room.create('TestRoom', position, size);
+      const center = room.getCenter();
+      expect(center.getX()).toBe(6);
+      expect(center.getY()).toBe(6);
+    });
+
+    it('should return the center for a room at (0,0) with size (0,0)', () => {
+      const position = Position.create(0, 0);
+      const size = Position.create(0, 0);
+      const room = Room.create('EmptyRoom', position, size);
+      const center = room.getCenter();
+      expect(center.getX()).toBe(0);
+      expect(center.getY()).toBe(0);
+    });
+  });
+
 });
 
