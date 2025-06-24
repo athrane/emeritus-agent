@@ -24,16 +24,16 @@ export class SceneFactory {
         const garden = scene.createRoom("Garden",4,0,1,1);
 
         // create and register locations
-        bedroom.createLocation("Bed", 0.5, 1); 
-        bedroom.createLocation("Wardrobe", 0.25, 1);        
-        kitchen.createLocation("Fridge", 0.25, 1); 
-        kitchen.createLocation("Stove", 0.5, 1);
-        livingRoom.createLocation("Table", 0.25, 1);
-        livingRoom.createLocation("Sofa", 0.5, 1);
-        hall.createLocation("Coat Hanger", 0.5, 1);
-        hall.createLocation("Front Door", 1, 1);
-        garden.createLocation("Flower Bed", 0.5, 1);
-        garden.createLocation("Tree", 1, 1);
+        bedroom.createLocation("Bed", 0.5, 0.2); 
+        bedroom.createLocation("Wardrobe", 0.25, 0.2);        
+        kitchen.createLocation("Fridge", 0.25, 0.2); 
+        kitchen.createLocation("Stove", 0.5, 0.2);
+        livingRoom.createLocation("Table", 0.25, 0.2);
+        livingRoom.createLocation("Sofa", 0.5, 0.2);
+        hall.createLocation("Coat Hanger", 0.5, 0.2);
+        hall.createLocation("Front Door", 1, 0.2);
+        garden.createLocation("Flower Bed", 0.5, 0.2);
+        garden.createLocation("Tree", 1, 0.2);
 
         // connect rooms
         bedroom.addAdjacentRoom(livingRoom.getName());
