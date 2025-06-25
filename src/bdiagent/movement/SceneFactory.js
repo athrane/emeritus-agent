@@ -7,6 +7,16 @@ import { Scene } from '../../internal.js';
 export class SceneFactory {
 
     /**
+     * Register two rooms as adjacent to each other.
+     * @param {room1} room1 The first room.
+     * @param {room2} room2 The second room.
+     */
+    static registerAdjacentRooms(room1, room2) {
+        room1.addAdjacentRoom(room2.getName());
+        room2.addAdjacentRoom(room1.getName());
+    }
+
+    /**
      * Create a house with predefined rooms.
      *
      * @returns {Scene} The created scene.
@@ -36,14 +46,10 @@ export class SceneFactory {
         garden.createLocation("Tree", 1, 0.2);
 
         // connect rooms
-        bedroom.addAdjacentRoom(livingRoom.getName());
-        livingRoom.addAdjacentRoom(bedroom.getName());
-        livingRoom.addAdjacentRoom(kitchen.getName());
-        kitchen.addAdjacentRoom(livingRoom.getName());
-        kitchen.addAdjacentRoom(hall.getName());
-        hall.addAdjacentRoom(kitchen.getName());
-        hall.addAdjacentRoom(garden.getName());
-        garden.addAdjacentRoom(hall.getName());
+        SceneFactory.registerAdjacentRooms(bedroom, kitchen);
+        SceneFactory.registerAdjacentRooms(kitchen, livingRoom);
+        SceneFactory.registerAdjacentRooms(livingRoom, hall);
+        SceneFactory.registerAdjacentRooms(hall, garden);
         return scene;
     }        
 

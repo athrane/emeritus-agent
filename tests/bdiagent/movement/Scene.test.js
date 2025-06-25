@@ -210,8 +210,8 @@ describe('Scene', () => {
             const livingRoom = scene.getRoom('Living Room');
             const path = scene.findShortestPath(garden, livingRoom);
             expect(path).toBeInstanceOf(Path);
-            expect(path.getLength()).toBe(4);
-            expect(path.getRoomNames()).toEqual(['Garden', 'Hall', 'Kitchen', 'Living Room']);
+            expect(path.getLength()).toBe(3);
+            expect(path.getRoomNames()).toEqual(['Garden', 'Hall', 'Living Room']);
         });
 
         test('should find a path from Living Room to Garden', () => {
@@ -219,8 +219,8 @@ describe('Scene', () => {
             const garden = scene.getRoom('Garden');
             const path = scene.findShortestPath(livingRoom, garden);
             expect(path).toBeInstanceOf(Path);
-            expect(path.getLength()).toBe(4);
-            expect(path.getRoomNames()).toEqual(['Living Room', 'Kitchen', 'Hall', 'Garden']);
+            expect(path.getLength()).toBe(3);
+            expect(path.getRoomNames()).toEqual(['Living Room', 'Hall', 'Garden']);
         });
 
     });
