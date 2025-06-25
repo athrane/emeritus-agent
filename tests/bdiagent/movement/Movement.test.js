@@ -333,14 +333,15 @@ describe('Pathfinding Movement', () => {
     let locHallway, locLivingRoom, locKitchen, locLivingRoom2;
     let hallway, livingRoom, kitchen; // Define rooms
 
-    // Helper function to calculate room center
-    const getRoomCenter = (room) => {
+    // Helper function to calculate target position as in Movement.calculateTargetPosition
+    const calculateTargetPosition = (room) => {
         const roomPos = room.getPosition();
         const roomSize = room.getSize();
-        return Position.create(
-            roomPos.getX() + roomSize.getX() / 2,
-            roomPos.getY() + roomSize.getY() / 2
-        );
+        // Use the same logic as Movement.calculateTargetPosition for intermediate rooms
+        const targetX = roomPos.getX() + roomSize.getX() / 2;
+        // Use the same Y as Movement.TARGET_POS_Y (static value)
+        const targetY = roomPos.getY() + Movement.TARGET_POS_Y;
+        return Position.create(targetX, targetY);
     };
 
     beforeEach(() => {
@@ -405,43 +406,42 @@ describe('Pathfinding Movement', () => {
         expect(movement.getRoom().getName()).toBe(hallway.getName());    
     });
 
-    it('should calculate target position in expteced room when starting movement - to next room', () => {
+    it('should calculate target position in expected room when starting movement - to next room', () => {
         movement.moveTo(locLivingRoom);
-        expect(movement.getTargetPosition()).toEqual(getRoomCenter(hallway));
+        expect(movement.getTargetPosition()).toEqual(calculateTargetPosition(hallway));
+        expect(movement.getTargetPosition().getX()).toBeCloseTo(5);
+        expect(movement.getTargetPosition().getY()).toBeCloseTo(0.1);    
     });    
     
     it('should update the position correctly - when moving to next room', () => {
         movement.moveTo(locLivingRoom);
         movement.update();
-        expect(movement.getPosition().getX()).toBeCloseTo(10);
-        expect(movement.getPosition().getY()).toBeCloseTo(5);
-        expect(movement.isMoving()).toBe(true);
+        expect(movement.getPosition().getX()).toBeCloseTo(9.489);
+        expect(movement.getPosition().getY()).toBeCloseTo(2.3);
     });
 
     it('should update the position correctly - when moving to next room', () => {
-        const destPosition = getRoomCenter(livingRoom);
         movement.moveTo(locLivingRoom);
         movement.update();
         movement.update();
-        expect(movement.getPosition().getX()).toBeCloseTo(destPosition.getX());
-        expect(movement.getPosition().getY()).toBeCloseTo(destPosition.getY());
-        expect(movement.isMoving()).toBe(false);
+        expect(movement.getPosition().getX()).toBeCloseTo(13.979);
+        expect(movement.getPosition().getY()).toBeCloseTo(4.5);
     });
 
     it('should update the movement state correctly - when moving to next room', () => {
-        const destPosition = getRoomCenter(livingRoom);
         movement.moveTo(locLivingRoom);
         movement.update();
         movement.update();
-        expect(movement.getPosition().getX()).toBeCloseTo(destPosition.getX());
-        expect(movement.getPosition().getY()).toBeCloseTo(destPosition.getY());
-        expect(movement.isMoving()).toBe(false);
+        expect(movement.isMoving()).toBe(true);
     });
 
     it('should stop moving when the destination is reached - when moving to next room', () => {
         movement.moveTo(locLivingRoom);
         movement.update();
         movement.update();
+        movement.update();
+        expect(movement.getPosition().getX()).toBeCloseTo(locLivingRoom.getPhysicalPosition().getX());
+        expect(movement.getPosition().getY()).toBeCloseTo(locLivingRoom.getPhysicalPosition().getY());
         expect(movement.isMoving()).toBe(false);
     });         
 

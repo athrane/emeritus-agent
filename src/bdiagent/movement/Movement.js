@@ -11,6 +11,11 @@ import { Intention } from "../../internal.js";
 export class Movement {
 
     /**
+     * A constant representing the Y coordinate of the target position.
+     */
+    static TARGET_POS_Y = 0.1;
+
+    /**
      * A constant representing a null location.
      */
     static NULL_LOCATION = Location.createNullLocation();
@@ -207,10 +212,10 @@ export class Movement {
         const roomPos = this.currentRoom.getPosition();
         const roomSize = this.currentRoom.getSize();
 
-        // Calculate center position (adjust as needed for better navigation later)
-        const centerX = roomPos.getX() + roomSize.getX() / 2;
-        const centerY = roomPos.getY() + roomSize.getY() / 2;
-        return Position.create(centerX, centerY);
+        // Calculate target position (adjust as needed for better navigation later)
+        const targetX = roomPos.getX() + roomSize.getX() / 2;
+        const targetY = roomPos.getY() + Movement.TARGET_POS_Y; 
+        return Position.create(targetX, targetY);
     }
 
     /**
