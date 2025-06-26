@@ -70,6 +70,13 @@ export class IntentionManager {
     }
 
     /**
+     * Resets the current intention of the agent to the null intention.
+     */
+    reset() {
+        this.currentIntention = IntentionManager.NULL_INTENTION;
+    }
+
+    /**
      * Executes the current intention of the agent.
      *
      * @param {Agent} agent The agent whose intention is being executed.

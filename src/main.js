@@ -16,7 +16,7 @@ rooms2.forEach(room => {
 
 
 // Run the agent
-for (let i = 0; i < 30; i++) {
+for (let i = 0; i < 100; i++) {
     console.log(`--- Generation: ${simulation.getGeneration()} ---`);
     simulation.run();
 

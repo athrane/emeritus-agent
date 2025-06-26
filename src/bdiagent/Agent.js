@@ -115,15 +115,15 @@ export class Agent {
   /**
    * Retrieves the agent's belief manager.
    * @return {BeliefManager} The belief manager of the agent.
-   */ 
+   */
   getBeliefManager() {
     return this.beliefManager;
   }
-  
+
   /**
    * Retrieves the scene where the agent resides. 
    * @return {Scene} The scene of the agent.
-   */ 
+   */
   getScene() {
     return this.scene;
   }
@@ -132,54 +132,62 @@ export class Agent {
    * Runs the agent for a single iteration of the simulation.
    */
   run() {
+    // Always update beliefs    
     this.beliefManager.update(this);
-    this.desireManager.update(this);
-    this.movement.update();
 
-    // if moving then exit 
-    //console.log(`Update-CP1: Agent ${this.name} is moving: ${this.movement.isMoving()}`);
-    if (this.movement.isMoving()) return;
-    
-    // update the intention managed with the current best desire
-    //console.log(`Update-CP2: Agent ${this.name} has current best desire: ${this.desireManager.getCurrentBestDesire() ? this.desireManager.getCurrentBestDesire().getName() : 'null'}`);
-    this.intentionManager.update(this, this.desireManager.getCurrentBestDesire());
-    
+    // If moving, continue movement and defer desire/intention re-evaluation
+    if (this.movement.isMoving()) {
+      //console.log(`Update-CP1: Agent ${this.name} is moving`);
+      this.movement.update();
+      return;
+    }
+
+    // agent is not moving, or has just completed a movement
+    //console.log(`Update-CP2: Agent ${this.name} has completed movement.`);
+
+    // If no current intention, re-evaluate desires and intentions
+    if (this.getCurrentIntention() === null || this.getCurrentIntention() == IntentionManager.NULL_INTENTION) {
+      //console.log(`Update-CP3: Agent ${this.name} has no current intention. Re-evaluating desires and intentions.`);
+      this.desireManager.update(this);
+
+      // update the intention managed with the current best desire
+      //console.log(`Update-CP4: Agent ${this.name} has current best desire: ${this.desireManager.getCurrentBestDesire() ? this.desireManager.getCurrentBestDesire().getName() : 'null'}`);
+      this.intentionManager.update(this, this.desireManager.getCurrentBestDesire());
+    }
+
     // get the current intention
     const currentIntention = this.getCurrentIntention();
-    //console.log(`Update-CP2: Agent ${this.name} current intention: ${currentIntention ? currentIntention.getName() : 'null'}`);
+    //console.log(`Update-CP5: Agent ${this.name} current intention: ${currentIntention ? currentIntention.getName() : 'null'}`);
 
     // if the current intention is null or the null intention then exit
-    if (currentIntention === null) return;
     if (currentIntention == IntentionManager.NULL_INTENTION) return;
+    if (currentIntention === null) return;
 
-    // state: we have a new intention and we are not moving
-    // if agent is in same intention room and within "reasonable" distance of location for intention the execute the intention
     // get new target room for intention
     const intentionLocation = currentIntention.getLocation();
     const intentionRoom = intentionLocation.getRoom();
-    //console.log(`Update-CP3: Agent ${this.name} intention location: ${intentionLocation.getName()}`);
-    //console.log(`Update-CP3: Agent ${this.name} intention room: ${intentionRoom.getName()}`);
+    //console.log(`Update-CP6a: Agent ${this.name} intention location: ${intentionLocation.getName()}`);
+    //console.log(`Update-CP6b: Agent ${this.name} intention room: ${intentionRoom.getName()}`);
 
     // get current room where agent resides
-    const currentLocation = this.movement.getDestination();
     const currentRoom = this.movement.getRoom();
-    //console.log(`Update-CP3: Agent ${this.name} current room: ${currentRoom.getName()}`);
-    //console.log(`Update-CP3: Agent ${this.name} current location: ${currentLocation.getName()}`);
+    //console.log(`Update-CP6c: Agent ${this.name} current room: ${currentRoom.getName()}`);
 
     // if the current room is the same as the intention room then check if the agent is within reasonable range of the target location
     if (currentRoom === intentionRoom) {
-      //console.log(`Update-CP4: Agent ${this.name} is in the same room as the intention room: ${intentionRoom.getName()}`);
-
-      // check if the agent is within reasonable range of the target location
-      if (this.movement.isWithinReasonbleRange(intentionLocation)) {
-        //console.log(`Update-CP4: Agent ${this.name} is within reasonable range of the intention location: ${intentionLocation.getName()}. Will execute intention.`);
+      if (this.movement.isWithinReasonableRange(intentionLocation)) {
+        //console.log(`Update-CP8: Agent ${this.name} is within reasonable range of the intention location: ${intentionLocation.getName()}. Will execute intention.`);
         this.intentionManager.executeCurrentIntention(this);
+
+        // reset intention after execution
+        //console.log(`Update-CP9: Agent ${this.name} has executed intention: ${  currentIntention.getName()}. Resetting current intention.`);
+        this.intentionManager.reset();
         return;
       }
     }
 
-    // Need to move: Initiate pathfinding and movement
-    //console.log(`Update-CP4: Agent ${this.name} is not within reasonable range of the intention location: ${intentionLocation.getName()}. Will ininitiate pathfinding and movement.`);
+    // If not in range or not in the correct room, initiate movement towards the intention's location
+    //console.log(`Update-CP9: Agent ${this.name} is not within reasonable range of the intention location: ${intentionLocation.getName()}. Will initiate pathfinding and movement.`);
     this.movement.moveTo(intentionLocation);
   }
 }

@@ -224,7 +224,7 @@ export class Movement {
      * @param {Location} location The location to check.
      * @returns {boolean} True if the location is within a reasonable range, false otherwise.
      */
-    isWithinReasonbleRange(location) {
+    isWithinReasonableRange(location) {
         TypeUtils.ensureInstanceOf(location, Location);
         const locPosition = location.getPhysicalPosition();
         return this.position.distanceTo(locPosition) <= Intention.EXECUTION_RANGE;

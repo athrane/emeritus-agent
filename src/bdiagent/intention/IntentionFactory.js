@@ -14,8 +14,8 @@ export class IntentionFactory {
             [
                 (agent) => {
                     //console.log("Agent is going to sleep.");
-                    agent.getBelief("Fatigue").decrease(50);
-                    agent.getBelief("Hunger").increase(10); // Sleeping might increase hunger a bit
+                    agent.getBelief("Fatigue").decrease(80);
+                    agent.getBelief("Hunger").increase(5); // Sleeping might increase hunger a bit
                 }
             ],
             (agent) => agent.getBelief("Fatigue").getValue() > 70, // Preconditions
@@ -37,7 +37,7 @@ export class IntentionFactory {
             [
                 (agent) => {
                     //console.log("Agent is eating.");
-                    agent.getBelief("Hunger").decrease(40);
+                    agent.getBelief("Hunger").decrease(70);
                     agent.getBelief("Fatigue").increase(5); // Eating might cause a bit of fatigue
                 }
             ],
