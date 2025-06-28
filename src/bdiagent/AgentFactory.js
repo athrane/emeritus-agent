@@ -55,13 +55,13 @@ export class AgentFactory {
         oldMan.addBelief(vesicularDistentionBelief);
 
         // Register belief updaters
-        oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(hungerBelief, 5));
-        oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(fatigueBelief, 5));
-        oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(boredomBelief, 5));
+        oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(hungerBelief, 2));
+        oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(fatigueBelief, 2));
+        oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(boredomBelief, 1));
         oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(dentalHygieneBelief, 0));
         oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(bodyHygieneBelief, 1));
         oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(handHygieneBelief, 0));
-        oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(vesicularDistentionBelief, 7));
+        oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(vesicularDistentionBelief, 3));
 
         // Add desires
         oldMan.addDesire(DesireFactory.createSleepDesire());

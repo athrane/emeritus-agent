@@ -13,7 +13,7 @@ export class DesireFactory {
         return new Desire(
             "Sleep",
             (agent) => agent.getBelief("Fatigue").getValue() > 70, // Condition for activation
-            20 // Priority
+            30 // Priority
         );
     }
 
