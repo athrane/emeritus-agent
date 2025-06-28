@@ -41,14 +41,27 @@ export class AgentFactory {
         const hungerBelief = new IntegerPercentageBelief("Hunger", 0);
         const fatigueBelief = new IntegerPercentageBelief("Fatigue", 0);
         const boredomBelief = new IntegerPercentageBelief("Boredom", 50);
+        const dentalHygieneBelief = new IntegerPercentageBelief("Dental Hygiene", 0);
+        const bodyHygieneBelief = new IntegerPercentageBelief("Body Hygiene", 0);
+        const handHygieneBelief = new IntegerPercentageBelief("Hand Hygiene", 0);
+        const vesicularDistentionBelief = new IntegerPercentageBelief("Vesicular Distention", 0);
+
         oldMan.addBelief(hungerBelief);
         oldMan.addBelief(fatigueBelief);
         oldMan.addBelief(boredomBelief);
+        oldMan.addBelief(dentalHygieneBelief);
+        oldMan.addBelief(bodyHygieneBelief);
+        oldMan.addBelief(handHygieneBelief);
+        oldMan.addBelief(vesicularDistentionBelief);
 
         // Register belief updaters
         oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(hungerBelief, 5));
         oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(fatigueBelief, 5));
         oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(boredomBelief, 5));
+        oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(dentalHygieneBelief, 2));
+        oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(bodyHygieneBelief, 1));
+        oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(handHygieneBelief, 0));
+        oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(vesicularDistentionBelief, 7));
 
         // Add desires
         oldMan.addDesire(DesireFactory.createSleepDesire());
@@ -56,12 +69,20 @@ export class AgentFactory {
         oldMan.addDesire(DesireFactory.createEntertainDesire());
         oldMan.addDesire(DesireFactory.createSitIdleDesire());
         oldMan.addDesire(DesireFactory.createNullDesire());
+        oldMan.addDesire(DesireFactory.createDentalHygieneDesire());
+        oldMan.addDesire(DesireFactory.createBodyHygieneDesire());
+        oldMan.addDesire(DesireFactory.createHandHygieneDesire());
+        oldMan.addDesire(DesireFactory.createVesicularDistentionDesire());
 
         // Add intentions using IntentionFactory
         oldMan.addIntention(IntentionFactory.createSleepIntention(scene));
         oldMan.addIntention(IntentionFactory.createEatIntention(scene));
         oldMan.addIntention(IntentionFactory.createEntertainIntention(scene));
         oldMan.addIntention(IntentionFactory.createSitIdleIntention(scene));
+        oldMan.addIntention(IntentionFactory.createDentalHygieneIntention(scene));
+        oldMan.addIntention(IntentionFactory.createBodyHygieneIntention(scene));
+        oldMan.addIntention(IntentionFactory.createHandHygieneIntention(scene));
+        oldMan.addIntention(IntentionFactory.createVesicularDistentionIntention(scene));
 
         return oldMan;
     }

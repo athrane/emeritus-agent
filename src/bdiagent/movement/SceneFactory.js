@@ -56,7 +56,7 @@ export class SceneFactory {
         hall.createLocation("Front Door", 1, 0.2);
         garden.createLocation("Flower Bed", 0.5, 0.2);
         garden.createLocation("Tree", 1, 0.2);
-        bathroom.createLocation("Sink", 0.5, 0.2);
+        bathroom.createLocation("Bathroom Sink", 0.5, 0.2);
         bathroom.createLocation("Toilet", 0.25, 0.2);
         bathroom.createLocation("Shower", 0.75, 0.2);
         study.createLocation("Desk", 0.5, 0.2);

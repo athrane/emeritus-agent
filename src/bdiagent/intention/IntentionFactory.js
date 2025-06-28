@@ -21,6 +21,8 @@ export class IntentionFactory {
             (agent) => agent.getBelief("Fatigue").getValue() > 70, // Preconditions
             (agent) => {
                 //console.log("Agent woke up and feels rested.");
+                agent.getBelief("Dental Hygiene").increase(100); // Dental hygiene after sleeping
+
             }, // Effects
             scene.getLocation("Bed")  
         );
@@ -90,6 +92,95 @@ export class IntentionFactory {
                 // console.log("Agent is done idling.");
             }, // Effects
             scene.getLocation("Sofa") 
+        );
+    }
+
+    /**
+     * Creates a "Dental Hygiene" intention.
+     * @param {Scene} scene The scene where the simulation takes place.
+     * @returns {Intention} An intention for the agent to maintain dental hygiene.
+     */
+    static createDentalHygieneIntention(scene) {
+        return new Intention(
+            "Dental Hygiene",
+            [
+                (agent) => {
+                    //console.log("Agent is brushing teeth.");
+                    agent.getBelief("Dental Hygiene").decrease(100);
+                }
+            ],
+            (agent) => agent.getBelief("Dental Hygiene").getValue() > 80, // Preconditions
+            (agent) => {
+                //console.log("Agent finished dental hygiene.");
+            }, // Effects
+            scene.getLocation("Bathroom Sink")
+        );
+    }
+
+    /**
+     * Creates a "Body Hygiene" intention.
+     * @param {Scene} scene The scene where the simulation takes place.
+     * @returns {Intention} An intention for the agent to maintain body hygiene.
+     */
+    static createBodyHygieneIntention(scene) {
+        return new Intention(
+            "Body Hygiene",
+            [
+                (agent) => {
+                    //console.log("Agent is taking a shower.");
+                    agent.getBelief("Body Hygiene").decrease(100);
+                }
+            ],
+            (agent) => agent.getBelief("Body Hygiene").getValue() > 80, // Preconditions
+            (agent) => {
+                //console.log("Agent finished body hygiene.");
+            }, // Effects
+            scene.getLocation("Shower")
+        );
+    }
+
+    /**
+     * Creates a "Hand Hygiene" intention.
+     * @param {Scene} scene The scene where the simulation takes place.
+     * @returns {Intention} An intention for the agent to maintain hand hygiene.
+     */
+    static createHandHygieneIntention(scene) {
+        return new Intention(
+            "Hand Hygiene",
+            [
+                (agent) => {
+                    //console.log("Agent is washing hands.");
+                    agent.getBelief("Hand Hygiene").decrease(100);
+                }
+            ],
+            (agent) => agent.getBelief("Hand Hygiene").getValue() > 80, // Preconditions
+            (agent) => {
+                //console.log("Agent finished hand hygiene.");
+            }, // Effects
+            scene.getLocation("Bathroom Sink")
+        );
+    }
+
+    /**
+     * Creates a "Vesicular Distention" intention.
+     * @param {Scene} scene The scene where the simulation takes place.
+     * @returns {Intention} An intention for the agent to perform vesicular distention.
+     */
+    static createVesicularDistentionIntention(scene) {
+        return new Intention(
+            "Vesicular Distention",
+            [
+                (agent) => {
+                    //console.log("Agent is performing vesicular distention.");
+                    agent.getBelief("Vesicular Distention").decrease(100);
+                }
+            ],
+            (agent) => agent.getBelief("Vesicular Distention").getValue() > 80, // Preconditions
+            (agent) => {
+                //console.log("Agent finished vesicular distention.");
+                agent.getBelief("Hand Hygiene").increase(100); // Hand hygiene after vesicular distention
+            }, // Effects
+            scene.getLocation("Toilet")
         );
     }
 }
