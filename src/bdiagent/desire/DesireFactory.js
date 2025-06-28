@@ -61,7 +61,7 @@ export class DesireFactory {
         return new Desire(
             "Dental Hygiene",
             (agent) => agent.getBelief("Dental Hygiene").getValue() > 80, // Condition for activation
-            20 // Priority (adjust as needed)
+            21 // Priority (adjust as needed)
         );
     }
 
@@ -96,8 +96,8 @@ export class DesireFactory {
     static createHandHygieneDesire() {
         return new Desire(
             "Hand Hygiene",
-            (agent) => agent.getBelief("Hand Hygiene").getValue() > 70, // Condition for activation
-            20 // Priority (adjust as needed)
+            (agent) => agent.getBelief("Hand Hygiene").getValue() > 80, // Condition for activation
+            60 // Priority (adjust as needed)
         );
     }
 

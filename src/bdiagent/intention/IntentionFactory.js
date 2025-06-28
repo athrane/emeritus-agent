@@ -14,7 +14,7 @@ export class IntentionFactory {
             [
                 (agent) => {
                     //console.log("Agent is going to sleep.");
-                    agent.getBelief("Fatigue").decrease(80);
+                    agent.getBelief("Fatigue").decrease(100);
                     agent.getBelief("Hunger").increase(5); // Sleeping might increase hunger a bit
                 }
             ],
