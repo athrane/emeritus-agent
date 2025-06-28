@@ -22,7 +22,6 @@ export class IntentionFactory {
             (agent) => {
                 //console.log("Agent woke up and feels rested.");
                 agent.getBelief("Dental Hygiene").increase(100); // Dental hygiene after sleeping
-
             }, // Effects
             scene.getLocation("Bed")  
         );
@@ -39,13 +38,14 @@ export class IntentionFactory {
             [
                 (agent) => {
                     //console.log("Agent is eating.");
-                    agent.getBelief("Hunger").decrease(70);
-                    agent.getBelief("Fatigue").increase(5); // Eating might cause a bit of fatigue
+                    agent.getBelief("Hunger").decrease(90);
                 }
             ],
             (agent) => agent.getBelief("Hunger").getValue() > 60, // Preconditions
             (agent) => {
                 //console.log("Agent finished eating.");
+                agent.getBelief("Dental Hygiene").increase(20); // Dental hygiene after eating
+
             }, // Effects
             scene.getLocation("Fridge")
         );

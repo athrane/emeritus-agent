@@ -58,7 +58,7 @@ export class AgentFactory {
         oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(hungerBelief, 5));
         oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(fatigueBelief, 5));
         oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(boredomBelief, 5));
-        oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(dentalHygieneBelief, 2));
+        oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(dentalHygieneBelief, 0));
         oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(bodyHygieneBelief, 1));
         oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(handHygieneBelief, 0));
         oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(vesicularDistentionBelief, 7));

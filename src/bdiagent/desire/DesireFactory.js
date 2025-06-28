@@ -13,7 +13,7 @@ export class DesireFactory {
         return new Desire(
             "Sleep",
             (agent) => agent.getBelief("Fatigue").getValue() > 70, // Condition for activation
-            8 // Priority
+            20 // Priority
         );
     }
 
@@ -25,7 +25,7 @@ export class DesireFactory {
         return new Desire(
             "Eat",
             (agent) => agent.getBelief("Hunger").getValue() > 60, // Condition for activation
-            7 // Priority
+            40 // Priority
         );
     }
 
@@ -49,7 +49,7 @@ export class DesireFactory {
         return new Desire(
             "Sit Idle",
             (agent) => true,  // Condition is always true, so it will always activate
-            3 // Priority
+            4 // Priority
         );
     }
 
@@ -61,7 +61,7 @@ export class DesireFactory {
         return new Desire(
             "Dental Hygiene",
             (agent) => agent.getBelief("Dental Hygiene").getValue() > 80, // Condition for activation
-            6 // Priority (adjust as needed)
+            20 // Priority (adjust as needed)
         );
     }
 
@@ -73,7 +73,7 @@ export class DesireFactory {
         return new Desire(
             "Body Hygiene",
             (agent) => agent.getBelief("Body Hygiene").getValue() > 80, // Condition for activation
-            6 // Priority (adjust as needed)
+            20 // Priority (adjust as needed)
         );
     }
 
@@ -85,7 +85,7 @@ export class DesireFactory {
         return new Desire(
             "Vesicular Distention",
             (agent) => agent.getBelief("Vesicular Distention").getValue() > 80, // Condition for activation
-            6 // Priority (adjust as needed)
+            50 // Priority (adjust as needed)
         );
     }
 
@@ -97,7 +97,7 @@ export class DesireFactory {
         return new Desire(
             "Hand Hygiene",
             (agent) => agent.getBelief("Hand Hygiene").getValue() > 70, // Condition for activation
-            6 // Priority (adjust as needed)
+            20 // Priority (adjust as needed)
         );
     }
 
