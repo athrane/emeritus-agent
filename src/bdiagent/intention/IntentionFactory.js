@@ -186,7 +186,7 @@ export class IntentionFactory {
 
     static createCatSleepIntention(scene) {
         return new Intention(
-            "Cat Sleep",
+            "Sleep",
             [
                 (agent) => {
                     //console.log("Cat is going to sleep.");
@@ -204,7 +204,7 @@ export class IntentionFactory {
 
     static createCatEatIntention(scene) {
         return new Intention(
-            "Cat Eat",
+            "Eat",
             [
                 (agent) => {
                     //console.log("Cat is eating.");
@@ -221,7 +221,7 @@ export class IntentionFactory {
 
     static createCatSitIdleIntention(scene) {
         return new Intention(
-            "Cat Sit Idle",
+            "Sit Idle",
             [
                 (agent) => {
                     //console.log("Cat is sitting idle.");
