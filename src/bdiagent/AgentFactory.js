@@ -11,8 +11,15 @@ import { Scene } from '../internal.js';
  */
 export class AgentFactory {
 
+    /**
+     * The speed at which the old man agent moves.
+     */
+    static MOVEMENT_SPEED_OLDMAN = 0.2; 
 
-    static MOVEMENT_SPEED_OLDMAN = 0.2; // Speed of the old man agent
+    /**
+     * The speed at which the cat agent moves.
+     */
+    static MOVEMENT_SPEED_CAT = 0.25; 
 
     /**
      * Creates a new null Agent.
@@ -85,5 +92,40 @@ export class AgentFactory {
         oldMan.addIntention(IntentionFactory.createVesicularDistentionIntention(scene));
 
         return oldMan;
+    }
+
+    /**
+     * Creates a new cat Agent simulating a lazy house cat.
+     * 
+     * @param {Scene} scene The scene where the agent resides.
+     * @returns {Agent} The created cat agent.
+     */
+    static createCatAgent(scene) {
+        const initialLocation = scene.getLocation("Bed") 
+        const cat = new Agent("Anais", initialLocation,  AgentFactory.MOVEMENT_SPEED_CAT, scene); 
+
+        // Add beliefs
+        const hungerBelief = new IntegerPercentageBelief("Hunger", 0);
+        const fatigueBelief = new IntegerPercentageBelief("Fatigue", 0);
+        const boredomBelief = new IntegerPercentageBelief("Boredom", 0);
+        cat.addBelief(hungerBelief);
+        cat.addBelief(fatigueBelief);
+        cat.addBelief(boredomBelief);
+
+        // Register belief updaters
+        cat.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(hungerBelief, 1));
+        cat.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(fatigueBelief, 1));
+
+        // Add desires (reuse existing ones)
+        cat.addDesire(DesireFactory.createSleepDesire());
+        cat.addDesire(DesireFactory.createEatDesire());
+        cat.addDesire(DesireFactory.createSitIdleDesire());
+
+        // Add cat intentions 
+        cat.addIntention(IntentionFactory.createCatSleepIntention(scene));
+        cat.addIntention(IntentionFactory.createCatEatIntention(scene));
+        cat.addIntention(IntentionFactory.createCatSitIdleIntention(scene));
+
+        return cat;
     }
 }

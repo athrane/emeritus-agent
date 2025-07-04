@@ -183,4 +183,57 @@ export class IntentionFactory {
             scene.getLocation("Toilet")
         );
     }
+
+    static createCatSleepIntention(scene) {
+        return new Intention(
+            "Cat Sleep",
+            [
+                (agent) => {
+                    //console.log("Cat is going to sleep.");
+                    agent.getBelief("Fatigue").decrease(100);
+                    agent.getBelief("Hunger").increase(5); // Sleeping might increase hunger a bit
+                }
+            ],
+            (agent) => agent.getBelief("Fatigue").getValue() > 70, // Preconditions
+            (agent) => {
+                //console.log("Cat woke up and feels rested.");
+            }, // Effects
+            scene.getLocation("Desk")  
+        );
+    }
+
+    static createCatEatIntention(scene) {
+        return new Intention(
+            "Cat Eat",
+            [
+                (agent) => {
+                    //console.log("Cat is eating.");
+                    agent.getBelief("Hunger").decrease(90);
+                }
+            ],
+            (agent) => agent.getBelief("Hunger").getValue() > 60, // Preconditions
+            (agent) => {
+                //console.log("Cat finished eating.");
+            }, // Effects
+            scene.getLocation("Fridge")
+        );
+    }
+
+    static createCatSitIdleIntention(scene) {
+        return new Intention(
+            "Cat Sit Idle",
+            [
+                (agent) => {
+                    //console.log("Cat is sitting idle.");
+                    agent.getBelief("Boredom").increase(5); // is boring to sit idle
+                }
+            ],
+            (agent) => true,  // Condition is always true, so it will always activate
+            (agent) => {
+                // console.log("Cat is done idling.");
+            }, // Effects
+            scene.getLocation("Flower Bed") 
+        );
+    }
+
 }

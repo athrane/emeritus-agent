@@ -16,11 +16,14 @@ export class Simulation {
 
     /**
      * Creates a new Simulation instance with a house scene and an old man agent.
+     * Initializes an empty map to store agents.
      */
     constructor() {
         this.step = 0;
         this.scene = SceneFactory.createHouse();
-        this.agent = AgentFactory.createOldManAgent(this.scene);
+        this.agents = new Map();
+        this.agents.set("Acticus", AgentFactory.createOldManAgent(this.scene));
+        this.agents.set("Anais", AgentFactory.createCatAgent(this.scene));
         this.timeManager = new TimeManager(Simulation.SIMULATION_STEP_MINUTES);
     }
 
@@ -36,8 +39,8 @@ export class Simulation {
      * Get the simulation agent.
      * @return {Agent} The agent of the simulation.
      */ 
-    getSimulationAgent() {
-        return this.agent;
+    getAgent(name) {
+        return this.agents.get(name);
     }
 
     /**
@@ -61,7 +64,9 @@ export class Simulation {
      */
     run() {
         this.timeManager.advanceStep();
-        this.agent.run();
+        for (const agent of this.agents.values()) {
+            agent.run();
+        }
         this.step++;
     }
 

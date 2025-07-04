@@ -5,7 +5,8 @@ const simulation = new Simulation();
 
 // Get the scene and agent from the simulation
 const scene = simulation.getSimulationScene();
-const oldMan = simulation.getSimulationAgent();
+const agentOldMan = simulation.getAgent("Acticus");
+const agentCat = simulation.getAgent("Anais");
 
 // list rooms
 const rooms2 = Array.from(scene.rooms.values());
@@ -15,21 +16,35 @@ rooms2.forEach(room => {
 });
 
 
-// Run the agent
+// Run the simulation
 for (let i = 0; i < 100; i++) {
     console.log(`--- Generation: ${simulation.getGeneration()} ---`);
     simulation.run();
 
-    let boredom = oldMan.getBelief("Boredom").getValue();
-    let hunger = oldMan.getBelief("Hunger").getValue();
-    let fatigue = oldMan.getBelief("Fatigue").getValue();;
+    let agent = simulation.getAgent("Acticus");
+    logAgent(agent);
+
+    agent = simulation.getAgent("Anais");
+    logAgent(agent);
+}
+
+/**
+ * Log agent details.
+ * @param {Agent} agent - The agent to log.
+ */
+function logAgent(agent) {
+    console.log(`Agent Name: ${agent.getName()}`);
+
+    let boredom = agent.getBelief("Boredom").getValue();
+    let hunger = agent.getBelief("Hunger").getValue();
+    let fatigue = agent.getBelief("Fatigue").getValue();
     console.log(`Boredom: ${boredom}`);
     console.log(`Hunger: ${hunger}`);
     console.log(`Fatigue: ${fatigue}`);
 
-    let desireManager = oldMan.getDesireManager();
+    let desireManager = agent.getDesireManager();
     let currentBestDesire = desireManager.getCurrentBestDesire();
-    if(currentBestDesire) console.log(`Current Desire: ${currentBestDesire.getName()}`);
+    if (currentBestDesire) console.log(`Current Desire: ${currentBestDesire.getName()}`);
     else console.log("No current desire.");
 
     let activeDesires = desireManager.getActiveDesires();
@@ -37,7 +52,7 @@ for (let i = 0; i < 100; i++) {
         let logString = "Active Desires:";
         activeDesires.forEach(desire => {
             logString += ` ${desire.name}`;
-            if (desire.isActive(oldMan)) {
+            if (desire.isActive(agentOldMan)) {
                 logString += "/satisfied";
             } else {
                 logString += "/not satisfied";
@@ -51,19 +66,19 @@ for (let i = 0; i < 100; i++) {
         console.log("No active desires.");
     }
 
-    let currentIntention = oldMan.getCurrentIntention();
+    let currentIntention = agent.getCurrentIntention();
     console.log(`Current Intention: ${currentIntention.name}`);
 
-    let movement = oldMan.getMovement();
+    let movement = agent.getMovement();
     let room = movement.getRoom();
-    let roomPosition = room.getPosition(); 
+    let roomPosition = room.getPosition();
     console.log(`Agent's target room: ${room.getName()} (${roomPosition.getX()}, ${roomPosition.getY()})`);
     console.log(`Agent is witin room: ${movement.isWithinRoom()}`);
 
     let position = movement.getPosition();
     console.log(`Current Position: (${position.getX()}, ${position.getY()})`);
 
-    if(movement.isTargetPositionDefined()) {
+    if (movement.isTargetPositionDefined()) {
         let targetPosition = movement.getTargetPosition();
         console.log(`Target Position: (${targetPosition.getX()}, ${targetPosition.getY()})`);
     }
@@ -88,6 +103,5 @@ for (let i = 0; i < 100; i++) {
     } else {
         console.log("No path.");
     }
-
 }
 
