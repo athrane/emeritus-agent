@@ -71,5 +71,30 @@ describe('TimeManager', () => {
         expect(tm.getDay()).toBe(5);
     });
 
-    // Add more tests as methods are implemented
+    describe('getFractionOfDayPassed', () => {
+        test('should return 0.0 at the beginning of the day', () => {
+            const tm = new TimeManager(10);
+            tm.timeOfDayMinutes = 0;
+            expect(tm.getFractionOfDayPassed()).toBe(0.0);
+        });
+
+        test('should return 0.5 at midday', () => {
+            const tm = new TimeManager(10);
+            tm.timeOfDayMinutes = TimeManager.MINUTES_PER_DAY / 2; // 720 minutes
+            expect(tm.getFractionOfDayPassed()).toBe(0.5);
+        });
+
+        test('should return a value close to 1.0 at the end of the day', () => {
+            const tm = new TimeManager(10);
+            tm.timeOfDayMinutes = TimeManager.MINUTES_PER_DAY - 1;
+            expect(tm.getFractionOfDayPassed()).toBeCloseTo(1.0);
+            expect(tm.getFractionOfDayPassed()).not.toBe(1.0);
+        });
+
+        test('should return 0.25 at 6 AM', () => {
+            const tm = new TimeManager(10);
+            tm.timeOfDayMinutes = 6 * 60; // 360 minutes
+            expect(tm.getFractionOfDayPassed()).toBe(0.25);
+        });
+    });
 });

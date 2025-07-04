@@ -65,4 +65,12 @@ export class TimeManager {
     getStepMinutes() {
         return this.stepMinutes;
     }
+
+    /**
+     * Returns the fraction of the day that has passed.
+     * @returns {number} The fraction of the day passed (0.0 to < 1.0).
+     */
+    getFractionOfDayPassed() {
+        return this.timeOfDayMinutes / TimeManager.MINUTES_PER_DAY;
+    }
 }
