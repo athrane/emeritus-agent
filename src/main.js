@@ -1,4 +1,4 @@
-import { Simulation  } from './internal.js';
+import { Simulation } from './internal.js';
 
 // Create a new simulation instance
 const simulation = new Simulation();
@@ -26,6 +26,9 @@ for (let i = 0; i < 100; i++) {
 
     agent = simulation.getAgent("Anais");
     logAgent(agent);
+
+    agent = simulation.getAgent("Sun");
+    logAgent(agent);
 }
 
 /**
@@ -35,12 +38,13 @@ for (let i = 0; i < 100; i++) {
 function logAgent(agent) {
     console.log(`Agent Name: ${agent.getName()}`);
 
-    let boredom = agent.getBelief("Boredom").getValue();
-    let hunger = agent.getBelief("Hunger").getValue();
-    let fatigue = agent.getBelief("Fatigue").getValue();
-    console.log(`Boredom: ${boredom}`);
-    console.log(`Hunger: ${hunger}`);
-    console.log(`Fatigue: ${fatigue}`);
+    // Log all beliefs using BeliefManager.getBeliefs()
+    const beliefs = agent.getBeliefManager().getBeliefs();
+    beliefs.forEach(belief => {
+        if (belief && belief.getName && belief.getValue) {
+            console.log(`${belief.getName()}: ${belief.getValue()}`);
+        }
+    });
 
     let desireManager = agent.getDesireManager();
     let currentBestDesire = desireManager.getCurrentBestDesire();
@@ -52,13 +56,12 @@ function logAgent(agent) {
         let logString = "Active Desires:";
         activeDesires.forEach(desire => {
             logString += ` ${desire.name}`;
-            if (desire.isActive(agentOldMan)) {
+            if (desire.isActive(agent)) {
                 logString += "/satisfied";
             } else {
                 logString += "/not satisfied";
             }
             logString += `/${desire.priority}`;
-
         });
         console.log(logString);
     }
@@ -71,35 +74,47 @@ function logAgent(agent) {
 
     let motion = agent.getMotion();
     let room = motion.getRoom();
-    let roomPosition = room.getPosition();
-    console.log(`Agent's target room: ${room.getName()} (${roomPosition.getX()}, ${roomPosition.getY()})`);
-    console.log(`Agent is witin room: ${motion.isWithinRoom()}`);
+    let roomPosition = room && room.getPosition ? room.getPosition() : { getX: () => 'N/A', getY: () => 'N/A' };
+    console.log(`Agent's target room: ${room && room.getName ? room.getName() : 'N/A'} (${roomPosition.getX()}, ${roomPosition.getY()})`);
+    console.log(`Agent is witin room: ${motion.isWithinRoom ? motion.isWithinRoom() : 'N/A'}`);
 
     let position = motion.getPosition();
-    console.log(`Current Position: (${position.getX()}, ${position.getY()})`);
+    if (position && position.getX && position.getY) {
+        console.log(`Current Position: (${position.getX()}, ${position.getY()})`);
+    } else {
+        console.log("Current Position: N/A");
+    }
 
-    if (motion.isTargetPositionDefined()) {
+    if (motion.isTargetPositionDefined && motion.isTargetPositionDefined()) {
         let targetPosition = motion.getTargetPosition();
-        console.log(`Target Position: (${targetPosition.getX()}, ${targetPosition.getY()})`);
+        if (targetPosition && targetPosition.getX && targetPosition.getY) {
+            console.log(`Target Position: (${targetPosition.getX()}, ${targetPosition.getY()})`);
+        } else {
+            console.log("Target Position: N/A");
+        }
     }
     else {
         console.log("No target position.");
     }
-    let destination = motion.getDestination();
-    if (destination) {
+    let destination = motion.getDestination ? motion.getDestination() : null;
+    if (destination && destination.getPhysicalPosition) {
         let destinationPosition = destination.getPhysicalPosition();
         console.log(`Agent going to location: ${destination.name} (${destinationPosition.getX()}, ${destinationPosition.getY()})`);
     } else {
         console.log("No destination.");
     }
-    let isMoving = motion.isMoving();
+    let isMoving = motion.isMoving ? motion.isMoving() : false;
     console.log(`Agent is moving: ${isMoving}`);
 
     let path = motion.path;
     if (path) {
-        console.log(`Path length: ${path.getLength()}`);
-        console.log(`Path: ${path.getRoomNames()}`);
-        console.log(`Current index: ${path.currentIndex}`);
+        if (path.getLength && path.getRoomNames && path.currentIndex !== undefined) {
+            console.log(`Path length: ${path.getLength()}`);
+            console.log(`Path: ${path.getRoomNames()}`);
+            console.log(`Current index: ${path.currentIndex}`);
+        } else {
+            console.log("Path: [object] (details unavailable)");
+        }
     } else {
         console.log("No path.");
     }

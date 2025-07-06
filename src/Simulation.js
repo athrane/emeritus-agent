@@ -21,10 +21,12 @@ export class Simulation {
     constructor() {
         this.step = 0;
         this.scene = SceneFactory.createHouse();
+        this.timeManager = new TimeManager(Simulation.SIMULATION_STEP_MINUTES);
         this.agents = new Map();
         this.agents.set("Acticus", AgentFactory.createOldManAgent(this.scene));
         this.agents.set("Anais", AgentFactory.createCatAgent(this.scene));
-        this.timeManager = new TimeManager(Simulation.SIMULATION_STEP_MINUTES);
+        const sunAgent = AgentFactory.createSunAgent(this.scene, this.timeManager, 1); // radius=1
+        this.agents.set("Sun", sunAgent);
     }
 
     /**

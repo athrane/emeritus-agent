@@ -1,5 +1,5 @@
-import { Motion } from "./Motion.js";
-import {TypeUtils } from "../../internal.js";
+import { Motion } from "../../internal.js";
+import { TypeUtils } from "../../internal.js";
 import { Location } from "../../internal.js";
 import { Scene } from "../../internal.js";
 import { Path } from "../../internal.js";
@@ -63,25 +63,25 @@ export class WalkMotion extends Motion {
      * @returns {Location} The current destination location of the agent.
      */
     getDestination() { return this.destination; }
-    
+
     /**
      * Gets the current room the agent is in or moving toward.
      * @returns {Room} The current room of the agent.
      */
     getRoom() { return this.currentRoom; }
-    
+
     /**
      * Checks if the agent is within the current room.
      * @returns {boolean} True if the agent is within the current room, false otherwise.
      */
     isWithinRoom() { return this.currentRoom.isWithinRoom(this.position); }
-    
+
     /**
      * Checks if the agent is currently moving.
      * @returns {boolean} True if the agent is moving, false otherwise.
      */
     isMoving() { return this.isAgentMoving; }
-    
+
     /**
      * Checks if the agent has a target position defined.
      * @returns {boolean} True if the target position is defined, false otherwise.
@@ -143,7 +143,7 @@ export class WalkMotion extends Motion {
 
         // set motion state for motion 
         this.isAgentMoving = true;
-        this.destination = destination; 
+        this.destination = destination;
 
         // if start and end rooms are the same, set target position
         if (this.path.getLength() === 1) {
@@ -167,7 +167,7 @@ export class WalkMotion extends Motion {
         // Get the current room from the path
         const nextRoomName = this.path.getRoom();
         this.currentRoom = this.scene.getRoom(nextRoomName);
-        
+
         // if last room in the path, set the final destination
         if (this.path.getRoom() === this.path.getEndRoom()) {
             return finalDestination.getPhysicalPosition();

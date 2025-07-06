@@ -12,6 +12,7 @@ export { Path } from './bdiagent/movement/Path.js';
 export { Motion } from './bdiagent/movement/Motion.js';
 export { WalkMotion } from './bdiagent/movement/WalkMotion.js';
 export { NullMotion } from './bdiagent/movement/NullMotion.js';
+export { CircularMotion } from './bdiagent/movement/CircularMotion.js';
 
 export { Belief } from './bdiagent/belief/Belief.js';
 export { IntegerPercentageBelief } from './bdiagent/belief/IntegerPercentageBelief.js';

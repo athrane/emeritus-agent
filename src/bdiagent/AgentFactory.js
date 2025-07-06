@@ -3,9 +3,10 @@ import { IntegerPercentageBelief } from '../internal.js';
 import { IntegerPercentageBeliefUpdater } from '../internal.js';
 import { DesireFactory } from '../internal.js';
 import { IntentionFactory } from '../internal.js';
-import { Location } from '../internal.js'; 
-import { Scene } from '../internal.js'; 
+import { Location } from '../internal.js';
+import { Scene } from '../internal.js';
 import { WalkMotion } from './movement/WalkMotion.js';
+import { CircularMotion } from '../internal.js';
 
 /**
  * Factory class for creating agents.
@@ -15,12 +16,17 @@ export class AgentFactory {
     /**
      * The speed at which the old man agent moves.
      */
-    static MOTION_SPEED_OLDMAN = 0.2; 
+    static MOTION_SPEED_OLDMAN = 0.2;
 
     /**
      * The speed at which the cat agent moves.
      */
-    static MOTION_SPEED_CAT = 0.25; 
+    static MOTION_SPEED_CAT = 0.25;
+
+    /**
+     * The speed at which the sun agent moves.
+     */
+    static MOTION_SPEED_SUN = 1.0;
 
     /**
      * Creates a new null Agent.
@@ -39,7 +45,7 @@ export class AgentFactory {
      * 
      * @param {Scene} scene The scene where the agent resides.
      * @returns {Agent} The created agent.
-     */    
+     */
     static createOldManAgent(scene) {
 
         // Create the agent
@@ -104,9 +110,9 @@ export class AgentFactory {
      * @returns {Agent} The created cat agent.
      */
     static createCatAgent(scene) {
-        const initialLocation = scene.getLocation("Bed") 
+        const initialLocation = scene.getLocation("Bed")
         const walkMotion = new WalkMotion(initialLocation, AgentFactory.MOTION_SPEED_CAT, scene);
-        const cat = new Agent("Anais", walkMotion, scene); 
+        const cat = new Agent("Anais", walkMotion, scene);
 
         // Add beliefs
         const hungerBelief = new IntegerPercentageBelief("Hunger", 0);
@@ -131,5 +137,18 @@ export class AgentFactory {
         cat.addIntention(IntentionFactory.createCatSitIdleIntention(scene));
 
         return cat;
+    }
+
+    /**
+     * Creates a Sun agent with circular motion.
+     * @param {Scene} scene
+     * @param {TimeManager} timeManager
+     * @returns {Agent}
+     */
+    static createSunAgent(scene, timeManager) {
+        const initialLocation = scene.getLocation("Celestial Center");
+        const circularMotion = new CircularMotion(initialLocation, AgentFactory.MOTION_SPEED_SUN, timeManager);
+        const sun = new Agent('Sun', circularMotion, scene);
+        return sun;
     }
 }

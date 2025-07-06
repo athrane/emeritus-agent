@@ -1,6 +1,6 @@
 import { Location } from "../../../src/internal.js";
 import { Position } from "../../../src/internal.js";
-import { WalkMotion } from "../../../src/bdiagent/movement/WalkMotion.js";
+import { WalkMotion } from "../../../src/internal.js";
 import { Scene } from "../../../src/internal.js";
 import { Path } from "../../../src/internal.js";
 

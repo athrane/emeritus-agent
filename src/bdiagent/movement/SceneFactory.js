@@ -35,6 +35,7 @@ export class SceneFactory {
         const upperHall = scene.createRoom("Upper Hall",2.5,1,1,1);
         const bathroom = scene.createRoom("Bathroom",1.5,1,1,1);
         const study = scene.createRoom("Study",0.5,1,1,1);
+        const celestialSphere = scene.createRoom("Celestial Sphere", 0, 0, 5, 5);
 
         // connect rooms
         SceneFactory.registerAdjacentRooms(bedroom, kitchen);
@@ -62,6 +63,7 @@ export class SceneFactory {
         study.createLocation("Desk", 0.5, 0.2);
         study.createLocation("Chair", 0.25, 0.2);
         study.createLocation("Bookshelf", 0.75, 0.2);
+        celestialSphere.createLocation("Celestial Center", 2.5, 2.5);
 
         return scene;
     }        
