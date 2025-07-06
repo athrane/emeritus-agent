@@ -11,6 +11,12 @@ import { TimeManager } from "../../internal.js";
  */
 export class CircularMotion extends Motion {
 
+    /**
+     * Represents a null location for the agent.
+     * This is used when the agent is not moving or has no destination.
+     */
+    static NULL_LOCATION = Location.createNullLocation();
+
   /**
    * Creates a new CircularMotion instance.
    * @param {Location} initialLocation - The initial location of the agent (center of the circle).
@@ -53,7 +59,7 @@ export class CircularMotion extends Motion {
    * Destination is not applicable for circular motion.
    */
   getDestination() {
-    return null;
+    return CircularMotion.NULL_LOCATION;
   }
 
   /**
