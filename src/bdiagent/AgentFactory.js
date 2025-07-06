@@ -15,12 +15,12 @@ export class AgentFactory {
     /**
      * The speed at which the old man agent moves.
      */
-    static MOVEMENT_SPEED_OLDMAN = 0.2; 
+    static MOTION_SPEED_OLDMAN = 0.2; 
 
     /**
      * The speed at which the cat agent moves.
      */
-    static MOVEMENT_SPEED_CAT = 0.25; 
+    static MOTION_SPEED_CAT = 0.25; 
 
     /**
      * Creates a new null Agent.
@@ -30,7 +30,7 @@ export class AgentFactory {
      */
     static createNullAgent(scene) {
         const initialLocation = Location.createNullLocation();
-        const walkMotion = new WalkMotion(initialLocation, AgentFactory.MOVEMENT_SPEED_OLDMAN, scene);
+        const walkMotion = new WalkMotion(initialLocation, AgentFactory.MOTION_SPEED_OLDMAN, scene);
         return new Agent("NULL Agent", walkMotion, scene);
     }
 
@@ -44,7 +44,7 @@ export class AgentFactory {
 
         // Create the agent
         const initialLocation = scene.getLocation("Bed");
-        const walkMotion = new WalkMotion(initialLocation, AgentFactory.MOVEMENT_SPEED_OLDMAN, scene);
+        const walkMotion = new WalkMotion(initialLocation, AgentFactory.MOTION_SPEED_OLDMAN, scene);
         const oldMan = new Agent("Acticus", walkMotion, scene);
 
         // Add beliefs
@@ -105,7 +105,7 @@ export class AgentFactory {
      */
     static createCatAgent(scene) {
         const initialLocation = scene.getLocation("Bed") 
-        const walkMotion = new WalkMotion(initialLocation, AgentFactory.MOVEMENT_SPEED_CAT, scene);
+        const walkMotion = new WalkMotion(initialLocation, AgentFactory.MOTION_SPEED_CAT, scene);
         const cat = new Agent("Anais", walkMotion, scene); 
 
         // Add beliefs

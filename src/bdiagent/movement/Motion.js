@@ -1,4 +1,3 @@
-
 /**
  * Abstract base class/interface for motion systems
  */
@@ -70,7 +69,7 @@ export class Motion {
     getPath() { throw new Error('Not implemented'); }
 
     /**
-     * Initiate movement to a specified destination.
+     * Initiate motion to a specified destination.
      * @param {Location} destination
      */
     moveTo(destination) { throw new Error('Not implemented'); }

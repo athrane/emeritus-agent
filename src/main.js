@@ -69,33 +69,33 @@ function logAgent(agent) {
     let currentIntention = agent.getCurrentIntention();
     console.log(`Current Intention: ${currentIntention.name}`);
 
-    let movement = agent.getMovement();
-    let room = movement.getRoom();
+    let motion = agent.getMotion();
+    let room = motion.getRoom();
     let roomPosition = room.getPosition();
     console.log(`Agent's target room: ${room.getName()} (${roomPosition.getX()}, ${roomPosition.getY()})`);
-    console.log(`Agent is witin room: ${movement.isWithinRoom()}`);
+    console.log(`Agent is witin room: ${motion.isWithinRoom()}`);
 
-    let position = movement.getPosition();
+    let position = motion.getPosition();
     console.log(`Current Position: (${position.getX()}, ${position.getY()})`);
 
-    if (movement.isTargetPositionDefined()) {
-        let targetPosition = movement.getTargetPosition();
+    if (motion.isTargetPositionDefined()) {
+        let targetPosition = motion.getTargetPosition();
         console.log(`Target Position: (${targetPosition.getX()}, ${targetPosition.getY()})`);
     }
     else {
         console.log("No target position.");
     }
-    let destination = movement.getDestination();
+    let destination = motion.getDestination();
     if (destination) {
         let destinationPosition = destination.getPhysicalPosition();
         console.log(`Agent going to location: ${destination.name} (${destinationPosition.getX()}, ${destinationPosition.getY()})`);
     } else {
         console.log("No destination.");
     }
-    let isMoving = movement.isMoving();
+    let isMoving = motion.isMoving();
     console.log(`Agent is moving: ${isMoving}`);
 
-    let path = movement.path;
+    let path = motion.path;
     if (path) {
         console.log(`Path length: ${path.getLength()}`);
         console.log(`Path: ${path.getRoomNames()}`);

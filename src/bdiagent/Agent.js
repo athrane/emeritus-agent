@@ -30,7 +30,7 @@ export class Agent {
       throw new Error('motionSystem must be an instance of Motion');
     }
     this.name = name;
-    this.movement = motionSystem;
+    this.motion = motionSystem;
     this.beliefManager = new BeliefManager();
     this.desireManager = new DesireManager();
     this.intentionManager = new IntentionManager();
@@ -96,11 +96,11 @@ export class Agent {
   }
 
   /**
-   * Retrieves the agent's movement system.
+   * Retrieves the agent's motion system.
    * @returns {Motion} The motion system of the agent.
    */
-  getMovement() {
-    return this.movement;
+  getMotion() {
+    return this.motion;
   }
 
   /**
@@ -134,23 +134,20 @@ export class Agent {
     // Always update beliefs    
     this.beliefManager.update(this);
 
-    // If moving, continue movement and defer desire/intention re-evaluation
-    if (this.movement.isMoving()) {
+    // If moving, continue motion and defer desire/intention re-evaluation
+    if (this.motion.isMoving()) {
       //console.log(`Update-CP1: Agent ${this.name} is moving`);
-      this.movement.update();
+      this.motion.update();
       return;
     }
 
-    // agent is not moving, or has just completed a movement
-    //console.log(`Update-CP2: Agent ${this.name} has completed movement.`);
+    // agent is not moving, or has just completed a motion
+    //console.log(`Update-CP2: Agent ${this.name} has completed motion.`);
 
     // If no current intention, re-evaluate desires and intentions
     if (this.getCurrentIntention() === null || this.getCurrentIntention() == IntentionManager.NULL_INTENTION) {
       //console.log(`Update-CP3: Agent ${this.name} has no current intention. Re-evaluating desires and intentions.`);
       this.desireManager.update(this);
-
-      // update the intention managed with the current best desire
-      //console.log(`Update-CP4: Agent ${this.name} has current best desire: ${this.desireManager.getCurrentBestDesire() ? this.desireManager.getCurrentBestDesire().getName() : 'null'}`);
       this.intentionManager.update(this, this.desireManager.getCurrentBestDesire());
     }
 
@@ -169,12 +166,12 @@ export class Agent {
     //console.log(`Update-CP6b: Agent ${this.name} intention room: ${intentionRoom.getName()}`);
 
     // get current room where agent resides
-    const currentRoom = this.movement.getRoom();
+    const currentRoom = this.motion.getRoom();
     //console.log(`Update-CP6c: Agent ${this.name} current room: ${currentRoom.getName()}`);
 
     // if the current room is the same as the intention room then check if the agent is within reasonable range of the target location
     if (currentRoom === intentionRoom) {
-      if (this.movement.isWithinReasonableRange(intentionLocation)) {
+      if (this.motion.isWithinReasonableRange(intentionLocation)) {
         //console.log(`Update-CP8: Agent ${this.name} is within reasonable range of the intention location: ${intentionLocation.getName()}. Will execute intention.`);
         this.intentionManager.executeCurrentIntention(this);
 
@@ -185,8 +182,8 @@ export class Agent {
       }
     }
 
-    // If not in range or not in the correct room, initiate movement towards the intention's location
-    //console.log(`Update-CP9: Agent ${this.name} is not within reasonable range of the intention location: ${intentionLocation.getName()}. Will initiate pathfinding and movement.`);
-    this.movement.moveTo(intentionLocation);
+    // If not in range or not in the correct room, initiate motion towards the intention's location
+    //console.log(`Update-CP9: Agent ${this.name} is not within reasonable range of the intention location: ${intentionLocation.getName()}. Will initiate pathfinding and motion.`);
+    this.motion.moveTo(intentionLocation);
   }
 }

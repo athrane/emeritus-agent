@@ -127,6 +127,51 @@ const config = {
 export default config;
 ```
 
+## Class Reference
+
+### Core Simulation
+- **Simulation**: Orchestrates the simulation loop, manages agents, and coordinates time and scene updates.
+
+### BDI Agent System
+- **Agent**: The main BDI agent class. Integrates belief, desire, intention, and motion systems. Runs the agent's decision and action loop.
+- **AgentFactory**: Factory for creating and initializing agents with default or custom configurations.
+
+#### Belief System
+- **Belief**: Abstract base class for agent beliefs.
+- **IntegerPercentageBelief**: Belief with a value between 0 and 100 (e.g., hunger).
+- **BeliefUpdater**: Abstract class for updating beliefs.
+- **IntegerPercentageBeliefUpdater**: Updates an IntegerPercentageBelief by a rate.
+- **BeliefManager**: Manages all beliefs and updaters for an agent.
+
+#### Desire System
+- **Desire**: Represents a possible goal for the agent.
+- **DesireFactory**: Factory for creating desires.
+- **DesireManager**: Manages and evaluates all desires for the agent.
+
+#### Intention System
+- **Intention**: Represents a plan or commitment to achieve a desire.
+- **IntentionFactory**: Factory for creating intentions from desires.
+- **IntentionManager**: Manages the agent's current intention and execution.
+
+### Motion & Environment
+- **Motion**: Abstract base/interface for agent motion systems (e.g., walking, stationary).
+- **WalkMotion**: Implements walking motion, pathfinding, and stepwise movement.
+- **NullMotion**: Implements a no-op motion for stationary agents.
+- **Position**: Immutable 2D coordinate (x, y).
+- **Location**: Named point of interest in a room, with a position.
+- **Room**: Area in the environment, with a name, position, size, and locations.
+- **Scene**: Manages all rooms and locations, provides pathfinding.
+- **SceneFactory**: Utility for creating standard scenes (e.g., a house).
+- **Path**: Sequence of room names representing a route between locations.
+
+### Time System
+- **TimeManager**: Tracks simulation time, steps, and day/night cycle.
+- **TimeOfDay**: Represents hours and minutes, with formatting utilities.
+
+### Utilities
+- **TypeUtils**: Static type-checking and validation helpers.
+- **LogBuffer**: Buffered logging utility for simulation output.
+
 ## Description
 
 This project includes the following classes, grouped by their respective directories:

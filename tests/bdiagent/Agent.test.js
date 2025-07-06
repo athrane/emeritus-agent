@@ -29,12 +29,12 @@ describe('Agent', () => {
         it('should create be able to create agent', () => {
             expect(agent).toBeDefined();
             expect(agent.getName()).toBe('TestAgent');
-            expect(agent.movement).toBeDefined();
-            expect(agent.movement.getPosition()).toBeDefined();
-            expect(agent.movement.getPosition()).toBeInstanceOf(Position);
-            expect(agent.movement.getPosition().getX()).toBe(initialPosition.getX());
-            expect(agent.movement.getPosition().getY()).toBe(initialPosition.getY());
-            expect(agent.movement.speed).toBe(5);
+            expect(agent.motion).toBeDefined();
+            expect(agent.motion.getPosition()).toBeDefined();
+            expect(agent.motion.getPosition()).toBeInstanceOf(Position);
+            expect(agent.motion.getPosition().getX()).toBe(initialPosition.getX());
+            expect(agent.motion.getPosition().getY()).toBe(initialPosition.getY());
+            expect(agent.motion.speed).toBe(5);
             expect(agent.getCurrentIntention()).toEqual(IntentionManager.NULL_INTENTION);
             expect(agent.beliefManager).toBeDefined();
             expect(agent.desireManager).toBeDefined();

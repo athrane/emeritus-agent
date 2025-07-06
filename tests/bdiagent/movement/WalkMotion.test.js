@@ -52,7 +52,7 @@ describe('create', () => {
         expect(walkMotion.getTargetPosition()).toBeNull();
     });
 
-    it('should initialize with the correct moving state - no movement', () => {
+    it('should initialize with the correct moving state - no motion', () => {
         expect(walkMotion.isMoving()).toBe(false);
     });
 
@@ -61,7 +61,7 @@ describe('create', () => {
     });
 });
 
-describe('Pathfinding Movement', () => {
+describe('Pathfinding Motion', () => {
     let scene;
     let walkMotion;
     let locHallway, locLivingRoom, locKitchen, locLivingRoom2;
@@ -71,7 +71,7 @@ describe('Pathfinding Movement', () => {
         const roomPos = room.getPosition();
         const roomSize = room.getSize();
         const targetX = roomPos.getX() + roomSize.getX() / 2;
-        const targetY = roomPos.getY() + 0.1; // Use same Y as Movement.TARGET_POS_Y
+        const targetY = roomPos.getY() + 0.1; // Use same Y as Motion.TARGET_POS_Y
         return Position.create(targetX, targetY);
     };
 
@@ -106,17 +106,17 @@ describe('Pathfinding Movement', () => {
         expect(walkMotion.isTargetPositionDefined()).toBe(false);
     });
 
-    it('should set a destination when starting movement - to next room', () => {
+    it('should set a destination when starting motion - to next room', () => {
         walkMotion.moveTo(locLivingRoom);
         expect(walkMotion.getDestination()).toBe(locLivingRoom);
     });
 
-    it('should set the movement state when starting movement - to next room', () => {
+    it('should set the motion state when starting motion - to next room', () => {
         walkMotion.moveTo(locLivingRoom);
         expect(walkMotion.isMoving()).toBe(true);
     });
 
-    it('should calculate path when starting movement - to next room', () => {
+    it('should calculate path when starting motion - to next room', () => {
         walkMotion.moveTo(locLivingRoom);
         expect(walkMotion.path).toBeInstanceOf(Path);
         expect(walkMotion.path.getCurrentIndex()).toBe(0);
@@ -125,12 +125,12 @@ describe('Pathfinding Movement', () => {
         expect(walkMotion.path.getRoomAt(1)).toBe(livingRoom.getName());
     });
 
-    it('should start in expected room when starting movement - to next room', () => {
+    it('should start in expected room when starting motion - to next room', () => {
         walkMotion.moveTo(locLivingRoom);
         expect(walkMotion.getRoom().getName()).toBe(hallway.getName());
     });
 
-    it('should calculate target position in expected room when starting movement - to next room', () => {
+    it('should calculate target position in expected room when starting motion - to next room', () => {
         walkMotion.moveTo(locLivingRoom);
         expect(walkMotion.getTargetPosition()).toEqual(calculateTargetPosition(hallway));
         expect(walkMotion.getTargetPosition().getX()).toBeCloseTo(5);
@@ -152,7 +152,7 @@ describe('Pathfinding Movement', () => {
         expect(walkMotion.getPosition().getY()).toBeCloseTo(4.5);
     });
 
-    it('should update the movement state correctly - when moving to next room', () => {
+    it('should update the motion state correctly - when moving to next room', () => {
         walkMotion.moveTo(locLivingRoom);
         walkMotion.update();
         walkMotion.update();
@@ -268,7 +268,7 @@ describe('getDestination', () => {
     });
 });
 
-describe('Direct Movement (No Pathfinding Required)', () => {
+describe('Direct Motion (No Pathfinding Required)', () => {
     let testRoom;
     let scene;
     let initialLocation;
@@ -283,21 +283,21 @@ describe('Direct Movement (No Pathfinding Required)', () => {
         walkMotion = new WalkMotion(initialLocation, 5, scene);
     });
 
-    it('should set a destination when starting movement', () => {
+    it('should set a destination when starting motion', () => {
         const destPosition = Position.create(10, 0);
         const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
         walkMotion.moveTo(destLocation);
         expect(walkMotion.getDestination()).toBe(destLocation);
     });
 
-    it('should update the movement state when starting movement', () => {
+    it('should update the motion state when starting motion', () => {
         const destPosition = Position.create(10, 0);
         const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
         walkMotion.moveTo(destLocation);
         expect(walkMotion.isMoving()).toBe(true);
     });
 
-    it('should update the target position when starting movement', () => {
+    it('should update the target position when starting motion', () => {
         const destPosition = Position.create(10, 0);
         const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
         walkMotion.moveTo(destLocation);
@@ -414,7 +414,7 @@ describe('Direct Movement (No Pathfinding Required)', () => {
         expect(walkMotion.isMoving()).toBe(false);
     });
 
-    it('should handle diagonal movement correctly', () => {
+    it('should handle diagonal motion correctly', () => {
         const destPosition = Position.create(10, 10);
         const destLocation = testRoom.createLocation("Destination", destPosition.getX(), destPosition.getY());
         walkMotion.moveTo(destLocation);

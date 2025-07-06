@@ -7,7 +7,7 @@ import { Position } from "../../internal.js";
 import { Intention } from "../../internal.js";
 
 /**
- * Implements walking movement for agents (man/cat).
+ * Implements walking motion for agents (man/cat).
  */
 export class WalkMotion extends Motion {
 
@@ -132,16 +132,16 @@ export class WalkMotion extends Motion {
         //console.log(`moveTo-CP2: Path length: ${this.path.getLength()}`);
         //console.log(`moveTo-CP2: Calculated path: ${this.path.getRoomNames()}`);
 
-        //  if the path is empty then stop movement and exit
+        //  if the path is empty then stop motion and exit
         if (this.path.isEmpty()) {
-            //console.log("moveTo-CP3: Path is empty, stopping movement.");
+            //console.log("moveTo-CP3: Path is empty, stopping motion.");
             this.isAgentMoving = false;
             this.targetPosition = null;
             this.destination = WalkMotion.NULL_LOCATION;
             return;
         }
 
-        // set movement state for movement 
+        // set motion state for motion 
         this.isAgentMoving = true;
         this.destination = destination; 
 
