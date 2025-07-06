@@ -3,8 +3,7 @@ import { BeliefUpdater } from '../internal.js';
 import { Desire } from '../internal.js';
 import { Intention } from '../internal.js';
 import { TypeUtils } from '../internal.js';
-import { Movement } from '../internal.js';
-import { Location } from '../internal.js';
+import { Motion } from '../internal.js';
 import { BeliefManager } from '../internal.js';
 import { DesireManager } from '../internal.js';
 import { IntentionManager } from '../internal.js';
@@ -20,18 +19,18 @@ export class Agent {
      * Constructor for the Agent class.
      * 
      * @param {string} name The name of the agent.
-     * @param {Location} initialLocation The initial location of the agent.
-     * @param {number} movementSpeed The speed of the agent's movement.
+     * @param {Motion} motionSystem The motion system for the agent (must be a Motion instance).
      * @param {Scene} scene The scene where the agent resides.
      * @throws {Error} If the provided name is not a string.
      */
-  constructor(name, initialLocation, movementSpeed, scene) {
+  constructor(name, motionSystem, scene) {
     TypeUtils.ensureString(name);
-    TypeUtils.ensureInstanceOf(initialLocation, Location);
-    TypeUtils.ensureNumber(movementSpeed);
     TypeUtils.ensureInstanceOf(scene, Scene);
+    if (!(motionSystem instanceof Motion)) {
+      throw new Error('motionSystem must be an instance of Motion');
+    }
     this.name = name;
-    this.movement = new Movement(initialLocation, movementSpeed, scene);
+    this.movement = motionSystem;
     this.beliefManager = new BeliefManager();
     this.desireManager = new DesireManager();
     this.intentionManager = new IntentionManager();

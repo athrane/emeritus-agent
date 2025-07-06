@@ -4,6 +4,7 @@ import { Agent } from '../../../src/internal.js';
 import { Scene } from '../../../src/internal.js'; 
 import { Position } from '../../../src/internal.js';
 import { Location } from '../../../src/internal.js';
+import { NullMotion } from '../../../src/internal.js';
 
 /**
  * MockDesire class for testing purposes.
@@ -169,7 +170,8 @@ describe('getActiveDesires', () => {
     initialRoom = scene.createRoom("Room1", 0, 0, 10, 10);
     initialPosition = Position.create(0, 0);
     initialLocation = Location.create("L1", initialPosition, initialRoom);
-    agent = new Agent('TestAgent', initialLocation, 5, scene);
+    const nullMotion = new NullMotion();
+    agent = new Agent('TestAgent', nullMotion, scene);
 
   });
 
@@ -225,7 +227,8 @@ describe('update', () => {
     initialRoom = scene.createRoom("Room1", 0, 0, 10, 10);
     initialPosition = Position.create(0, 0);
     initialLocation = Location.create("L1", initialPosition, initialRoom);
-    agent = new Agent('TestAgent', initialLocation, 5, scene);
+    const nullMotion = new NullMotion();
+    agent = new Agent('TestAgent', nullMotion, scene);
   });
 
   test('should select the highest priority satisfied desire', () => {

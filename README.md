@@ -134,9 +134,6 @@ This project includes the following classes, grouped by their respective directo
 ### `src/`
 - **`main.js`**: The entry point of the application. It sets up the simulation environment and agent, then runs the simulation loop.
 
-### `src/utils/`
-- **`TypeUtils`**: Provides static utility methods for runtime type checking, such as ensuring a value is an instance of a specific class or a primitive type (e.g., `isInstanceOf`, `isNumber`).
-
 ### `src/bdiagent`
 - **`Agent`**: Represents the core BDI agent. It integrates the `BeliefManager`, `DesireManager`, and `Movement` components. It processes its beliefs, selects the most pressing desire, forms an intention, and executes actions (including movement) in each simulation tick.
 - **`AgentFactory`**: A factory class responsible for creating and initializing `Agent` instances with predefined configurations, including initial beliefs, desires, intentions, and the simulation scene.
@@ -163,3 +160,14 @@ This project includes the following classes, grouped by their respective directo
 - **`SceneFactory`**: A utility class designed to create pre-configured `Scene` objects, such as a standard house layout with interconnected rooms.
 - **`Path`**: Represents an ordered sequence of room names, defining a route between two locations as calculated by `Scene.findShortestPath`.
 - **`Movement`**: Manages an agent's physical presence and movement within the `Scene`. It tracks the agent's current `Position`, target `Location`, and calculates position updates based on speed and the path required to reach the destination.
+- **`Motion`**: Abstract base class/interface for all agent motion systems. Defines the required interface for movement-related methods (e.g., `getSpeed`, `getPosition`, `moveTo`, `update`).
+- **`WalkMotion`**: Implements the `Motion` interface for walking agents (e.g., man, cat). Handles pathfinding, stepwise movement, and room transitions.
+- **`NullMotion`**: Implements the `Motion` interface as a no-op for agents that do not move. All movement methods are inert.
+
+### `src/time/`
+- **`TimeManager`**: Tracks the simulation time, including the current step, time of day, and day count. Provides methods to advance time and query the current time state.
+- **`TimeOfDay`**: Represents the time of day as hours and minutes, with utility methods for formatting and comparison.
+
+### `src/utils/`
+- **`TypeUtils`**: Provides static utility methods for runtime type checking, such as ensuring a value is an instance of a specific class or a primitive type (e.g., `isInstanceOf`, `isNumber`).
+- **`LogBuffer`**: (Located in `src/utils/log/LogBuffer.js`) A simple logging utility for buffering and retrieving log messages during simulation.

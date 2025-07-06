@@ -5,6 +5,7 @@ import { DesireFactory } from '../internal.js';
 import { IntentionFactory } from '../internal.js';
 import { Location } from '../internal.js'; 
 import { Scene } from '../internal.js'; 
+import { WalkMotion } from './movement/WalkMotion.js';
 
 /**
  * Factory class for creating agents.
@@ -29,7 +30,8 @@ export class AgentFactory {
      */
     static createNullAgent(scene) {
         const initialLocation = Location.createNullLocation();
-        return new Agent("NULL Agent", initialLocation, AgentFactory.MOVEMENT_SPEED_OLDMAN, scene)
+        const walkMotion = new WalkMotion(initialLocation, AgentFactory.MOVEMENT_SPEED_OLDMAN, scene);
+        return new Agent("NULL Agent", walkMotion, scene);
     }
 
     /**
@@ -42,7 +44,8 @@ export class AgentFactory {
 
         // Create the agent
         const initialLocation = scene.getLocation("Bed");
-        const oldMan = new Agent("Acticus", initialLocation, AgentFactory.MOVEMENT_SPEED_OLDMAN, scene);
+        const walkMotion = new WalkMotion(initialLocation, AgentFactory.MOVEMENT_SPEED_OLDMAN, scene);
+        const oldMan = new Agent("Acticus", walkMotion, scene);
 
         // Add beliefs
         const hungerBelief = new IntegerPercentageBelief("Hunger", 0);
@@ -102,7 +105,8 @@ export class AgentFactory {
      */
     static createCatAgent(scene) {
         const initialLocation = scene.getLocation("Bed") 
-        const cat = new Agent("Anais", initialLocation,  AgentFactory.MOVEMENT_SPEED_CAT, scene); 
+        const walkMotion = new WalkMotion(initialLocation, AgentFactory.MOVEMENT_SPEED_CAT, scene);
+        const cat = new Agent("Anais", walkMotion, scene); 
 
         // Add beliefs
         const hungerBelief = new IntegerPercentageBelief("Hunger", 0);

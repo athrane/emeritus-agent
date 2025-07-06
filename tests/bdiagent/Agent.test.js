@@ -6,6 +6,7 @@ import { Scene } from "../../src/internal.js";
 import { Position } from "../../src/internal.js";
 import { SceneFactory } from "../../src/internal.js";
 import { AgentFactory } from "../../src/internal.js";
+import { WalkMotion } from "../../src/internal.js";
 
 describe('Agent', () => {
 
@@ -21,7 +22,8 @@ describe('Agent', () => {
             initialRoom = scene.createRoom("Room1", 0, 0, 10, 10);
             initialPosition = Position.create(0, 0);
             initialLocation = Location.create("L1", initialPosition, initialRoom);
-            agent = new Agent('TestAgent', initialLocation, 5, scene);
+            const walkMotion = new WalkMotion(initialLocation, 5, scene);
+            agent = new Agent('TestAgent', walkMotion, scene);
         });
 
         it('should create be able to create agent', () => {
@@ -68,7 +70,8 @@ describe('Agent', () => {
             const room = scene.createRoom("Room1", 0, 0, 10, 10);
             const position = Position.create(0, 0);
             const location = Location.create("L1", position, room);
-            agent = new Agent('TestAgent', location, 5, scene);
+            const walkMotion = new WalkMotion(location, 5, scene);
+            agent = new Agent('TestAgent', walkMotion, scene);
         });
         
         it('should create be able to run agent one turn', () => {
@@ -105,7 +108,8 @@ describe('Agent', () => {
             const room = scene.createRoom("Room1", 0, 0, 10, 10);
             const position = Position.create(0, 0);
             const location = Location.create("L1", position, room);
-            agent = new Agent('TestAgent', location, 5, scene);
+            const walkMotion = new WalkMotion(location, 5, scene);
+            agent = new Agent('TestAgent', walkMotion, scene);
         });
         
         it('should create be able to get desire manager', () => {
@@ -123,7 +127,8 @@ describe('Agent', () => {
             const room = scene.createRoom("Room1", 0, 0, 10, 10);
             const position = Position.create(0, 0);
             const location = Location.create("L1", position, room);
-            agent = new Agent('TestAgent', location, 5, scene);
+            const walkMotion = new WalkMotion(location, 5, scene);
+            agent = new Agent('TestAgent', walkMotion, scene);
         });
 
         it('should return the name of the agent', () => {
@@ -140,7 +145,8 @@ describe('Agent', () => {
             const room = scene.createRoom("Room1", 0, 0, 10, 10);
             const position = Position.create(0, 0);
             const location = Location.create("L1", position, room);
-            agent = new Agent('TestAgent', location, 5, scene);
+            const walkMotion = new WalkMotion(location, 5, scene);
+            agent = new Agent('TestAgent', walkMotion, scene);
         });
 
         it('should return the scene associated with the agent', () => {
@@ -157,7 +163,8 @@ describe('Agent', () => {
             const room = scene.createRoom("Room1", 0, 0, 10, 10);
             const position = Position.create(0, 0);
             const location = Location.create("L1", position, room);
-            agent = new Agent('TestAgent', location, 5, scene);
+            const walkMotion = new WalkMotion(location, 5, scene);
+            agent = new Agent('TestAgent', walkMotion, scene);
         });
 
         it('should return the belief manager associated with the agent', () => {

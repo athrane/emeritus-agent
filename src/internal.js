@@ -10,6 +10,9 @@ export { SceneFactory } from './bdiagent/movement/SceneFactory.js';
 export { Movement } from './bdiagent/movement/Movement.js';
 export { Scene } from './bdiagent/movement/Scene.js';
 export { Path } from './bdiagent/movement/Path.js';
+export { Motion } from './bdiagent/movement/Motion.js';
+export { WalkMotion } from './bdiagent/movement/WalkMotion.js';
+export { NullMotion } from './bdiagent/movement/NullMotion.js';
 
 export { Belief } from './bdiagent/belief/Belief.js';
 export { IntegerPercentageBelief } from './bdiagent/belief/IntegerPercentageBelief.js';
