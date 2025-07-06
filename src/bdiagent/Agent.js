@@ -97,7 +97,7 @@ export class Agent {
 
   /**
    * Retrieves the agent's movement system.
-   * @returns {Movement} The movement system of the agent.
+   * @returns {Motion} The motion system of the agent.
    */
   getMovement() {
     return this.movement;
