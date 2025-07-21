@@ -1,5 +1,7 @@
 # Emeritus-agent
-[![codecov](https://codecov.io/gh/<OWNER>/emeritus-agent/branch/main/graph/badge.svg)](https://codecov.io/gh/<OWNER>/emeritus-agent)
+[![codecov](https://codecov.io/gh/athrane/emeritus-agent/branch/main/graph/badge.svg)](https://codecov.io/gh/athrane/emeritus-agent)
+https://app.codecov.io/github/athrane/emeritus-agent
+
 
 Experiment with a belief–desire–intention (BDI) agent for an old man living in a house.
 
