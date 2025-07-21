@@ -35,9 +35,9 @@ describe('CircularMotion', () => {
     expect(motion.getPosition()).toBeInstanceOf(Position);
   });
 
-  test('getDestination returns null', () => {
+  test('getDestination returns null location', () => {
     const motion = new CircularMotion(initialLocation, 1, timeManager);
-    expect(motion.getDestination()).toBeNull();
+    expect(motion.getDestination()).toBeInstanceOf(Location);
   });
 
   test('getRoom returns current room', () => {
