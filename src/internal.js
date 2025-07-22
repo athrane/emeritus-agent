@@ -3,6 +3,11 @@
 export { TypeUtils } from './utils/TypeUtils.js';
 export { LogBuffer } from './utils/log/LogBuffer.js';
 
+// Exporting the core ECS classes
+export { Entity } from './entity/Entity.js';
+export { System } from './system/System.js';
+export { Component } from './component/Component.js';
+
 export { Position } from './bdiagent/movement/Position.js';
 export { Location } from './bdiagent/movement/Location.js';
 export { Room } from './bdiagent/movement/Room.js';
@@ -34,18 +39,14 @@ export { Simulation } from './Simulation.js';
 
 export { TimeManager } from './time/TimeManager.js';
 export { TimeOfDay } from './time/TimeOfDay.js';
+export { TimeComponent } from './time/TimeComponent.js';
+export { TimeSystem } from './time/TimeSystem.js';
 
-// Exporting the ECS entity classes
-export { Entity } from './entity/Entity.js';
+// Exporting the ECS classes
 export { Entities } from './entity/Entities.js';
-
-// Exporting the ECS component classes
-export { Component } from './component/Component.js';
-export { NameComponent } from './component/NameComponent.js';
-
-// Exporting ECS System classes
-export { System } from './system/System.js';
 export { Systems } from './system/Systems.js';
+
+export { NameComponent } from './component/NameComponent.js';
 
 // Exporting ECS Movement classes 
 export { PositionComponent } from './movement/PositionComponent.js';
