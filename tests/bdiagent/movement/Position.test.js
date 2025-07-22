@@ -8,22 +8,22 @@ describe('Position', () => {
             const y = 20;
             const pos = Position.create(x, y);
             expect(pos).toBeInstanceOf(Position);
-            expect(pos.x).toBe(x);
-            expect(pos.y).toBe(y);
+            expect(pos.getX()).toBe(x);
+            expect(pos.getY()).toBe(y);
         });
 
         test('should handle zero coordinates', () => {
             const pos = Position.create(0, 0);
-            expect(pos.x).toBe(0);
-            expect(pos.y).toBe(0);
+            expect(pos.getX()).toBe(0);
+            expect(pos.getY()).toBe(0);
         });
 
         test('should handle negative coordinates', () => {
             const x = -5;
             const y = -15;
             const pos = Position.create(x, y);
-            expect(pos.x).toBe(x);
-            expect(pos.y).toBe(y);
+            expect(pos.getX()).toBe(x);
+            expect(pos.getY()).toBe(y);
         });
 
         test('should throw error if x is not a number (assuming TypeUtils throws)', () => {
@@ -117,36 +117,36 @@ describe('Position', () => {
         
     });
 
-    describe('create2', () => {
+    describe('from', () => {
 
         test('should create a Position instance with given x and y coordinates', () => {
             const x = 10;
             const y = 20;
             const pos = Position.create(x, y);
-            const pos2 = Position.create2(pos);
+            const pos2 = Position.from(pos);
             expect(pos2).toBeInstanceOf(Position);
-            expect(pos2.x).toBe(x);
-            expect(pos2.y).toBe(y);
+            expect(pos2.getX()).toBe(x);
+            expect(pos2.getY()).toBe(y);
         });
 
         test('should handle zero coordinates', () => {
             const pos = Position.create(0, 0);
-            const pos2 = Position.create2(pos);
-            expect(pos2.x).toBe(0);
-            expect(pos2.y).toBe(0);
+            const pos2 = Position.from(pos);
+            expect(pos2.getX()).toBe(0);
+            expect(pos2.getY()).toBe(0);
         });
 
         test('should handle negative coordinates', () => {
             const x = -5;
             const y = -15;
             const pos = Position.create(x, y);
-            const pos2 = Position.create2(pos);
-            expect(pos2.x).toBe(x);
-            expect(pos2.y).toBe(y);
+            const pos2 = Position.from(pos);
+            expect(pos2.getX()).toBe(x);
+            expect(pos2.getY()).toBe(y);
         });
 
         test('should throw error if parameter isnt Position', () => {
-            expect(() => Position.create2("not-a-position")).toThrow(TypeError);
+            expect(() => Position.from("not-a-position")).toThrow(TypeError);
         });
 
     });
@@ -169,11 +169,16 @@ describe('Position', () => {
 
         test('modifying the copied position should not affect the original', () => {
             const originalPos = Position.create(10, 10);
-            const copiedPos = originalPos.copy();
-            copiedPos.x = 100; // Modify the copy
+            expect(originalPos.getX()).toBe(10);
 
-            expect(originalPos.x).toBe(10); // Original should remain unchanged
-            expect(copiedPos.x).toBe(100);
+            const copiedPos = originalPos.copy();
+            expect(copiedPos.getX()).toBe(10);
+
+            const copiedPos2 = copiedPos.setX(100); // Modify the copy
+            expect(copiedPos.getX()).toBe(10);
+            expect(copiedPos2.getX()).toBe(100);
+
+            expect(originalPos.getX()).toBe(10); // Original should remain unchanged
         });
     });
 

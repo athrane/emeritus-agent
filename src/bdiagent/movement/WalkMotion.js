@@ -213,7 +213,7 @@ export class WalkMotion extends Motion {
         if (this.canReachTargetPosition()) {
 
             // move to target position
-            this.position = Position.create2(this.targetPosition);
+            this.position = Position.from(this.targetPosition);
 
             // if final destination is reached, stop moving
             if (this.hasReachedFinalDestination()) {

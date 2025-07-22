@@ -34,3 +34,21 @@ export { Simulation } from './Simulation.js';
 
 export { TimeManager } from './time/TimeManager.js';
 export { TimeOfDay } from './time/TimeOfDay.js';
+
+// Exporting the ECS entity classes
+export { Entity } from './entity/Entity.js';
+export { Entities } from './entity/Entities.js';
+
+// Exporting the ECS component classes
+export { Component } from './component/Component.js';
+export { NameComponent } from './component/NameComponent.js';
+
+// Exporting ECS System classes
+export { System } from './system/System.js';
+export { Systems } from './system/Systems.js';
+
+// Exporting ECS Movement classes 
+export { PositionComponent } from './movement/PositionComponent.js';
+export { VelocityComponent } from './movement/VelocityComponent.js';
+export { MovementSystem } from './movement/MovementSystem.js';
+

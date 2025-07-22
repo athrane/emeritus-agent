@@ -3,10 +3,20 @@ import { TypeUtils } from '../../internal.js';
 /**
  * Represents a position in the simulation.
  * A position is defined by coordinates (x, y).
- * Object are immutable.
+ * Objects are immutable.
+ * All operations that change the state return a new Position object.
  */
 export class Position {
-    
+    /**
+     * @type {number}
+     */
+    #x;
+
+    /**
+     * @type {number}
+     */
+    #y;
+
     /**
      * Constructor for the Position class.
      * 
@@ -15,9 +25,9 @@ export class Position {
      */
     constructor(x, y) {
         TypeUtils.ensureNumber(x);
-        TypeUtils.ensureNumber(y);        
-        this.x = x;
-        this.y = y;
+        TypeUtils.ensureNumber(y);
+        this.#x = x;
+        this.#y = y;
     }
 
     /**
@@ -25,7 +35,7 @@ export class Position {
      * @returns {number} The x-coordinate.
      */
     getX() {
-        return this.x;
+        return this.#x;
     }
 
     /**
@@ -33,7 +43,7 @@ export class Position {
      * @returns {number} The y-coordinate.
      */
     getY() {
-        return this.y;
+        return this.#y;
     }   
 
     /**
@@ -42,7 +52,7 @@ export class Position {
      * @returns {Position} A new Position object with the same properties as the original.
      */
     copy() {
-        return new Position(this.x, this.y);
+        return new Position(this.#x, this.#y);
     }
     
     /**
@@ -54,13 +64,14 @@ export class Position {
     distanceTo(otherPosition) {
         TypeUtils.ensureInstanceOf(otherPosition, Position);
         return Math.sqrt(
-            Math.pow(this.x - otherPosition.getX(), 2) +
-            Math.pow(this.y - otherPosition.getY(), 2)
+            Math.pow(this.#x - otherPosition.getX(), 2) +
+            Math.pow(this.#y - otherPosition.getY(), 2)
         );
     }
 
     /**
      * Sets the x-coordinate of the position.
+     * Does not modify the current position, as it is immutable.
      * 
      * @param {number} x The new x-coordinate.
      * @param {number} y The new y-coordinate.
@@ -69,31 +80,31 @@ export class Position {
     set(x,y) {
         TypeUtils.ensureNumber(x);
         TypeUtils.ensureNumber(y);
-        this.x = x;
-        this.y = y;
         return new Position(x, y);
     }
 
     /**
      * Sets the x-coordinate of the position.
+     * Does not modify the current position, as it is immutable.
      * 
      * @param {number} x The new x-coordinate.
      * @returns {Position} A new Position object with the updated x-coordinate.
      */
     setX(x) {
         TypeUtils.ensureNumber(x);
-        return new Position(x, this.y);
+        return new Position(x, this.#y);
     }
 
     /**
      * Sets the y-coordinate of the position.
+     * Does not modify the current position, as it is immutable.
      * 
      * @param {number} y The new y-coordinate.
      * @returns {Position} A new Position object with the updated y-coordinate.
      */
     setY(y) {
         TypeUtils.ensureNumber(y);
-        return new Position(this.x, y);
+        return new Position(this.#x, y);
     }
 
     /**
@@ -105,7 +116,7 @@ export class Position {
      */
     add(position) {
         TypeUtils.ensureInstanceOf(position, Position);
-        return new Position(this.x + position.getX(), this.y + position.getY());
+        return new Position(this.#x + position.getX(), this.#y + position.getY());
     }
 
     /**
@@ -116,7 +127,7 @@ export class Position {
      */ 
     isEqual(position) {
         TypeUtils.ensureInstanceOf(position, Position);
-        return this.x === position.getX() && this.y === position.getY();
+        return this.#x === position.getX() && this.#y === position.getY();
     }    
 
     /**
@@ -131,11 +142,12 @@ export class Position {
     }
 
     /**
-     * Creates a new Position object from another Position object.
+     * Creates a new Position object from another Position instance (a copy constructor).
      * 
      * @param {Position} position The position to copy.
+     * @returns {Position} A new Position object.
      */
-    static create2(position) {
+    static from(position) {
         TypeUtils.ensureInstanceOf(position, Position);
         return new Position(position.getX(), position.getY());
     }
