@@ -44,15 +44,17 @@ console.log('Added MovementSystem to the simulation.');
 
 // 4. Create entities and add components
 console.log('\n--- Creating Entities ---');
-const movingEntity = entitiesManager.create();
-movingEntity.addComponent(new NameComponent('Player'));
-movingEntity.addComponent(new PositionComponent(new Position(100, 200)));
-movingEntity.addComponent(new VelocityComponent(10, -5)); // Moves 10 units/sec on X, -5 on Y
+entitiesManager.create(
+  new NameComponent('Player'),
+  new PositionComponent(new Position(100, 200)),
+  new VelocityComponent(10, -5) // Moves 10 units/sec on X, -5 on Y
+);
 
-const staticEntity = entitiesManager.create();
-staticEntity.addComponent(new NameComponent('Tree'));
-staticEntity.addComponent(new PositionComponent(new Position(50, 50)));
-staticEntity.addComponent(new VelocityComponent(0, 0)); // Zero velocity, so it won't move
+entitiesManager.create(
+  new NameComponent('Tree'),
+  new PositionComponent(new Position(50, 50)),
+  new VelocityComponent(0, 0) // Zero velocity, so it won't move
+);
 
 console.log('Initial entity states:');
 logEntityDetails(entitiesManager);

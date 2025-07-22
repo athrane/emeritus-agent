@@ -1,7 +1,9 @@
-import { System, TypeUtils } from '../internal.js';
-import { PositionComponent } from '../internal.js';
-import { VelocityComponent } from '../internal.js';
-import { Position } from '../internal.js';
+import { System, 
+  Entities, 
+  TypeUtils , 
+  PositionComponent,
+  VelocityComponent,
+  Position } from '../internal.js';
 
 /**
  * A system that handles physics-based movement for entities.

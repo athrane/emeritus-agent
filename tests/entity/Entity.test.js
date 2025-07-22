@@ -121,4 +121,28 @@ describe('Entity', () => {
       });
     });
   });
+
+  describe('create (static factory)', () => {
+    test('should create an entity instance with no components', () => {
+      const entity = Entity.create();
+      expect(entity).toBeInstanceOf(Entity);
+    });
+
+    test('should create an entity and add components passed as arguments', () => {
+      const componentA = new TestComponentA('value');
+      const componentB = new TestComponentB('data');
+      const entity = Entity.create(componentA, componentB);
+
+      expect(entity.hasComponent(TestComponentA)).toBe(true);
+      expect(entity.hasComponent(TestComponentB)).toBe(true);
+      expect(entity.getComponent(TestComponentA)).toBe(componentA);
+      expect(entity.getComponent(TestComponentB).data).toBe('data');
+    });
+
+    test('should throw an error if duplicate component types are passed', () => {
+      const componentA1 = new TestComponentA();
+      const componentA2 = new TestComponentA();
+      expect(() => Entity.create(componentA1, componentA2)).toThrow(/already has a component of type TestComponentA/);
+    });
+  });
 });

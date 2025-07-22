@@ -1,6 +1,6 @@
-import { Entities } from '../internal.js';
-import { Systems } from '../internal.js';
-import { TypeUtils } from '../internal.js';
+import { Entities,
+  Systems,
+  TypeUtils } from '../internal.js';
 
 /**
  * Orchestrates an Entity-Component-System (ECS) based simulation.

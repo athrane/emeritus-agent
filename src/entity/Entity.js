@@ -83,4 +83,15 @@ export class Entity {
   removeComponent(componentType) {
     return this.#components.delete(componentType);
   }
+
+ /**
+   * Factory function to create a new Entity with the given components.
+   * This provides a declarative way to instantiate entities.
+   * @param {...Component} components - A list of components to attach to the entity upon creation.
+   * @returns {Entity} A new entity instance.
+   */
+  static create(...components) {
+    return new Entity(...components);
+  }
+
 }

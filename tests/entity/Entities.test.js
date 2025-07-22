@@ -150,4 +150,34 @@ describe('Entities Manager', () => {
       expect(withD.length).toBe(0);
     });
   });
+
+  describe('create', () => {
+    test('should create, add, and return a new entity with no components', () => {
+      const entity = entitiesManager.create();
+      expect(entity).toBeInstanceOf(Entity);
+      expect(entitiesManager.get(entity.getId())).toBe(entity);
+      expect(entitiesManager.getAll().length).toBe(1);
+    });
+
+    test('should create, add, and return a new entity with components', () => {
+      const componentA = new ComponentA();
+      const componentB = new ComponentB();
+      const entity = entitiesManager.create(componentA, componentB);
+
+      expect(entity).toBeInstanceOf(Entity);
+      expect(entity.hasComponent(ComponentA)).toBe(true);
+      expect(entity.getComponent(ComponentA)).toBe(componentA);
+      expect(entity.hasComponent(ComponentB)).toBe(true);
+      expect(entitiesManager.get(entity.getId())).toBe(entity);
+    });
+
+    test('should throw an error if duplicate component types are provided', () => {
+      expect(() => entitiesManager.create(new ComponentA(), new ComponentA())).toThrow(/already has a component of type ComponentA/);
+    });
+
+    test('should throw a TypeError if a non-component is provided', () => {
+      expect(() => entitiesManager.create({})).toThrow(TypeError);
+      expect(() => entitiesManager.create(new ComponentA(), 'not-a-component')).toThrow(TypeError);
+    });
+  });
 });

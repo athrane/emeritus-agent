@@ -1,5 +1,5 @@
-import { Entity } from '../internal.js';
-import { TypeUtils } from '../internal.js';
+import { Entity,
+   TypeUtils } from '../internal.js';
 
 /**
  * Manages the lifecycle and querying of all entities in the ECS.
@@ -10,6 +10,20 @@ export class Entities {
    * @type {Map<number, Entity>}
    */
   #entities = new Map();
+
+  /**
+   * Creates a new entity, adds it to the manager, and returns it.
+   * This is a convenience method that combines entity creation and registration.
+   * @param {...import('../internal.js').Component} components - A list of components to attach to the new entity.
+   * @returns {Entity} The newly created and registered entity.
+   */
+  create(...components) {
+    // Component type validation is handled by the Entity constructor,
+    // so no need to perform a separate check here.
+    const entity = Entity.create(...components);
+    this.add(entity);
+    return entity;
+  }
 
   /**
    * Adds an entity to the manager.
