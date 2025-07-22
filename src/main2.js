@@ -35,8 +35,8 @@ console.log('--- Initializing ECS Simulation ---');
 const simulation = new SimulationECS();
 
 // 2. Get managers
-const entitiesManager = simulation.getEntitiesManager();
-const systemsManager = simulation.getSystemsManager();
+const entitiesManager = simulation.getEntities();
+const systemsManager = simulation.getSystems();
 
 // 3. Add systems
 systemsManager.add(new MovementSystem());

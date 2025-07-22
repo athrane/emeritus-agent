@@ -29,7 +29,7 @@ export class SimulationECS {
    * Gets the entity manager.
    * @returns {Entities} The manager for all entities.
    */
-  getEntitiesManager() {
+  getEntities() {
     return this.#entities;
   }
 
@@ -37,7 +37,7 @@ export class SimulationECS {
    * Gets the system manager.
    * @returns {Systems} The manager for all systems.
    */
-  getSystemsManager() {
+  getSystems() {
     return this.#systems;
   }
 

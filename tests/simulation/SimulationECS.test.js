@@ -10,29 +10,29 @@ describe('SimulationECS', () => {
   describe('constructor', () => {
     test('should create an instance and initialize managers', () => {
       expect(simulation).toBeInstanceOf(SimulationECS);
-      expect(simulation.getEntitiesManager()).toBeInstanceOf(Entities);
-      expect(simulation.getSystemsManager()).toBeInstanceOf(Systems);
+      expect(simulation.getEntities()).toBeInstanceOf(Entities);
+      expect(simulation.getSystems()).toBeInstanceOf(Systems);
     });
   });
 
-  describe('getEntitiesManager', () => {
+  describe('getEntities', () => {
     test('should return the entity manager instance', () => {
-      const entitiesManager = simulation.getEntitiesManager();
+      const entitiesManager = simulation.getEntities();
       expect(entitiesManager).toBeInstanceOf(Entities);
     });
   });
 
-  describe('getSystemsManager', () => {
+  describe('getSystems', () => {
     test('should return the system manager instance', () => {
-      const systemsManager = simulation.getSystemsManager();
+      const systemsManager = simulation.getSystems();
       expect(systemsManager).toBeInstanceOf(Systems);
     });
   });
 
   describe('update', () => {
     test('should call the update method on the systems manager with correct parameters', () => {
-      const systemsManager = simulation.getSystemsManager();
-      const entitiesManager = simulation.getEntitiesManager();
+      const systemsManager = simulation.getSystems();
+      const entitiesManager = simulation.getEntities();
       const deltaTime = 16;
 
       const updateSpy = jest.spyOn(systemsManager, 'update');
