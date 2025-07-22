@@ -6,7 +6,9 @@ Experiment with a belief–desire–intention (BDI) agent for an old man living 
 
 ## Usage 
 
-To run the script, open the terminal in your Codespace and execute the following command:
+### BDI Agent Simulation
+
+To run the agent simulation, open the terminal in your Codespace and execute the following command:
 
 ```sh
 npm start
@@ -14,13 +16,36 @@ npm start
 
 This will run the `src/main.js` file using Node.js. Ensure that all dependencies are installed by running `npm install` before executing the script.
 
+### ECS Simulation
+
+To run the new Entity-Component-System (ECS) simulation, use the following command:
+
+```sh
+npm run start:ecs
+```
+
+This will execute the `src/main2.js` file, which demonstrates the ECS architecture with a simple movement system.
+
 ## Build
 
-The project uses `esbuild` to bundle the source code into a single file for distribution. To build the project, run the following command in the terminal:
+The project uses `esbuild` to bundle the source code into single files for distribution.
+
+### BDI Agent Simulation
+
+To build the BDI agent simulation, run the following command:
 
 ```sh
 npm run build
 ```
+
+### ECS Agent Simulation
+
+To build the ECS simulation, run the following command:
+
+```sh
+npm run build:ecs
+```
+### What the build commands does
 
 This command uses `esbuild` with the following parameters:
 
@@ -136,6 +161,20 @@ export default config;
 - **Simulation**: Orchestrates the simulation loop, manages agents, and coordinates time and scene updates.
 
 ### BDI Agent System
+- **SimulationECS**: Orchestrates the ECS simulation loop, managing entity and system managers.
+
+### Entity-Component-System (ECS)
+
+#### Core
+- **Entity**: A general-purpose object with a unique ID, which can have components attached to it.
+- **Entities**: A manager class that creates, stores, and provides methods to query all entities.
+
+#### Components
+- **Component**: The abstract base class for all components. Components are data containers that attach to entities.
+- **NameComponent**: A component that stores a string name for an entity.
+- **PositionComponent**: A component that stores an entity's position using the `Position` class.
+- **VelocityComponent**: A component that stores an entity's velocity (vx, vy).
+
 - **Agent**: The main BDI agent class. Integrates belief, desire, intention, and motion systems. Runs the agent's decision and action loop.
 - **AgentFactory**: Factory for creating and initializing agents with default or custom configurations.
 
@@ -155,6 +194,11 @@ export default config;
 - **Intention**: Represents a plan or commitment to achieve a desire.
 - **IntentionFactory**: Factory for creating intentions from desires.
 - **IntentionManager**: Manages the agent's current intention and execution.
+
+#### Systems
+- **System**: The abstract base class for all systems. Systems contain the logic that operates on entities with specific components.
+- **Systems**: A manager class that registers and executes all systems in a defined order.
+- **MovementSystem**: A system that updates the position of entities based on their velocity and the elapsed time (`deltaTime`).
 
 ### Motion & Environment
 - **Motion**: Abstract base/interface for agent motion systems (e.g., walking, stationary).

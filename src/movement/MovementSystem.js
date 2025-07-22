@@ -1,5 +1,6 @@
 import { System, TypeUtils } from '../internal.js';
-import { PositionComponent, VelocityComponent } from '../internal.js';
+import { PositionComponent } from '../internal.js';
+import { VelocityComponent } from '../internal.js';
 import { Position } from '../internal.js';
 
 /**

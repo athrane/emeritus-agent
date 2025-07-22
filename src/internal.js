@@ -52,3 +52,4 @@ export { PositionComponent } from './movement/PositionComponent.js';
 export { VelocityComponent } from './movement/VelocityComponent.js';
 export { MovementSystem } from './movement/MovementSystem.js';
 
+export { SimulationECS } from './simulation/SimulationECS.js';
