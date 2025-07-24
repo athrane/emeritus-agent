@@ -1,5 +1,6 @@
 import { Component } from '../internal.js';
 import { TypeUtils } from '../internal.js';
+import { TimeOfDay } from '../internal.js';
 
 /**
  * A component that holds global simulation time data.
@@ -113,5 +114,15 @@ export class TimeComponent extends Component {
   setDay(day) {
     TypeUtils.ensureNumber(day);
     this.#day = day;
+  }
+
+  /**
+   * Gets the current time of day as a TimeOfDay object.
+   * @returns {TimeOfDay} The current time of day.
+   */
+  getTimeOfDayAsObject() {
+    const hours = Math.floor(this.#timeOfDay / 60);
+    const minutes = Math.floor(this.#timeOfDay % 60);
+    return new TimeOfDay(hours, minutes);
   }
 }

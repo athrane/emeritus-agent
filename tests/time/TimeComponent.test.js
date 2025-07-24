@@ -1,4 +1,5 @@
 import { TimeComponent } from '../../src/internal.js';
+import { TimeOfDay } from '../../src/internal.js';
 
 describe('TimeComponent', () => {
   describe('constructor', () => {
@@ -99,6 +100,22 @@ describe('TimeComponent', () => {
       expect(customComponent.getTimeScale()).toBe(100);
       expect(customComponent.getTimeOfDay()).toBe(300);
       expect(customComponent.getDay()).toBe(1);
+    });
+
+    test('should get time of day as a TimeOfDay object', () => {
+      // 9:30 AM = 9 * 60 + 30 = 570 minutes
+      component.setTimeOfDay(570);
+      const timeOfDayObj = component.getTimeOfDayAsObject();
+      expect(timeOfDayObj).toBeInstanceOf(TimeOfDay);
+      expect(timeOfDayObj.getHours()).toBe(9);
+      expect(timeOfDayObj.getMinutes()).toBe(30);
+    });
+
+    test('getTimeOfDayAsObject should handle midnight correctly', () => {
+      component.setTimeOfDay(0);
+      const timeOfDayObj = component.getTimeOfDayAsObject();
+      expect(timeOfDayObj.getHours()).toBe(0);
+      expect(timeOfDayObj.getMinutes()).toBe(0);
     });
   });
 });

@@ -40,9 +40,9 @@ function logTime(entities) {
   if (!timeEntity) return;
 
   const timeComp = timeEntity.getComponent(TimeComponent);
-  const timeOfDay = timeComp.getTimeOfDay();
-  const hours = Math.floor(timeOfDay / 60);
-  const minutes = Math.floor(timeOfDay % 60);
+  const timeOfDayObj = timeComp.getTimeOfDayAsObject();
+  const hours = timeOfDayObj.getHours();
+  const minutes = timeOfDayObj.getMinutes();
   const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
 
   console.log(`Day ${timeComp.getDay()}, Time: ${timeString}`);
