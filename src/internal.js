@@ -8,11 +8,13 @@ export { Entity } from './entity/Entity.js';
 export { System } from './system/System.js';
 export { Component } from './component/Component.js';
 
-export { Position } from './bdiagent/movement/Position.js';
-export { Location } from './bdiagent/movement/Location.js';
-export { Room } from './bdiagent/movement/Room.js';
+// scene entities
 export { SceneFactory } from './scene/SceneFactory.js';
 export { Scene } from './scene/Scene.js';
+export { Location } from './scene/Location.js';
+export { Room } from './scene/Room.js';
+
+export { Position } from './bdiagent/movement/Position.js';
 export { Path } from './bdiagent/movement/Path.js';
 export { Motion } from './bdiagent/movement/Motion.js';
 export { WalkMotion } from './bdiagent/movement/WalkMotion.js';

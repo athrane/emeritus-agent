@@ -1,6 +1,6 @@
-import { TypeUtils } from '../../internal.js';
-import { Room } from '../../internal.js';
-import { Position } from '../../internal.js';
+import { TypeUtils } from '../internal.js';
+import { Room } from '../internal.js';
+import { Position } from '../internal.js';
 
 /**
  * Represents a location in the simulation.
