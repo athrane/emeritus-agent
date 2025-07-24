@@ -12,6 +12,7 @@ export { Component } from './component/Component.js';
 // scene entities
 export { SceneFactory } from './scene/SceneFactory.js';
 export { Scene } from './scene/Scene.js';
+export { SceneComponent } from './scene/SceneComponent.js';
 export { Location } from './scene/Location.js';
 export { Room } from './scene/Room.js';
 
