@@ -33,18 +33,19 @@ function logEntityDetails(entitiesManager) {
 
 /**
  * Logs the current simulation time.
- * @param {import('./internal.js').Entities} entitiesManager
+ * @param {import('./internal.js').Entities} entities
  */
-function logTime(entitiesManager) {
-  const timeEntity = entitiesManager.filterByComponents(TimeComponent)[0];
+function logTime(entities) {
+  const timeEntity = entities.filterByComponents(TimeComponent)[0];
   if (!timeEntity) return;
 
   const timeComp = timeEntity.getComponent(TimeComponent);
-  const hours = Math.floor(timeComp.timeOfDay / 60);
-  const minutes = Math.floor(timeComp.timeOfDay % 60);
+  const timeOfDay = timeComp.getTimeOfDay();
+  const hours = Math.floor(timeOfDay / 60);
+  const minutes = Math.floor(timeOfDay % 60);
   const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
 
-  console.log(`Day ${timeComp.day}, Time: ${timeString}`);
+  console.log(`Day ${timeComp.getDay()}, Time: ${timeString}`);
 }
 
 console.log('--- Initializing ECS Simulation ---');
