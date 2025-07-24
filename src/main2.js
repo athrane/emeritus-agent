@@ -7,6 +7,7 @@ import {
   NameComponent,
   TimeComponent,
   Position,
+  SceneComponent,
   SceneFactory,
   LogHelper
 } from './internal.js';
@@ -15,7 +16,7 @@ console.log('--- Initializing ECS Simulation ---');
 
 // 1. Create the simulation instance
 const scene =  SceneFactory.createHouse();
-const simulation = new SimulationECS(scene);
+const simulation = new SimulationECS();
 
 // 2. Get ECS core classes
 const entities = simulation.getEntities();
@@ -33,7 +34,8 @@ console.log('\n--- Creating Entities ---');
 const timeScale = 360; // 1 real second = 6 simulation minutes
 entities.create(
   new NameComponent('Global'),
-  new TimeComponent(timeScale, 480) // Start at 8:00 AM
+  new TimeComponent(timeScale, 480), // Start at 8:00 AM
+  new SceneComponent(scene)
 );
 
 entities.create(
@@ -49,7 +51,7 @@ entities.create(
 );
 
 console.log('\nInitial entity states:');
-LogHelper.logSceneDetails(scene);
+LogHelper.logSceneDetails(entities);
 LogHelper.logTime(entities);
 LogHelper.logEntityDetails(entities);
 

@@ -1,7 +1,6 @@
 import { Entities, 
   Systems,
-  TypeUtils,
-  Scene } from '../internal.js';
+  TypeUtils } from '../internal.js';
 
 /**
  * Orchestrates an Entity-Component-System (ECS) based simulation.
@@ -21,22 +20,11 @@ export class SimulationECS {
   #systems;
 
   /**
-   * The scene where the simulation takes place.
-   * @type {Scene}
-   */
-  #scene;
-
-  /**
    * Creates a new SimulationECS instance.
-   * @param {Scene} scene - The scene where the simulation will occur.
-   * @throws {Error} If the provided scene is not an instance of Scene.
-   * @throws {TypeError} If the scene parameter is not provided or is not a Scene instance.
    */
-  constructor(scene) {
-    TypeUtils.ensureInstanceOf(scene, Scene);
+  constructor() {
     this.#entities = new Entities();
     this.#systems = new Systems();
-    this.#scene = scene;
   }
 
   /**
@@ -53,14 +41,6 @@ export class SimulationECS {
    */
   getSystems() {
     return this.#systems;
-  }
-
-  /**
-   * Gets the scene.
-   * @returns {Scene} The scene where the simulation takes place.
-   */
-  getScene() {
-    return this.#scene;
   }
 
   /**

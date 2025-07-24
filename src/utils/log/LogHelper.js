@@ -2,7 +2,7 @@ import {
   Entities,
   NameComponent,
   PositionComponent,
-  Scene,
+  SceneComponent,
   TimeComponent,
 } from '../../internal.js';
 
@@ -35,10 +35,19 @@ export class LogHelper {
 
   /**
    * Logs details about the rooms in the scene.
-   * @param {Scene} scene
+   * @param {Entities} entitiesManager
    */
-  static logSceneDetails(scene) {
+  static logSceneDetails(entitiesManager) {
     console.log('Scene Details:');
+
+    const sceneEntity = entitiesManager.filterByComponents(SceneComponent)[0];
+    if (!sceneEntity) {
+      console.log('No SceneComponent found.');
+      return;
+    }
+
+    const scene = sceneEntity.getComponent(SceneComponent).getScene();
+
     const rooms = scene.rooms;
     if (rooms.size === 0) {
       console.log('No rooms in the scene.');
