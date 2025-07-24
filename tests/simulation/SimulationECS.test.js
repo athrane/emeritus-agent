@@ -1,10 +1,12 @@
-import { SimulationECS, Entities, Systems } from '../../src/internal.js';
+import { SimulationECS, Entities, Systems, Scene } from '../../src/internal.js';
 
 describe('SimulationECS', () => {
   let simulation;
+  let scene;
 
   beforeEach(() => {
-    simulation = new SimulationECS();
+    scene = new Scene();
+    simulation = new SimulationECS(scene);
   });
 
   describe('constructor', () => {
@@ -12,6 +14,16 @@ describe('SimulationECS', () => {
       expect(simulation).toBeInstanceOf(SimulationECS);
       expect(simulation.getEntities()).toBeInstanceOf(Entities);
       expect(simulation.getSystems()).toBeInstanceOf(Systems);
+      expect(simulation.getScene()).toBe(scene);
+    });
+
+    test('should throw a TypeError if scene is not provided', () => {
+      // The constructor expects a Scene instance, so calling it without one should fail.
+      expect(() => new SimulationECS()).toThrow(TypeError);
+    });
+
+    test('should throw a TypeError if the provided scene is not a Scene instance', () => {
+      expect(() => new SimulationECS({})).toThrow(TypeError);
     });
   });
 
@@ -26,6 +38,13 @@ describe('SimulationECS', () => {
     test('should return the system manager instance', () => {
       const systemsManager = simulation.getSystems();
       expect(systemsManager).toBeInstanceOf(Systems);
+    });
+  });
+
+  describe('getScene', () => {
+    test('should return the scene instance', () => {
+      const simulationScene = simulation.getScene();
+      expect(simulationScene).toBe(scene);
     });
   });
 

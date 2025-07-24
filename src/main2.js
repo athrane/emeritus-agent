@@ -7,51 +7,15 @@ import {
   NameComponent,
   TimeComponent,
   Position,
+  SceneFactory,
+  LogHelper
 } from './internal.js';
-
-/**
- * Logs the name and position of all entities that have them.
- * @param {import('./internal.js').Entities} entitiesManager
- */
-function logEntityDetails(entitiesManager) {
-  const entities = entitiesManager.filterByComponents(
-    NameComponent,
-    PositionComponent
-  );
-
-  if (entities.length === 0) {
-    console.log('No entities with Name and Position to log.');
-    return;
-  }
-
-  entities.forEach((entity) => {
-    const name = entity.getComponent(NameComponent).getName();
-    const pos = entity.getComponent(PositionComponent).getPosition();
-    console.log(`- ${name}: Position(${pos.getX()}, ${pos.getY()})`);
-  });
-}
-
-/**
- * Logs the current simulation time.
- * @param {import('./internal.js').Entities} entities
- */
-function logTime(entities) {
-  const timeEntity = entities.filterByComponents(TimeComponent)[0];
-  if (!timeEntity) return;
-
-  const timeComp = timeEntity.getComponent(TimeComponent);
-  const timeOfDayObj = timeComp.getTimeOfDayAsObject();
-  const hours = timeOfDayObj.getHours();
-  const minutes = timeOfDayObj.getMinutes();
-  const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-
-  console.log(`Day ${timeComp.getDay()}, Time: ${timeString}`);
-}
 
 console.log('--- Initializing ECS Simulation ---');
 
 // 1. Create the simulation instance
-const simulation = new SimulationECS();
+const scene =  SceneFactory.createHouse();
+const simulation = new SimulationECS(scene);
 
 // 2. Get ECS core classes
 const entities = simulation.getEntities();
@@ -84,9 +48,10 @@ entities.create(
   new VelocityComponent(0, 0) // Zero velocity, so it won't move
 );
 
-console.log('Initial entity states:');
-logTime(entities);
-logEntityDetails(entities);
+console.log('\nInitial entity states:');
+LogHelper.logSceneDetails(scene);
+LogHelper.logTime(entities);
+LogHelper.logEntityDetails(entities);
 
 // 5. Run the simulation loop
 console.log('\n--- Running Simulation Loop ---');
@@ -100,8 +65,8 @@ const deltaTime = 1000; // Using 1000ms (1 second) for easy-to-follow calculatio
 for (let i = 0; i < simulationSteps; i++) {
   console.log(`\n[Step ${i + 1}]`);
   simulation.update(deltaTime);
-  logTime(entities);
-  logEntityDetails(entities);
+  LogHelper.logTime(entities);
+  LogHelper.logEntityDetails(entities);
 }
 
 console.log('\n--- Simulation Complete ---');

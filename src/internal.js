@@ -2,6 +2,7 @@
 
 export { TypeUtils } from './utils/TypeUtils.js';
 export { LogBuffer } from './utils/log/LogBuffer.js';
+export { LogHelper } from './utils/log/LogHelper.js';
 
 // Exporting the core ECS classes
 export { Entity } from './entity/Entity.js';
