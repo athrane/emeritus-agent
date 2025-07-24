@@ -1,8 +1,8 @@
-import { Room } from "../../../src/internal.js";
-import { Location } from "../../../src/internal.js";
-import { Scene } from "../../../src/internal.js";
-import { SceneFactory } from "../../../src/internal.js";
-import { Path } from "../../../src/internal.js";
+import { Room } from "../../src/internal.js";
+import { Location } from "../../src/internal.js";
+import { Scene } from "../../src/internal.js";
+import { SceneFactory } from "../../src/internal.js";
+import { Path } from "../../src/internal.js";
 
 
 describe('Scene', () => {

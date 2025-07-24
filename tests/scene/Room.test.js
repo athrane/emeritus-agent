@@ -1,6 +1,6 @@
-import { Room } from "../../../src/internal.js";
-import { Position } from "../../../src/internal.js";
-import { Location } from "../../../src/internal.js";
+import { Room } from "../../src/internal.js";
+import { Position } from "../../src/internal.js";
+import { Location } from "../../src/internal.js";
 
 describe('Room', () => {
   let room;

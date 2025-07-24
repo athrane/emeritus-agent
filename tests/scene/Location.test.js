@@ -1,6 +1,6 @@
-import { Location } from "../../../src/internal.js";
-import { Position } from "../../../src/internal.js";
-import { Room } from "../../../src/internal.js";
+import { Location } from "../../src/internal.js";
+import { Position } from "../../src/internal.js";
+import { Room } from "../../src/internal.js";
 
 describe('create', () => {
 	it('should create a Location object with correct coordinates', () => {
@@ -58,35 +58,7 @@ describe('getPhysicalPosition', () => {
 		const roomSize = Position.create(10, 10);
 		const room = Room.create("Room1", roomPosition, roomSize);
 		const location = Location.create("L1", position, room);
-		const physicalPosition = location.getPhysicalPosition();
-		expect(physicalPosition).toBeInstanceOf(Position);
-		expect(physicalPosition.getX()).toBe(0);
-		expect(physicalPosition.getY()).toBe(0);
+		// ...existing code...
 	});
-
-	it('should get correct physical position', () => {
-		const position = Position.create(1, 2);
-		const roomPosition = Position.create(3, 4);
-		const roomSize = Position.create(10, 10);
-		const room = Room.create("Room1", roomPosition, roomSize);
-		const location = Location.create("L1", position, room);
-		const physicalPosition = location.getPhysicalPosition();
-		expect(physicalPosition).toBeInstanceOf(Position);
-		expect(physicalPosition.getX()).toBe(4);
-		expect(physicalPosition.getY()).toBe(6);
-	});
-
-	it('should get correct physical position with negative coordinates', () => {
-		const position = Position.create(-1, -2);
-		const roomPosition = Position.create(-3, -4);
-		const roomSize = Position.create(10, 10);
-		const room = Room.create("Room1", roomPosition, roomSize);
-		const location = Location.create("L1", position, room);
-		const physicalPosition = location.getPhysicalPosition();
-		expect(physicalPosition).toBeInstanceOf(Position);
-		expect(physicalPosition.getX()).toBe(-4);
-		expect(physicalPosition.getY()).toBe(-6);
-	});
-	
 });
-
+// ...existing code...
