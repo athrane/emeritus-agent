@@ -89,7 +89,11 @@ logEntityDetails(entitiesManager);
 
 // 5. Run the simulation loop
 console.log('\n--- Running Simulation Loop ---');
-const simulationSteps = 5;
+
+// number of steps to simulate
+const simulationSteps = 50;
+
+// deltaTime in milliseconds for each step
 const deltaTime = 1000; // Using 1000ms (1 second) for easy-to-follow calculations
 
 for (let i = 0; i < simulationSteps; i++) {

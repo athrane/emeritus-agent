@@ -165,15 +165,13 @@ export default config;
 
 ### Entity-Component-System (ECS)
 
-#### Core
+#### Entities
 - **Entity**: A general-purpose object with a unique ID, which can have components attached to it.
 - **Entities**: A manager class that creates, stores, and provides methods to query all entities.
 
 #### Components
 - **Component**: The abstract base class for all components. Components are data containers that attach to entities.
 - **NameComponent**: A component that stores a string name for an entity.
-- **PositionComponent**: A component that stores an entity's position using the `Position` class.
-- **VelocityComponent**: A component that stores an entity's velocity (vx, vy).
 
 - **Agent**: The main BDI agent class. Integrates belief, desire, intention, and motion systems. Runs the agent's decision and action loop.
 - **AgentFactory**: Factory for creating and initializing agents with default or custom configurations.
@@ -198,7 +196,6 @@ export default config;
 #### Systems
 - **System**: The abstract base class for all systems. Systems contain the logic that operates on entities with specific components.
 - **Systems**: A manager class that registers and executes all systems in a defined order.
-- **MovementSystem**: A system that updates the position of entities based on their velocity and the elapsed time (`deltaTime`).
 
 ### Motion & Environment
 - **Motion**: Abstract base/interface for agent motion systems (e.g., walking, stationary).
@@ -210,6 +207,9 @@ export default config;
 - **Scene**: Manages all rooms and locations, provides pathfinding.
 - **SceneFactory**: Utility for creating standard scenes (e.g., a house).
 - **Path**: Sequence of room names representing a route between locations.
+- **PositionComponent**: A component that stores an entity's position using the `Position` class.
+- **VelocityComponent**: A component that stores an entity's velocity (vx, vy).
+- **MovementSystem**: A system that updates the position of entities based on their velocity and the elapsed time (`deltaTime`).
 
 ### Time System
 - **TimeManager**: Tracks simulation time, steps, and day/night cycle.
