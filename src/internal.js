@@ -11,7 +11,7 @@ export { Component } from './component/Component.js';
 export { Position } from './bdiagent/movement/Position.js';
 export { Location } from './bdiagent/movement/Location.js';
 export { Room } from './bdiagent/movement/Room.js';
-export { SceneFactory } from './bdiagent/movement/SceneFactory.js';
+export { SceneFactory } from './scene/SceneFactory.js';
 export { Scene } from './scene/Scene.js';
 export { Path } from './bdiagent/movement/Path.js';
 export { Motion } from './bdiagent/movement/Motion.js';
