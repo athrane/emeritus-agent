@@ -2,6 +2,7 @@ import {
   SimulationECS,
   MovementSystem,
   TimeSystem,
+  BeliefUpdateSystem,
   PositionComponent,
   VelocityComponent,
   NameComponent,
@@ -9,7 +10,21 @@ import {
   Position,
   SceneComponent,
   SceneFactory,
-  LogHelper
+  LogHelper,
+  HungerBeliefComponent,
+  HungerUpdateComponent,
+  FatigueBeliefComponent,
+  FatigueUpdateComponent,
+  BoredomBeliefComponent,
+  BoredomUpdateComponent,
+  DentalHygieneBeliefComponent,
+  DentalHygieneUpdateComponent,
+  BodyHygieneBeliefComponent,
+  BodyHygieneUpdateComponent,
+  HandHygieneBeliefComponent,
+  HandHygieneUpdateComponent,
+  UrinationBeliefComponent,
+  UrinationUpdateComponent
 } from './internal.js';
 
 console.log('--- Initializing ECS Simulation ---');
@@ -25,7 +40,8 @@ const systems = simulation.getSystems();
 // 3. Add systems
 systems.add(new TimeSystem());
 systems.add(new MovementSystem());
-console.log('Added TimeSystem and MovementSystem to the simulation.');
+systems.add(new BeliefUpdateSystem());
+console.log('Added TimeSystem, MovementSystem, and BeliefUpdateSystem to the simulation.');
 
 // 4. Create entities and add components
 console.log('\n--- Creating Entities ---');
@@ -39,9 +55,35 @@ entities.create(
 );
 
 entities.create(
-  new NameComponent('Player'),
-  new PositionComponent(new Position(100, 200)),
-  new VelocityComponent(10, -5) // Moves 10 units/sec on X, -5 on Y
+  new NameComponent('Acticus'),
+  new PositionComponent(new Position(0, 0)),
+  new VelocityComponent(0.1, 0.1), // Moves at 0.1 units per second
+  new HungerBeliefComponent(0),    
+  new HungerUpdateComponent(1), // Hunger increases by 1 per real second
+  new FatigueBeliefComponent(0),   
+  new FatigueUpdateComponent(0.5), 
+  new BoredomBeliefComponent(50),  
+  new BoredomUpdateComponent(2),   
+  new DentalHygieneBeliefComponent(80), 
+  new DentalHygieneUpdateComponent(0), 
+  new BodyHygieneBeliefComponent(0), 
+  new BodyHygieneUpdateComponent(0.3), 
+  new HandHygieneBeliefComponent(0), 
+  new HandHygieneUpdateComponent(0), 
+  new UrinationBeliefComponent(0), 
+  new UrinationUpdateComponent(2)
+);
+
+entities.create(
+  new NameComponent('Anias'),
+  new PositionComponent(new Position(0, 0)),
+  new VelocityComponent(0.25, 0.25), // Moves at 0.25 units per second
+  new HungerBeliefComponent(0), 
+  new HungerUpdateComponent(1), // Hunger increases by 1 per real second
+  new FatigueBeliefComponent(0),   
+  new FatigueUpdateComponent(0.5), 
+  new BoredomBeliefComponent(0),   
+  new BoredomUpdateComponent(0)    
 );
 
 entities.create(

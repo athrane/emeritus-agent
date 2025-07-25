@@ -60,7 +60,8 @@ export class AgentFactory {
         const dentalHygieneBelief = new IntegerPercentageBelief("Dental Hygiene", 0);
         const bodyHygieneBelief = new IntegerPercentageBelief("Body Hygiene", 0);
         const handHygieneBelief = new IntegerPercentageBelief("Hand Hygiene", 0);
-        const vesicularDistentionBelief = new IntegerPercentageBelief("Vesicular Distention", 0);
+        // Vesicular Distention is the medical term for bladder fullness.
+        const urinationBelief = new IntegerPercentageBelief("Vesicular Distention", 0);
 
         oldMan.addBelief(hungerBelief);
         oldMan.addBelief(fatigueBelief);
@@ -68,7 +69,7 @@ export class AgentFactory {
         oldMan.addBelief(dentalHygieneBelief);
         oldMan.addBelief(bodyHygieneBelief);
         oldMan.addBelief(handHygieneBelief);
-        oldMan.addBelief(vesicularDistentionBelief);
+        oldMan.addBelief(urinationBelief);
 
         // Register belief updaters
         oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(hungerBelief, 1));
@@ -77,7 +78,7 @@ export class AgentFactory {
         oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(dentalHygieneBelief, 0));
         oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(bodyHygieneBelief, 1));
         oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(handHygieneBelief, 0));
-        oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(vesicularDistentionBelief, 2));
+        oldMan.registerBeliefUpdater(new IntegerPercentageBeliefUpdater(urinationBelief, 2));
 
         // Add desires
         oldMan.addDesire(DesireFactory.createSleepDesire());

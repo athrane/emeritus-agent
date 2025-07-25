@@ -52,6 +52,25 @@ export { Systems } from './system/Systems.js';
 
 export { NameComponent } from './component/NameComponent.js';
 
+// Exporting ECS Belief classes
+export { BeliefComponent } from './belief/BeliefComponent.js';
+export { HungerBeliefComponent } from './belief/HungerBeliefComponent.js';
+export { FatigueBeliefComponent } from './belief/FatigueBeliefComponent.js';
+export { BeliefUpdateComponent } from './belief/BeliefUpdateComponent.js';
+export { HungerUpdateComponent } from './belief/HungerUpdateComponent.js';
+export { FatigueUpdateComponent } from './belief/FatigueUpdateComponent.js';
+export { BoredomBeliefComponent } from './belief/BoredomBeliefComponent.js';
+export { BoredomUpdateComponent } from './belief/BoredomUpdateComponent.js';
+export { DentalHygieneBeliefComponent } from './belief/DentalHygieneBeliefComponent.js';
+export { DentalHygieneUpdateComponent } from './belief/DentalHygieneUpdateComponent.js';
+export { BodyHygieneBeliefComponent } from './belief/BodyHygieneBeliefComponent.js';
+export { BodyHygieneUpdateComponent } from './belief/BodyHygieneUpdateComponent.js';
+export { HandHygieneBeliefComponent } from './belief/HandHygieneBeliefComponent.js';
+export { HandHygieneUpdateComponent } from './belief/HandHygieneUpdateComponent.js';
+export { UrinationBeliefComponent } from './belief/UrinationBeliefComponent.js';
+export { UrinationUpdateComponent } from './belief/UrinationUpdateComponent.js';
+export { BeliefUpdateSystem } from './belief/BeliefUpdateSystem.js';
+
 // Exporting ECS Movement classes 
 export { PositionComponent } from './movement/PositionComponent.js';
 export { VelocityComponent } from './movement/VelocityComponent.js';

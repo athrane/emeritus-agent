@@ -1,5 +1,12 @@
 import {
   Entities,
+  FatigueBeliefComponent,
+  BoredomBeliefComponent,
+  DentalHygieneBeliefComponent,
+  BodyHygieneBeliefComponent,
+  HandHygieneBeliefComponent,
+  UrinationBeliefComponent,
+  HungerBeliefComponent,
   NameComponent,
   PositionComponent,
   SceneComponent,
@@ -29,7 +36,49 @@ export class LogHelper {
     entities.forEach((entity) => {
       const name = entity.getComponent(NameComponent).getName();
       const pos = entity.getComponent(PositionComponent).getPosition();
-      console.log(`- ${name}: Position(${pos.getX()}, ${pos.getY()})`);
+      let logString = `- ${name}: Position(${pos.getX()}, ${pos.getY()})`;
+
+      const beliefStrings = [];
+      const hungerBelief = entity.getComponent(HungerBeliefComponent);
+      if (hungerBelief) {
+        beliefStrings.push(`${hungerBelief.getName()}: ${hungerBelief.getValue().toFixed(0)}`);
+      }
+
+      const fatigueBelief = entity.getComponent(FatigueBeliefComponent);
+      if (fatigueBelief) {
+        beliefStrings.push(`${fatigueBelief.getName()}: ${fatigueBelief.getValue().toFixed(0)}`);
+      }
+
+      const boredomBelief = entity.getComponent(BoredomBeliefComponent);
+      if (boredomBelief) {
+        beliefStrings.push(`${boredomBelief.getName()}: ${boredomBelief.getValue().toFixed(0)}`);
+      }
+
+      const dentalHygieneBelief = entity.getComponent(DentalHygieneBeliefComponent);
+      if (dentalHygieneBelief) {
+        beliefStrings.push(`${dentalHygieneBelief.getName()}: ${dentalHygieneBelief.getValue().toFixed(0)}`);
+      }
+
+      const bodyHygieneBelief = entity.getComponent(BodyHygieneBeliefComponent);
+      if (bodyHygieneBelief) {
+        beliefStrings.push(`${bodyHygieneBelief.getName()}: ${bodyHygieneBelief.getValue().toFixed(0)}`);
+      }
+
+      const handHygieneBelief = entity.getComponent(HandHygieneBeliefComponent);
+      if (handHygieneBelief) {
+        beliefStrings.push(`${handHygieneBelief.getName()}: ${handHygieneBelief.getValue().toFixed(0)}`);
+      }
+
+      const urinationBelief = entity.getComponent(UrinationBeliefComponent);
+      if (urinationBelief) {
+        beliefStrings.push(`${urinationBelief.getName()}: ${urinationBelief.getValue().toFixed(0)}`);
+      }
+
+      if (beliefStrings.length > 0) {
+        logString += ` | Beliefs(${beliefStrings.join(', ')})`;
+      }
+
+      console.log(logString);
     });
   }
 
