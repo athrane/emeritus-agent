@@ -30,6 +30,8 @@ export { IntegerPercentageBeliefUpdater } from './bdiagent/belief/IntegerPercent
 export { BeliefManager } from './bdiagent/belief/BeliefManager.js';
 
 export { Desire } from './bdiagent/desire/Desire.js';
+export { Desire2 } from './desire/Desire2.js';
+export { DesireSetComponent } from './desire/DesireSetComponent.js';
 export { DesireFactory } from './bdiagent/desire/DesireFactory.js';
 export { DesireManager } from './bdiagent/desire/DesireManager.js';
 
