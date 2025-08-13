@@ -4,3 +4,6 @@ dist/
 # Ignore node_modules directory
 node_modules/
 out.txt
+
+# Ignore coverage directory
+coverage/
